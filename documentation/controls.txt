@@ -1,9 +1,14 @@
+------------------------------------------------------------------------
 CONTROLS
 
-This file is a bit of a placeholder (keyboard shortcuts planned).
 
-------------------------------------------------------------------------
-FUNCTIONALITY		:	DEFAULT BINDING
-------------------------------------------------------------------------
-EVERYTHING		:	Mouse Left Button
-------------------------------------------------------------------------
+
+MAIN MENU SCREEN CONTROLS
+Space	: Start a new Pomodoro
+ESC or Q: Exit program
+
+
+
+COUNTDOWN SCREEN CONTROLS
+M	: Main Menu
+ESC or Q: Exit program
