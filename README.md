@@ -3,7 +3,7 @@
 
 More info: [https://en.wikipedia.org/wiki/Pomodoro_Technique]
 
-*** This Software is in PRE-ALPHA phase! ***
+***This Software is in PRE-ALPHA phase!***
 
 Intro
 --------------
