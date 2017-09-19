@@ -121,6 +121,7 @@ void MainMenuState::draw()
 	m_engineSharedContext.frameID++;
 	m_window.clear( m_mainmenuBgColor );
 	m_grabbedWindow = m_windowActive
+		&& m_moveable
 		&& sf::Mouse::isButtonPressed( sf::Mouse::Left );
 	if ( m_grabbedWindow ) {
 		m_window.setPosition( sf::Mouse::getPosition() +
@@ -289,6 +290,16 @@ void MainMenuState::processEvents()
 					     newSize.y > MIN_SIZE_PX ) {
 						m_window.setSize( newSize );
 					}
+				}
+				break;
+			case sf::Keyboard::L:
+				{
+					m_moveable = !m_moveable;
+					#if defined DBG
+					std::cout <<
+					"Toggled moveable. New value: "	<<
+					m_moveable << "\n";
+					#endif
 				}
 				break;
 			default:

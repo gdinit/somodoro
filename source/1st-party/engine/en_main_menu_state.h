@@ -99,6 +99,7 @@ private:
 	int			m_mainmenuBgColorR = 0;
 	int			m_mainmenuBgColorG = 0;
 	int			m_mainmenuBgColorB = 0;
+	bool			m_moveable = false;
 };
 
 // EN_MAIN_MENU_STATE_H
