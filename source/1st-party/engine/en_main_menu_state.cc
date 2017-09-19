@@ -246,6 +246,7 @@ void MainMenuState::processEvents()
 				this->
 				tglDbgDFPSConsOutput();
 				break;
+			case sf::Keyboard::Escape:
 			case sf::Keyboard::Q:
 				std::cout << "Quitting on Q key press."
 				" Goodbye!\n";
