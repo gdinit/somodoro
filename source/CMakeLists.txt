@@ -5,7 +5,7 @@ set (CMAKE_CXX_STANDARD 11)
 
 find_package(OpenGL REQUIRED)
 
-project(202.somodoro)
+project(somodoro)
 SET(PROJECT_STATIC_RUNTIME FALSE CACHE BOOL "Use statically linked standard/runtime libraries?")
 mark_as_advanced	(PROJECT_STATIC_RUNTIME)
 
