@@ -1,0 +1,36 @@
+In random order.
+If you have any comments, correction requests, please let me know by creating an
+issue at project's GitHub page here https://github.com/gdinit/
+
+
+* This game is built on the very awesome C++ library SFML
+	Simple and Fast Multimedia Library
+	http://www.sfml-dev.org/ 
+	Copyright © Laurent Gomila & SFML Team
+
+* Game Engine functionality built on 'Small Game Engine'
+	programmed by Lukas 'eXpl0it3r' Dürrenberger
+	https://github.com/eXpl0it3r/SmallGameEngine
+
+* eXpl0it3r's engine code is based on original code by Anthony Lewis
+	http://gamedevgeek.com/tutorials/managing-game-states-in-c/
+	http://anthonylewis.com/about/
+
+* utility.h > setOrigin method by authors of the book 'SFML Game Development': 
+	by Jan Haller, Henrik Vogelius Hansson, Artur Moreira
+	https://www.amazon.co.uk/SFML-Game-Development-Jan-Haller/dp/1849696845
+	https://github.com/SFML/SFML-Game-Development-Book
+	Note: great book! buy it! :)
+
+* make_unique.h by JLBorges at cplusplus.com forums
+	http://www.cplusplus.com/user/JLBorges/
+
+* Assert macro code by therocode
+  	https://github.com/therocode/thero
+
+* Draggable window code by SFML Official Forums members Hapax & Geheim
+
+ARTWORK & SOUNDS
+* created by gdinit:	icon.ico Windows icon.
+* sounds:		created by gdinit
+* fonts:		"Sansation" Font (used everywhere) by Bernd Montag

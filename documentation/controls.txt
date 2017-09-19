@@ -1,0 +1,9 @@
+CONTROLS
+
+This file is a bit of a placeholder (keyboard shortcuts planned).
+
+------------------------------------------------------------------------
+FUNCTIONALITY		:	DEFAULT BINDING
+------------------------------------------------------------------------
+EVERYTHING		:	Mouse Left Button
+------------------------------------------------------------------------
