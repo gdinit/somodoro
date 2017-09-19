@@ -1,0 +1,15 @@
+{
+  "========================================================================": 0,
+  "MAINMENU SCREEN COLOR CODE (R,G,B)                                      ": 0,
+  "m_mainmenuBgColorR": 255,
+  "m_mainmenuBgColorG": 0,
+  "m_mainmenuBgColorB": 0,
+
+  "COUNTDOWN SCREEN COLOR CODE (R,G,B)                                     ": 0,
+  "m_countdownBgColorR": 138,
+  "m_countdownBgColorG": 22,
+  "m_countdownBgColorB": 55,
+ 
+  "COUNTDOWN IN SECONDS (25 minutes x 60 seconds = 1500)                   ": 0,
+  "m_countdownSeconds": 1500,
+}
