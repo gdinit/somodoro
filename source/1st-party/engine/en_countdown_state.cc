@@ -116,10 +116,9 @@ void CountdownState::initializeState()
 	m_countdownBgColor.r = m_countdownBgColorR;
 	m_countdownBgColor.g = m_countdownBgColorG;
 	m_countdownBgColor.b = m_countdownBgColorB;
-	std::cout 
-	<< "Short Break is: " << m_secsBreakShort << " seconds.\n"
-	<< "Long Break is: " << m_secsBreakLong << " seconds.\n"
-	<< "Pomodoro started - counting down: " << m_secsPomodoro << " seconds.\n";
+	std::cout << "Short Break is: " << m_secsBreakShort << " seconds.\n" <<
+	"Long Break is: " << m_secsBreakLong << " seconds.\n" <<
+	"Pomodoro started - counting down: " << m_secsPomodoro << " seconds.\n";
 
 	// TODO change this to steady clock
 	m_TPstart = std::chrono::system_clock::now();
