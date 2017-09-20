@@ -20,6 +20,7 @@ CountdownState::CountdownState( StateMachine &machine
 	, m_myObjNameStr( "CountdownState" )
 {
 	loadSounds();
+	// TODO actually, this should play every single time. remove condition?
 	playSoundIfRequested();
 	// Reset to prevent instant-game-over next time
 	GLOBALS->returnToMainMenuRequested = 0;
@@ -413,13 +414,18 @@ void CountdownState::loadSounds()
 		     "assets/sounds/clicked.wav" ) ) {
 	}
 	m_sClicked.setBuffer( m_sbClicked );
+
+	if ( !m_sbWindingUp.loadFromFile(
+		     "assets/sounds/winding_up.ogg" ) ) {
+	}
+	m_sWindingUp.setBuffer( m_sbWindingUp );
 }
 
 void CountdownState::playSoundIfRequested()
 {
 	if ( m_enSharedContext.reqPlaySound ) {
 		m_enSharedContext.reqPlaySound = 0;
-		playSoundClicked();
+		playSoundWindingUp();
 	}
 }
 
@@ -429,6 +435,14 @@ void CountdownState::playSoundClicked()
 	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
 	#endif
 	m_sClicked.play();
+}
+
+void CountdownState::playSoundWindingUp()
+{
+	#if defined DBG
+	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
+	#endif
+	m_sWindingUp.play();
 }
 
 void CountdownState::winSizeIncrease( int times )

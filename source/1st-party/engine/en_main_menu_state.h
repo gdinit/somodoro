@@ -56,6 +56,8 @@ public:
 	void	winSizeIncrease( int times );
 	void	winSizeDecrease( int times );
 	void	winToggleMoveable();
+	void	loadSounds();
+	void	playSoundClicked();
 
 private:
 	const t_objectName	m_myObjNameStr;
@@ -103,6 +105,9 @@ private:
 	int			m_mainmenuBgColorR = 0;
 	int			m_mainmenuBgColorG = 0;
 	int			m_mainmenuBgColorB = 0;
+	// SOUNDS
+	sf::SoundBuffer		m_sbClicked;
+	sf::Sound		m_sClicked;
 };
 
 // EN_MAIN_MENU_STATE_H

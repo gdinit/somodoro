@@ -68,6 +68,7 @@ public:
 	void	loadSounds();
 	void	playSoundIfRequested();
 	void	playSoundClicked();
+	void	playSoundWindingUp();
 	void	winSizeIncrease( int times );
 	void	winSizeDecrease( int times );
 	void	winToggleMoveable();
@@ -96,18 +97,17 @@ private:
 	int32			m_countdownBgColorB = 0;
 	int32			m_secsPomodoro = 0;
 	int32			m_countdownSecondsRemaining = 0;
-
 	sf::Font		m_countdownFont;
 	sf::Text		m_countdownText;
-
 	stdTimePoint		m_TPstart;
 	stdTimePoint		m_TPlatest;
 	bool			m_centerOriginNeeded = true;
 	bool			m_timerLive = false;
-
 	// SOUNDS
 	sf::SoundBuffer		m_sbClicked;
 	sf::Sound		m_sClicked;
+	sf::SoundBuffer		m_sbWindingUp;
+	sf::Sound		m_sWindingUp;
 };
 
 // EN_COUNTDOWN_STATE_H

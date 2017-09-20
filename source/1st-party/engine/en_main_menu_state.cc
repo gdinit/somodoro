@@ -21,6 +21,8 @@ MainMenuState::MainMenuState( StateMachine &machine
 	std::cout << "[DEBUG]\tCreated state:\t\t" << m_myObjNameStr << "\n";
 	#endif
 	restartStateClock();
+	loadSounds();
+	playSoundClicked();
 	// resize stuff here
 	// TODO base these values on config variables
 	m_desiredAspectRatio = 640.f / 480.f;
@@ -363,6 +365,22 @@ void MainMenuState::winToggleMoveable()
 	std::cout << "[DEBUG] Toggled moveable. New value: " << newValueText <<
 	"\t//" << m_myObjNameStr << "\n";
 	#endif
+}
+
+void MainMenuState::loadSounds()
+{
+	if ( !m_sbClicked.loadFromFile(
+		     "assets/sounds/clicked.wav" ) ) {
+	}
+	m_sClicked.setBuffer( m_sbClicked );
+}
+
+void MainMenuState::playSoundClicked()
+{
+	#if defined DBG
+	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
+	#endif
+	m_sClicked.play();
 }
 
 // ===================================80 chars=================================|
