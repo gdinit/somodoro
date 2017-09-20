@@ -151,7 +151,7 @@ void MainMenuState::draw()
 	// =====================================================================
 	if ( ImGui::ImageButton( m_tex1Start, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
-		m_engineSharedContext.reqPlayRewindSnd = 1;
+		m_engineSharedContext.reqPlaySound = 1;
 		m_next = StateMachine::build <CountdownState> ( m_machine
 				, m_window
 				, m_engineSharedContext, true );
@@ -159,7 +159,7 @@ void MainMenuState::draw()
 	// =====================================================================
 	if ( ImGui::ImageButton( m_tex2Short, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
-		m_engineSharedContext.reqPlayRewindSnd = 1;
+		m_engineSharedContext.reqPlaySound = 1;
 		m_next = StateMachine::build <CountdownState> ( m_machine
 				, m_window
 				, m_engineSharedContext, true );
@@ -230,7 +230,7 @@ void MainMenuState::processEvents()
 		case sf::Event::KeyPressed:
 			switch ( evt.key.code ) {
 			case sf::Keyboard::Space:
-				m_engineSharedContext.reqPlayRewindSnd = 1;
+				m_engineSharedContext.reqPlaySound = 1;
 				m_next = StateMachine::build
 					<CountdownState> ( m_machine
 						, m_window

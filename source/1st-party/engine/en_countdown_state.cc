@@ -216,8 +216,8 @@ void CountdownState::resume()
 	#endif
 
 	// if there is a pending play sound request, play it
-	if ( m_engineSharedContext.reqSndPlyFromPlay ) {
-		m_engineSharedContext.reqSndPlyFromPlay = 0;
+	if ( m_engineSharedContext.reqPlaySound ) {
+		m_engineSharedContext.reqPlaySound = 0;
 		m_sClicked.play();
 	}
 }
@@ -456,8 +456,8 @@ void CountdownState::loadSounds()
 
 void CountdownState::playSoundIfRequested()
 {
-	if ( m_engineSharedContext.reqPlayRewindSnd ) {
-		m_engineSharedContext.reqPlayRewindSnd = 0;
+	if ( m_engineSharedContext.reqPlaySound ) {
+		m_engineSharedContext.reqPlaySound = 0;
 		playSoundClicked();
 	}
 }
