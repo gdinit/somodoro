@@ -210,7 +210,7 @@ void MainMenuState::processEvents()
 			break;
 		case sf::Event::LostFocus:
 			m_windowActive = false;
-			makeWindowOnTop();
+			makeWindowAlwaysOnTop();
 			break;
 		case sf::Event::Resized:
 			// onResize();
@@ -257,55 +257,14 @@ void MainMenuState::processEvents()
 				break;
 			case sf::Keyboard::Add:
 			case sf::Keyboard::Num9:
-				{
-					sf::Vector2u	curSize =
-						m_window.getSize();
-					#if defined DBG
-					std::cout << "curSize: " << curSize.x <<
-					"," << curSize.y << '\n';
-					#endif
-					sf::Vector2u	newSize =
-					{ curSize.x + SIZE_STEP_PX
-					  , curSize.y + SIZE_STEP_PX };
-					#if defined DBG
-					std::cout << "newSize: " << newSize.x <<
-					"," << newSize.y << '\n';
-					#endif
-					m_window.setSize( newSize );
-				}
+				winSizeIncrease( 1 );
 				break;
 			case sf::Keyboard::Subtract:
 			case sf::Keyboard::Num0:
-				{
-					sf::Vector2u	curSize =
-						m_window.getSize();
-					#if defined DBG
-					std::cout << "curSize: " << curSize.x <<
-					"," << curSize.y << '\n';
-					#endif
-					sf::Vector2u	newSize =
-					{ curSize.x - SIZE_STEP_PX
-					  , curSize.y - SIZE_STEP_PX };
-					#if defined DBG
-					std::cout << "newSize: " << newSize.x <<
-					"," << newSize.y << '\n';
-					#endif
-					if ( newSize.x > MIN_SIZE_PX &&
-					     newSize.y > MIN_SIZE_PX ) {
-						m_window.setSize( newSize );
-					}
-				}
+				winSizeDecrease( 1 );
 				break;
 			case sf::Keyboard::L:
-				{
-					m_enSharedContext.winMoveable =
-						!m_enSharedContext.winMoveable;
-					#if defined DBG
-					std::cout <<
-					"Toggled moveable. New value: "	<<
-					m_enSharedContext.winMoveable << "\n";
-					#endif
-				}
+				winToggleMoveable();
 				break;
 			default:
 				break;
@@ -317,7 +276,7 @@ void MainMenuState::processEvents()
 	}
 }
 
-void MainMenuState::makeWindowOnTop()
+void MainMenuState::makeWindowAlwaysOnTop()
 // TODO: move this to state.cc
 {
 	#ifdef _WIN32
@@ -350,6 +309,55 @@ void MainMenuState::makeWindowOnTop()
 	// POSIX
 	#else
 	#   error "Unknown compiler"
+	#endif
+}
+
+void MainMenuState::winSizeIncrease( int times )
+{
+	for ( int n = 0; n < times; n++ ) {
+		sf::Vector2u	cSize = m_window.getSize();
+		sf::Vector2u	nSize
+			= { cSize.x + SIZE_STEP_PX, cSize.y + SIZE_STEP_PX };
+
+		#if defined DBG
+		std::cout << "[DEBUG] curSize: " << cSize.x << "," << cSize.y <<
+		"\tnewSize: " << nSize.x << "," << nSize.y << "\t//" <<
+		m_myObjNameStr << "\n";
+		#endif
+		m_window.setSize( nSize );
+	}
+}
+
+void MainMenuState::winSizeDecrease( int times )
+{
+	for ( int n = 0; n < times; n++ ) {
+		sf::Vector2u	cSize = m_window.getSize();
+		sf::Vector2u	nSize = { cSize.x - SIZE_STEP_PX
+					  , cSize.y - SIZE_STEP_PX };
+		#if defined DBG
+		std::cout << "[DEBUG] curSize: " << cSize.x << "," << cSize.y <<
+		"\tnewSize: " << nSize.x << "," << nSize.y << "\t//" <<
+		m_myObjNameStr << "\n";
+		#endif
+
+		if ( nSize.x > MIN_SIZE_PX && nSize.y > MIN_SIZE_PX ) {
+			m_window.setSize( nSize );
+		}
+	}
+}
+
+void MainMenuState::winToggleMoveable()
+{
+	m_enSharedContext.winMoveable = !m_enSharedContext.winMoveable;
+	#if defined DBG
+	std::string newValueText;
+	if ( m_enSharedContext.winMoveable ) {
+		newValueText = "ON\t";
+	} else {
+		newValueText = "OFF";
+	}
+	std::cout << "[DEBUG] Toggled moveable. New value: " << newValueText <<
+	"\t//" << m_myObjNameStr << "\n";
 	#endif
 }
 

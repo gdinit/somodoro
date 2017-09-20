@@ -62,7 +62,7 @@ public:
 	void	draw();
 	void	pause();
 	void	resume();
-	void	makeWindowOnTop();
+	void	makeWindowAlwaysOnTop();
 	void	calculateUpdateTimer();
 	void	updateText();
 	void	centerText();

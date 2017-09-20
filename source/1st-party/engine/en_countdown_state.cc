@@ -41,7 +41,7 @@ CountdownState::~CountdownState()
 	// TODO remove me
 	#if defined DBG
 	std::cout << "[DEBUG]\tCountdownState run time was: " <<
-	getStateAgeAsSeconds() << std::endl;
+	getStateAgeAsSeconds() << " seconds\n";
 	#endif
 }
 
@@ -239,7 +239,7 @@ void CountdownState::processEvents()
 			break;
 		case sf::Event::LostFocus:
 			m_windowActive = false;
-			makeWindowOnTop();
+			makeWindowAlwaysOnTop();
 			break;
 		case sf::Event::Resized:
 			// onResize();
@@ -309,7 +309,7 @@ void CountdownState::onResize()
 {
 }
 
-void CountdownState::makeWindowOnTop()
+void CountdownState::makeWindowAlwaysOnTop()
 // TODO: move this to state.cc
 {
 	#ifdef _WIN32
@@ -437,13 +437,13 @@ void CountdownState::winSizeIncrease( int times )
 {
 	for ( int n = 0; n < times; n++ ) {
 		sf::Vector2u	cSize = m_window.getSize();
+		sf::Vector2u	nSize
+			= { cSize.x + SIZE_STEP_PX, cSize.y + SIZE_STEP_PX };
+
 		#if defined DBG
-		std::cout << "curSize: " << cSize.x << "," << cSize.y << '\n';
-		#endif
-		sf::Vector2u	nSize =
-		{ cSize.x + SIZE_STEP_PX, cSize.y + SIZE_STEP_PX };
-		#if defined DBG
-		std::cout << "newSize: " << nSize.x << "," << nSize.y << '\n';
+		std::cout << "[DEBUG] curSize: " << cSize.x << "," << cSize.y <<
+		"\tnewSize: " << nSize.x << "," << nSize.y << "\t//" <<
+		m_myObjNameStr << "\n";
 		#endif
 		m_window.setSize( nSize );
 	}
@@ -453,14 +453,14 @@ void CountdownState::winSizeDecrease( int times )
 {
 	for ( int n = 0; n < times; n++ ) {
 		sf::Vector2u	cSize = m_window.getSize();
-		#if defined DBG
-		std::cout << "curSize: " << cSize.x << "," << cSize.y << '\n';
-		#endif
 		sf::Vector2u	nSize = { cSize.x - SIZE_STEP_PX
 					  , cSize.y - SIZE_STEP_PX };
 		#if defined DBG
-		std::cout << "newSize: " << nSize.x << "," << nSize.y << '\n';
+		std::cout << "[DEBUG] curSize: " << cSize.x << "," << cSize.y <<
+		"\tnewSize: " << nSize.x << "," << nSize.y << "\t//" <<
+		m_myObjNameStr << "\n";
 		#endif
+
 		if ( nSize.x > MIN_SIZE_PX && nSize.y > MIN_SIZE_PX ) {
 			m_window.setSize( nSize );
 		}
@@ -473,11 +473,12 @@ void CountdownState::winToggleMoveable()
 	#if defined DBG
 	std::string newValueText;
 	if ( m_enSharedContext.winMoveable ) {
-		newValueText = "ON";
+		newValueText = "ON\t";
 	} else {
 		newValueText = "OFF";
 	}
-	std::cout << "Toggled moveable. New value: " << newValueText << "\n";
+	std::cout << "[DEBUG] Toggled moveable. New value: " << newValueText <<
+	"\t//" << m_myObjNameStr << "\n";
 	#endif
 }
 

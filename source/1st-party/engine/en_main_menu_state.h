@@ -51,7 +51,10 @@ public:
 	void	draw();
 	void	pause();
 	void	resume();
-	void	makeWindowOnTop();
+	void	makeWindowAlwaysOnTop();
+	void	winSizeIncrease( int times );
+	void	winSizeDecrease( int times );
+	void	winToggleMoveable();
 
 private:
 	const t_objectName	m_myObjNameStr;
