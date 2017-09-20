@@ -83,26 +83,24 @@ CountdownState::CountdownState( StateMachine &machine
 			m_countdownBgColorB = it.value();
 		} else if ( it.key() == "m_secsPomodoro" ) {
 			m_secsPomodoro = it.value();
-		} else if ( it.key() == "m_secsBreakShort" ) {
-			m_secsBreakShort = it.value();
-		} else if ( it.key() == "m_secsBreakLong" ) {
-			m_secsBreakLong = it.value();
+		} else if ( it.key() == "winAutoResize" ) {
+			m_enSharedContext.winAutoResize = it.value();
+			std::cout << "m_enSharedContext.winAutoResize is: " <<
+			m_enSharedContext.winAutoResize << '\n';
 		}
 	}
 	i.close();
 	m_countdownBgColor.r = m_countdownBgColorR;
 	m_countdownBgColor.g = m_countdownBgColorG;
 	m_countdownBgColor.b = m_countdownBgColorB;
-	std::cout << "Short Break is: " << m_secsBreakShort << " seconds.\n" <<
-	"Long Break is: " << m_secsBreakLong << " seconds.\n" <<
-	"Pomodoro started - counting down: " << m_secsPomodoro << " seconds.\n";
+	std::cout << "Pomodoro started - counting down: " << m_secsPomodoro <<
+	" seconds.\n";
 
 	// TODO change this to steady clock
 	m_TPstart = std::chrono::system_clock::now();
 
 	// must happen after everything else
-	winSizeDecrease( 3 );
-	m_enSharedContext.winMMMustResize = !m_enSharedContext.winMMMustResize;
+	winAutoResizeIfRequested();
 }
 
 CountdownState::~CountdownState()
@@ -480,6 +478,15 @@ void CountdownState::winToggleMoveable()
 	std::cout << "[DEBUG] Toggled moveable. New value: " << newValueText <<
 	"\t//" << m_myObjNameStr << "\n";
 	#endif
+}
+
+void CountdownState::winAutoResizeIfRequested()
+{
+	if ( m_enSharedContext.winAutoResize ) {
+		winSizeDecrease( 3 );
+		m_enSharedContext.winMMMustResize
+			= !m_enSharedContext.winMMMustResize;
+	}
 }
 
 // ===================================80 chars=================================|

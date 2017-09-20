@@ -10,6 +10,18 @@
   "m_countdownBgColorG": 22,
   "m_countdownBgColorB": 55,
  
+  "BREAKSHORT SCREEN COLOR CODE (R,G,B)                                    ": 0,
+  "darkgreen   #006400   rgb(0,100,0)                                      ": 0,
+  "m_breakshortBgColorR": 0,
+  "m_breakshortBgColorG": 100,
+  "m_breakshortBgColorB": 0,
+ 
+  "BREAKLONG SCREEN COLOR CODE (R,G,B)                                     ": 0,
+  "mediumblue  #0000CD   rgb(0,0,205)                                  ": 0,
+  "m_breaklongBgColorR": 0,
+  "m_breaklongBgColorG": 0,
+  "m_breaklongBgColorB": 205,
+ 
   "COUNTDOWN IN SECONDS (25 minutes x 60 seconds = 1500)                   ": 0,
   "m_secsPomodoro": 1500,
   "m_secsBreakShort": 300,
@@ -17,6 +29,9 @@
 
   "ALLOW WINDOW DRAG & DROP. TOGGLED VIA HOTKEY                            ": 0,
   "m_windowMoveable": 1,
+
+  "AUTO-DECREASE WINDOW SIZE DURING COUNTDOWNS?. TOGGLED VIA HOTKEY        ": 0,
+  "winAutoResize": true,
 
   "LAST LINE DO NOT DELETE                                                 ": 0
 }

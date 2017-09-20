@@ -71,38 +71,36 @@ BreakshortState::BreakshortState( StateMachine &machine
 	m_clicked = 0;
 	////////////////////////////////////////
 
+	// TODO move this to a function
+	// TODO move this to a single unified location in app for all states
 	std::ifstream	i( "data/settings.json" );
 	nlohmann::json	j;
 	i >> j;
 	for ( nlohmann::json::iterator it = j.begin(); it != j.end(); ++it ) {
-		if ( it.key() == "m_countdownBgColorR" ) {
-			m_countdownBgColorR = it.value();
-		} else if ( it.key() == "m_countdownBgColorG" ) {
-			m_countdownBgColorG = it.value();
-		} else if ( it.key() == "m_countdownBgColorB" ) {
-			m_countdownBgColorB = it.value();
-		} else if ( it.key() == "m_secsPomodoro" ) {
-			m_secsPomodoro = it.value();
+		if ( it.key() == "m_breakshortBgColorR" ) {
+			m_breakshortBgColorR = it.value();
+		} else if ( it.key() == "m_breakshortBgColorG" ) {
+			m_breakshortBgColorG = it.value();
+		} else if ( it.key() == "m_breakshortBgColorB" ) {
+			m_breakshortBgColorB = it.value();
 		} else if ( it.key() == "m_secsBreakShort" ) {
 			m_secsBreakShort = it.value();
-		} else if ( it.key() == "m_secsBreakLong" ) {
-			m_secsBreakLong = it.value();
+		} else if ( it.key() == "winAutoResize" ) {
+			m_enSharedContext.winAutoResize = it.value();
 		}
 	}
 	i.close();
-	m_breakshortBgColor.r = m_countdownBgColorR;
-	m_breakshortBgColor.g = m_countdownBgColorG;
-	m_breakshortBgColor.b = m_countdownBgColorB;
-	std::cout << "Short Break is: " << m_secsBreakShort << " seconds.\n" <<
-	"Long Break is: " << m_secsBreakLong << " seconds.\n" <<
-	"Pomodoro started - counting down: " << m_secsPomodoro << " seconds.\n";
+	m_breakshortBgColor.r = m_breakshortBgColorR;
+	m_breakshortBgColor.g = m_breakshortBgColorG;
+	m_breakshortBgColor.b = m_breakshortBgColorB;
+	std::cout << "Short Break started - counting down: " <<
+	m_secsBreakShort << " seconds.\n";
 
 	// TODO change this to steady clock
 	m_TPstart = std::chrono::system_clock::now();
 
 	// must happen after everything else
-	winSizeDecrease( 3 );
-	m_enSharedContext.winMMMustResize = !m_enSharedContext.winMMMustResize;
+	winAutoResizeIfRequested();
 }
 
 BreakshortState::~BreakshortState()
@@ -113,7 +111,7 @@ BreakshortState::~BreakshortState()
 
 	// TODO remove me
 	#if defined DBG
-	std::cout << "[DEBUG]\tCountdownState run time was: " <<
+	std::cout << "[DEBUG]\t" << m_myObjNameStr << " run time was: " <<
 	getStateAgeAsSeconds() << " seconds\n";
 	#endif
 }
@@ -349,10 +347,10 @@ void BreakshortState::calculateUpdateTimer()
 {
 	m_TPlatest = std::chrono::system_clock::now();
 	std::chrono::duration <double> elapsed_secs = m_TPlatest - m_TPstart;
-	m_countdownSecondsRemaining = m_secsPomodoro - round(
+	m_countdownSecondsRemaining = m_secsBreakShort - round(
 			elapsed_secs.count() );
 
-	if ( elapsed_secs.count() >= m_secsPomodoro ) {
+	if ( elapsed_secs.count() >= m_secsBreakShort ) {
 		m_timerLive = false;
 	}
 
@@ -480,6 +478,15 @@ void BreakshortState::winToggleMoveable()
 	std::cout << "[DEBUG] Toggled moveable. New value: " << newValueText <<
 	"\t//" << m_myObjNameStr << "\n";
 	#endif
+}
+
+void BreakshortState::winAutoResizeIfRequested()
+{
+	if ( m_enSharedContext.winAutoResize ) {
+		winSizeDecrease( 3 );
+		m_enSharedContext.winMMMustResize
+			= !m_enSharedContext.winMMMustResize;
+	}
 }
 
 // ===================================80 chars=================================|

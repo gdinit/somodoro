@@ -71,6 +71,7 @@ public:
 	void	winSizeIncrease( int times );
 	void	winSizeDecrease( int times );
 	void	winToggleMoveable();
+	void	winAutoResizeIfRequested();
 
 private:
 	const t_objectName	m_myObjNameStr;
@@ -94,8 +95,6 @@ private:
 	int32			m_countdownBgColorG = 0;
 	int32			m_countdownBgColorB = 0;
 	int32			m_secsPomodoro = 0;
-	int32			m_secsBreakShort = 0;
-	int32			m_secsBreakLong = 0;
 	int32			m_countdownSecondsRemaining = 0;
 
 	sf::Font		m_countdownFont;
@@ -105,6 +104,7 @@ private:
 	stdTimePoint		m_TPlatest;
 	bool			m_centerOriginNeeded = true;
 	bool			m_timerLive = false;
+
 	// SOUNDS
 	sf::SoundBuffer		m_sbClicked;
 	sf::Sound		m_sClicked;

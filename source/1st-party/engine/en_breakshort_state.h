@@ -71,6 +71,7 @@ public:
 	void	winSizeIncrease( int times );
 	void	winSizeDecrease( int times );
 	void	winToggleMoveable();
+	void	winAutoResizeIfRequested();
 
 private:
 	const t_objectName	m_myObjNameStr;
@@ -90,12 +91,10 @@ private:
 	bool			m_windowActive = true;
 	// This should be overwritten by JSON parser
 	sf::Color		m_breakshortBgColor = sf::Color::Yellow;
-	int32			m_countdownBgColorR = 0;
-	int32			m_countdownBgColorG = 0;
-	int32			m_countdownBgColorB = 0;
-	int32			m_secsPomodoro = 0;
+	int32			m_breakshortBgColorR = 0;
+	int32			m_breakshortBgColorG = 0;
+	int32			m_breakshortBgColorB = 0;
 	int32			m_secsBreakShort = 0;
-	int32			m_secsBreakLong = 0;
 	int32			m_countdownSecondsRemaining = 0;
 
 	sf::Font		m_breakshortFont;

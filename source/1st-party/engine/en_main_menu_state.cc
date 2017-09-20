@@ -166,9 +166,12 @@ void MainMenuState::draw()
 				, m_window, m_enSharedContext, true );
 	}
 	// =====================================================================
+	// TODO change this to long
 	if ( ImGui::ImageButton( m_tex3Long, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
-		m_machine.quit();
+		m_enSharedContext.reqPlaySound = 1;
+		m_next = StateMachine::build <BreaklongState> ( m_machine
+				, m_window, m_enSharedContext, true );
 	}
 	// =====================================================================
 	ImGui::End();
