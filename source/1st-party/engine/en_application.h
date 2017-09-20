@@ -11,12 +11,15 @@
 #include "en_globals.h"
 #include "game/mc_game_defines.h"
 
+// Required for SFML setIcon
+#include <SFML/Graphics.hpp>
+
 class Application
 {
 public:
 	Application();
 	virtual ~Application();
-	void	createWindow();
+	int	createWindow();
 	void	loadSettings();
 	void	run();
 

@@ -51,7 +51,7 @@ sf::View getLetterboxView( sf::View view, int windowWidth, int windowHeight ) {
 	return view;
 }
 
-void Application::createWindow()
+int Application::createWindow()
 {
 	sf::VideoMode	desktopVM = sf::VideoMode::getDesktopMode();
 
@@ -80,6 +80,17 @@ void Application::createWindow()
 			, sf::Style::None );
 		// , sf::Style::Resize );
 	}
+	// SFML Icon
+	// Even though we have .rc based icon on Windows,  let's keep SFML icon
+	// also because it should also change the icon on Linux & OS X
+	// Note that in case of conflict, on MS-Win SFML icon is in effect
+	sf::Image background;
+	if ( !background.loadFromFile( "assets/icon/icon.png" ) ) {
+		return -1;
+	}
+	m_window.setIcon( background.getSize().x, background.getSize().y
+		, background.getPixelsPtr() );
+
 	m_enSharedContext.view.setSize( w, h );
 	m_enSharedContext.view.setCenter(
 		m_enSharedContext.view.getSize().x / 2
@@ -87,6 +98,8 @@ void Application::createWindow()
 	m_enSharedContext.view = getLetterboxView(
 			m_enSharedContext.view, w, h );
 	m_enSharedContext.pWindow = &m_window;
+
+	return 0;
 }
 
 void Application::loadSettings()
@@ -104,7 +117,9 @@ void Application::run()
 
 	// Create render window
 	sf::ContextSettings windowSettings;
-	createWindow();
+	if ( createWindow() > 0 ) {
+		exit( EXIT_FAILURE );
+	}
 	windowSettings.antialiasingLevel = 8;
 	m_window.setFramerateLimit( CONST_DESIRED_FPS_INT );
 	m_window.setKeyRepeatEnabled( false );
