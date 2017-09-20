@@ -69,6 +69,9 @@ public:
 	void	loadSounds();
 	void	playSoundIfRequested();
 	void	playSoundClicked();
+	void	winSizeIncrease( int times );
+	void	winSizeDecrease( int times );
+	void	winToggleMoveable();
 
 private:
 	const t_objectName	m_myObjNameStr;

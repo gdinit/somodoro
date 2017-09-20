@@ -4,8 +4,8 @@
 #include "en_main_menu_state.h"
 
 // Used to increase/decrease window size with hotkeys
-#define ADD_SUBTRACT_PX_STEP 20
-#define MIN_SIZE_PX 50
+#define SIZE_STEP_PX 20
+#define MIN_SIZE_PX 40
 
 MainMenuState::MainMenuState( StateMachine &machine
 	, sf::RenderWindow &window
@@ -265,8 +265,8 @@ void MainMenuState::processEvents()
 					"," << curSize.y << '\n';
 					#endif
 					sf::Vector2u	newSize =
-					{ curSize.x + ADD_SUBTRACT_PX_STEP
-					  , curSize.y + ADD_SUBTRACT_PX_STEP };
+					{ curSize.x + SIZE_STEP_PX
+					  , curSize.y + SIZE_STEP_PX };
 					#if defined DBG
 					std::cout << "newSize: " << newSize.x <<
 					"," << newSize.y << '\n';
@@ -284,8 +284,8 @@ void MainMenuState::processEvents()
 					"," << curSize.y << '\n';
 					#endif
 					sf::Vector2u	newSize =
-					{ curSize.x - ADD_SUBTRACT_PX_STEP
-					  , curSize.y - ADD_SUBTRACT_PX_STEP };
+					{ curSize.x - SIZE_STEP_PX
+					  , curSize.y - SIZE_STEP_PX };
 					#if defined DBG
 					std::cout << "newSize: " << newSize.x <<
 					"," << newSize.y << '\n';

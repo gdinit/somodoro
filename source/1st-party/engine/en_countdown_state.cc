@@ -8,9 +8,8 @@ extern std::unique_ptr <Settings>	SETTINGS;
 extern std::unique_ptr <Globals>	GLOBALS;
 
 // Used to increase/decrease window size with hotkeys
-#define ADD_SUBTRACT_PX_STEP 20
-#define MIN_SIZE_PX 50
-// #define FONT_SIZE_PX 80
+#define SIZE_STEP_PX 20
+#define MIN_SIZE_PX 40
 #define FONT_SIZE_PX 74
 
 CountdownState::CountdownState( StateMachine &machine
@@ -25,8 +24,12 @@ CountdownState::CountdownState( StateMachine &machine
 	// Reset to prevent instant-game-over next time
 	GLOBALS->returnToMainMenuRequested = 0;
 	m_timerLive = true;
+
 	// TODO: remove initializeState() - move all into ctor
 	initializeState();
+
+	// must happen after everything else
+	winSizeDecrease( 3 );
 }
 
 CountdownState::~CountdownState()
@@ -283,55 +286,14 @@ void CountdownState::processEvents()
 			switch ( evt.key.code ) {
 			case sf::Keyboard::Add:
 			case sf::Keyboard::Num9:
-				{
-					sf::Vector2u	curSize =
-						m_window.getSize();
-					#if defined DBG
-					std::cout << "curSize: " << curSize.x <<
-					"," << curSize.y << '\n';
-					#endif
-					sf::Vector2u	newSize =
-					{ curSize.x + ADD_SUBTRACT_PX_STEP
-					  , curSize.y + ADD_SUBTRACT_PX_STEP };
-					#if defined DBG
-					std::cout << "newSize: " << newSize.x <<
-					"," << newSize.y << '\n';
-					#endif
-					m_window.setSize( newSize );
-				}
+				winSizeIncrease( 1 );
 				break;
 			case sf::Keyboard::Subtract:
 			case sf::Keyboard::Num0:
-				{
-					sf::Vector2u	curSize =
-						m_window.getSize();
-					#if defined DBG
-					std::cout << "curSize: " << curSize.x <<
-					"," << curSize.y << '\n';
-					#endif
-					sf::Vector2u	newSize =
-					{ curSize.x - ADD_SUBTRACT_PX_STEP
-					  , curSize.y - ADD_SUBTRACT_PX_STEP };
-					#if defined DBG
-					std::cout << "newSize: " << newSize.x <<
-					"," << newSize.y << '\n';
-					#endif
-					if ( newSize.x > MIN_SIZE_PX &&
-					     newSize.y > MIN_SIZE_PX ) {
-						m_window.setSize( newSize );
-					}
-				}
+				winSizeDecrease( 1 );
 				break;
 			case sf::Keyboard::L:
-				{
-					m_enSharedContext.winMoveable =
-						!m_enSharedContext.winMoveable;
-					#if defined DBG
-					std::cout <<
-					"Toggled moveable. New value: "	<<
-					m_enSharedContext.winMoveable << "\n";
-					#endif
-				}
+				winToggleMoveable();
 				break;
 			default:
 				break;
@@ -469,6 +431,54 @@ void CountdownState::playSoundClicked()
 	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
 	#endif
 	m_sClicked.play();
+}
+
+void CountdownState::winSizeIncrease( int times )
+{
+	for ( int n = 0; n < times; n++ ) {
+		sf::Vector2u	cSize = m_window.getSize();
+		#if defined DBG
+		std::cout << "curSize: " << cSize.x << "," << cSize.y << '\n';
+		#endif
+		sf::Vector2u	nSize =
+		{ cSize.x + SIZE_STEP_PX, cSize.y + SIZE_STEP_PX };
+		#if defined DBG
+		std::cout << "newSize: " << nSize.x << "," << nSize.y << '\n';
+		#endif
+		m_window.setSize( nSize );
+	}
+}
+
+void CountdownState::winSizeDecrease( int times )
+{
+	for ( int n = 0; n < times; n++ ) {
+		sf::Vector2u	cSize = m_window.getSize();
+		#if defined DBG
+		std::cout << "curSize: " << cSize.x << "," << cSize.y << '\n';
+		#endif
+		sf::Vector2u	nSize = { cSize.x - SIZE_STEP_PX
+					  , cSize.y - SIZE_STEP_PX };
+		#if defined DBG
+		std::cout << "newSize: " << nSize.x << "," << nSize.y << '\n';
+		#endif
+		if ( nSize.x > MIN_SIZE_PX && nSize.y > MIN_SIZE_PX ) {
+			m_window.setSize( nSize );
+		}
+	}
+}
+
+void CountdownState::winToggleMoveable()
+{
+	m_enSharedContext.winMoveable = !m_enSharedContext.winMoveable;
+	#if defined DBG
+	std::string newValueText;
+	if ( m_enSharedContext.winMoveable ) {
+		newValueText = "ON";
+	} else {
+		newValueText = "OFF";
+	}
+	std::cout << "Toggled moveable. New value: " << newValueText << "\n";
+	#endif
 }
 
 // ===================================80 chars=================================|
