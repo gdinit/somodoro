@@ -167,7 +167,7 @@ void MainMenuState::draw()
 	if ( ImGui::ImageButton( m_tex2Short, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
 		m_enSharedContext.reqPlaySound = 1;
-		m_next = StateMachine::build <CountdownState> ( m_machine
+		m_next = StateMachine::build <BreakshortState> ( m_machine
 				, m_window
 				, m_enSharedContext, true );
 	}
