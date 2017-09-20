@@ -14,5 +14,7 @@
   "m_countdownSeconds": 1500,
   "1m_countdownSeconds": 3,
 
+  "m_windowMoveable": 1,
+
   "LAST LINE DO NOT DELETE                                                 ": 0
 }

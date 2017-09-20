@@ -90,7 +90,7 @@ void CountdownState::initializeState()
 	m_clicked = 0;
 	////////////////////////////////////////
 
-	std::ifstream	i( "data/defines.json" );
+	std::ifstream	i( "data/settings.json" );
 	nlohmann::json	j;
 	i >> j;
 	for ( nlohmann::json::iterator it = j.begin(); it != j.end(); ++it ) {
