@@ -37,6 +37,9 @@
 # tmp text files
 __tmp__*.txt
 
+# Windows links
+*.lnk
+
 # IGNORE everything under these directories
 **/build
 **/buildscripts
