@@ -30,6 +30,7 @@ CountdownState::CountdownState( StateMachine &machine
 
 	// must happen after everything else
 	winSizeDecrease( 3 );
+	m_enSharedContext.winMMMustResize = !m_enSharedContext.winMMMustResize;
 }
 
 CountdownState::~CountdownState()

@@ -17,6 +17,13 @@ MainMenuState::MainMenuState( StateMachine &machine
 	// Get size of window.
 	m_windowSize = m_window.getSize();
 	initializeState();
+
+	// must happen after everything else
+	if ( m_enSharedContext.winMMMustResize ) {
+		m_enSharedContext.winMMMustResize
+			= !m_enSharedContext.winMMMustResize;
+		winSizeIncrease( 3 );
+	}
 }
 
 MainMenuState::~MainMenuState()

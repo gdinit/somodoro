@@ -24,6 +24,8 @@ struct EngineSharedContext
 	bool reqPlaySound = 0;
 	// Window
 	bool winMoveable = 1;
+	// countdown reduced size, so MainMenu Must Resize back
+	bool winMMMustResize = 0;
 };
 
 // EN_SHARED_CONTEXT_H
