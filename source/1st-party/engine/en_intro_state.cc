@@ -12,7 +12,10 @@ IntroState::IntroState( StateMachine &machine
 {
 	m_enSharedContext.tIntroFirstLaunchTime =
 		std::chrono::steady_clock::now();
-	initializeState();
+
+	// go straight in to mainmenuState - keep this for future use
+	m_next = StateMachine::build <MainMenuState> ( m_machine, m_window
+			, m_enSharedContext, true );
 }
 
 IntroState::~IntroState()
@@ -20,13 +23,6 @@ IntroState::~IntroState()
 	#if defined DBG
 	std::cout << "[DEBUG]\tDestructed state:\t" << m_myObjNameStr << "\n";
 	#endif
-}
-
-void IntroState::initializeState()
-{
-	// go straight in to mainmenuState - keep this for future use
-	m_next = StateMachine::build <MainMenuState> ( m_machine, m_window
-			, m_enSharedContext, true );
 }
 
 void IntroState::pause()

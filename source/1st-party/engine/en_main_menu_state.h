@@ -46,7 +46,6 @@ public:
 	virtual ~MainMenuState();
 	// resize stuff here
 	void	onResize();
-	void	initializeState();
 	void	processEvents();
 	void	update();
 	void	draw();

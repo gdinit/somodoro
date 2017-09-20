@@ -56,7 +56,6 @@ public:
 	, bool replace = true );
 	virtual ~BreakshortState();
 	void	onResize();
-	void	initializeState();
 	void	processEvents();
 	void	update();
 	void	draw();

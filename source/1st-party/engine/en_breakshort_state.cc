@@ -25,29 +25,6 @@ BreakshortState::BreakshortState( StateMachine &machine
 	GLOBALS->returnToMainMenuRequested = 0;
 	m_timerLive = true;
 
-	// TODO: remove initializeState() - move all into ctor
-	initializeState();
-
-	// must happen after everything else
-	winSizeDecrease( 3 );
-	m_enSharedContext.winMMMustResize = !m_enSharedContext.winMMMustResize;
-}
-
-BreakshortState::~BreakshortState()
-{
-	#if defined DBG
-	std::cout << "[DEBUG]\tDestructed state:\t" << m_myObjNameStr << "\n";
-	#endif
-
-	// TODO remove me
-	#if defined DBG
-	std::cout << "[DEBUG]\tCountdownState run time was: " <<
-	getStateAgeAsSeconds() << " seconds\n";
-	#endif
-}
-
-void BreakshortState::initializeState()
-{
 	#if defined DBG
 	std::cout << "[DEBUG]\tCreated state:\t\t" << m_myObjNameStr << "\n";
 	#endif
@@ -122,6 +99,23 @@ void BreakshortState::initializeState()
 
 	// TODO change this to steady clock
 	m_TPstart = std::chrono::system_clock::now();
+
+	// must happen after everything else
+	winSizeDecrease( 3 );
+	m_enSharedContext.winMMMustResize = !m_enSharedContext.winMMMustResize;
+}
+
+BreakshortState::~BreakshortState()
+{
+	#if defined DBG
+	std::cout << "[DEBUG]\tDestructed state:\t" << m_myObjNameStr << "\n";
+	#endif
+
+	// TODO remove me
+	#if defined DBG
+	std::cout << "[DEBUG]\tCountdownState run time was: " <<
+	getStateAgeAsSeconds() << " seconds\n";
+	#endif
 }
 
 void BreakshortState::update()

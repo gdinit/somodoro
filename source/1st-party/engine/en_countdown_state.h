@@ -56,7 +56,6 @@ public:
 	, bool replace = true );
 	virtual ~CountdownState();
 	void	onResize();
-	void	initializeState();
 	void	processEvents();
 	void	update();
 	void	draw();

@@ -16,25 +16,7 @@ MainMenuState::MainMenuState( StateMachine &machine
 {
 	// Get size of window.
 	m_windowSize = m_window.getSize();
-	initializeState();
 
-	// must happen after everything else
-	if ( m_enSharedContext.winMMMustResize ) {
-		m_enSharedContext.winMMMustResize
-			= !m_enSharedContext.winMMMustResize;
-		winSizeIncrease( 3 );
-	}
-}
-
-MainMenuState::~MainMenuState()
-{
-	#if defined DBG
-	std::cout << "[DEBUG]\tDestructed state:\t" << m_myObjNameStr << "\n";
-	#endif
-}
-
-void MainMenuState::initializeState()
-{
 	#if defined DBG
 	std::cout << "[DEBUG]\tCreated state:\t\t" << m_myObjNameStr << "\n";
 	#endif
@@ -83,6 +65,20 @@ void MainMenuState::initializeState()
 	m_mainmenuBgColor.r = m_mainmenuBgColorR;
 	m_mainmenuBgColor.g = m_mainmenuBgColorG;
 	m_mainmenuBgColor.b = m_mainmenuBgColorB;
+
+	// must happen after everything else
+	if ( m_enSharedContext.winMMMustResize ) {
+		m_enSharedContext.winMMMustResize
+			= !m_enSharedContext.winMMMustResize;
+		winSizeIncrease( 3 );
+	}
+}
+
+MainMenuState::~MainMenuState()
+{
+	#if defined DBG
+	std::cout << "[DEBUG]\tDestructed state:\t" << m_myObjNameStr << "\n";
+	#endif
 }
 
 void MainMenuState::update()
