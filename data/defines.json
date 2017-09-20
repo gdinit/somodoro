@@ -11,5 +11,6 @@
   "m_countdownBgColorB": 55,
  
   "COUNTDOWN IN SECONDS (25 minutes x 60 seconds = 1500)                   ": 0,
-  "m_countdownSeconds": 1500
+  "1m_countdownSeconds": 1500,
+  "m_countdownSeconds": 3
 }

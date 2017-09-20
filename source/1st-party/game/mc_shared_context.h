@@ -3,36 +3,9 @@
 
 #ifndef MC_SHARED_CONTEXT_H
 #define MC_SHARED_CONTEXT_H
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
-// I think this is not in use
+
+	// Sound Stuff
+	bool reqSndPlyFromMainMenu = 0;
 
 // This struct stores some data and makes it accessible to all game states.
 // It is instantiated in Application() & passed to each GameState as &ref.

@@ -100,6 +100,12 @@ private:
 	int			m_mainmenuBgColorG = 0;
 	int			m_mainmenuBgColorB = 0;
 	bool			m_moveable = false;
+	// SOUNDS
+	sf::SoundBuffer		m_sbBlip2;
+	sf::Sound		m_sBlip2;
+	sf::SoundBuffer		m_sbClicked;
+	sf::Sound		m_sClicked;
+
 };
 
 // EN_MAIN_MENU_STATE_H
