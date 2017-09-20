@@ -20,8 +20,7 @@ CountdownState::CountdownState( StateMachine &machine
 	, m_myObjNameStr( "CountdownState" )
 {
 	loadSounds();
-	// TODO actually, this should play every single time. remove condition?
-	playSoundIfRequested();
+	playSoundWindingUp();
 	// Reset to prevent instant-game-over next time
 	GLOBALS->returnToMainMenuRequested = 0;
 	m_timerLive = true;
@@ -353,6 +352,7 @@ void CountdownState::calculateUpdateTimer()
 
 	if ( elapsed_secs.count() >= m_secsPomodoro ) {
 		m_timerLive = false;
+		playSoundChime();
 	}
 
 	if ( !m_window.hasFocus() ) {
@@ -419,6 +419,11 @@ void CountdownState::loadSounds()
 		     "assets/sounds/winding_up.ogg" ) ) {
 	}
 	m_sWindingUp.setBuffer( m_sbWindingUp );
+
+	if ( !m_sbChime.loadFromFile(
+		     "assets/sounds/chime.ogg" ) ) {
+	}
+	m_sChime.setBuffer( m_sbChime );
 }
 
 void CountdownState::playSoundIfRequested()
@@ -443,6 +448,14 @@ void CountdownState::playSoundWindingUp()
 	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
 	#endif
 	m_sWindingUp.play();
+}
+
+void CountdownState::playSoundChime()
+{
+	#if defined DBG
+	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
+	#endif
+	m_sChime.play();
 }
 
 void CountdownState::winSizeIncrease( int times )

@@ -68,6 +68,8 @@ public:
 	void	loadSounds();
 	void	playSoundIfRequested();
 	void	playSoundClicked();
+	void	playSoundWindingUp();
+	void	playSoundChime();
 	void	winSizeIncrease( int times );
 	void	winSizeDecrease( int times );
 	void	winToggleMoveable();
@@ -107,6 +109,10 @@ private:
 	// SOUNDS
 	sf::SoundBuffer		m_sbClicked;
 	sf::Sound		m_sClicked;
+	sf::SoundBuffer		m_sbWindingUp;
+	sf::Sound		m_sWindingUp;
+	sf::SoundBuffer		m_sbChime;
+	sf::Sound		m_sChime;
 };
 
 // EN_BREAKLONG_STATE_H

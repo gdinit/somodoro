@@ -69,6 +69,7 @@ public:
 	void	playSoundIfRequested();
 	void	playSoundClicked();
 	void	playSoundWindingUp();
+	void	playSoundChime();
 	void	winSizeIncrease( int times );
 	void	winSizeDecrease( int times );
 	void	winToggleMoveable();
@@ -108,6 +109,8 @@ private:
 	sf::Sound		m_sClicked;
 	sf::SoundBuffer		m_sbWindingUp;
 	sf::Sound		m_sWindingUp;
+	sf::SoundBuffer		m_sbChime;
+	sf::Sound		m_sChime;
 };
 
 // EN_COUNTDOWN_STATE_H

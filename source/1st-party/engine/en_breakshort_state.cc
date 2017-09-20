@@ -20,7 +20,7 @@ BreakshortState::BreakshortState( StateMachine &machine
 	, m_myObjNameStr( "BreakshortState" )
 {
 	loadSounds();
-	playSoundIfRequested();
+	playSoundWindingUp();
 	// Reset to prevent instant-game-over next time
 	GLOBALS->returnToMainMenuRequested = 0;
 	m_timerLive = true;
@@ -352,6 +352,7 @@ void BreakshortState::calculateUpdateTimer()
 
 	if ( elapsed_secs.count() >= m_secsBreakShort ) {
 		m_timerLive = false;
+		playSoundChime();
 	}
 
 	if ( !m_window.hasFocus() ) {
@@ -413,6 +414,16 @@ void BreakshortState::loadSounds()
 		     "assets/sounds/clicked.wav" ) ) {
 	}
 	m_sClicked.setBuffer( m_sbClicked );
+
+	if ( !m_sbWindingUp.loadFromFile(
+		     "assets/sounds/winding_up.ogg" ) ) {
+	}
+	m_sWindingUp.setBuffer( m_sbWindingUp );
+
+	if ( !m_sbChime.loadFromFile(
+		     "assets/sounds/chime.ogg" ) ) {
+	}
+	m_sChime.setBuffer( m_sbChime );
 }
 
 void BreakshortState::playSoundIfRequested()
@@ -429,6 +440,22 @@ void BreakshortState::playSoundClicked()
 	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
 	#endif
 	m_sClicked.play();
+}
+
+void BreakshortState::playSoundWindingUp()
+{
+	#if defined DBG
+	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
+	#endif
+	m_sWindingUp.play();
+}
+
+void BreakshortState::playSoundChime()
+{
+	#if defined DBG
+	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
+	#endif
+	m_sChime.play();
 }
 
 void BreakshortState::winSizeIncrease( int times )
