@@ -58,8 +58,7 @@ public:
 	void			tglDbgShowOverlay();
 	void			toggleDebugConsoleOutput();
 	void			tglDbgDFPSConsOutput();
-	void			updateDebugOverlayTextIfEnabled( bool
-	b );
+	void			updateDebugOverlayTextIfEnabled( bool b );
 	void			updateDebugOverlayTextIfEnabled();
 	void			printConsoleDebugIfEnabled();
 	void			recordObservedFPS();
