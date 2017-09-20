@@ -39,7 +39,7 @@ void MainMenuState::initializeState()
 	std::cout << "[DEBUG]\tm_desiredAspectRatio is: \t" <<
 	m_desiredAspectRatio << " //" << m_myObjNameStr << "\n";
 	#endif
-	m_engineSharedContext.mustMainMenu = false;
+	m_enSharedContext.mustMainMenu = false;
 	m_urgentUpdateNeeded = 10;
 	// debug overlay font
 	m_font.loadFromFile( "assets/fonts/sansation.ttf" );
@@ -118,16 +118,16 @@ void MainMenuState::update()
 
 void MainMenuState::draw()
 {
-	m_engineSharedContext.frameID++;
+	m_enSharedContext.frameID++;
 	m_window.clear( m_mainmenuBgColor );
 	m_grabbedWindow = m_windowActive
-		&& m_moveable
+		&& m_enSharedContext.winMoveable
 		&& sf::Mouse::isButtonPressed( sf::Mouse::Left );
 	if ( m_grabbedWindow ) {
 		m_window.setPosition( sf::Mouse::getPosition() +
 			m_grabbedOffset );
 	}
-	m_window.setView( m_engineSharedContext.view );
+	m_window.setView( m_enSharedContext.view );
 	ImGui::SFML::Update( m_window, m_deltaClock.restart() );
 	// =====================================================================
 	ImGuiWindowFlags window_flags = 0;
@@ -151,18 +151,18 @@ void MainMenuState::draw()
 	// =====================================================================
 	if ( ImGui::ImageButton( m_tex1Start, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
-		m_engineSharedContext.reqPlaySound = 1;
+		m_enSharedContext.reqPlaySound = 1;
 		m_next = StateMachine::build <CountdownState> ( m_machine
 				, m_window
-				, m_engineSharedContext, true );
+				, m_enSharedContext, true );
 	}
 	// =====================================================================
 	if ( ImGui::ImageButton( m_tex2Short, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
-		m_engineSharedContext.reqPlaySound = 1;
+		m_enSharedContext.reqPlaySound = 1;
 		m_next = StateMachine::build <CountdownState> ( m_machine
 				, m_window
-				, m_engineSharedContext, true );
+				, m_enSharedContext, true );
 	}
 	// =====================================================================
 	if ( ImGui::ImageButton( m_tex3Long, -1, sf::Color::Green
@@ -214,8 +214,8 @@ void MainMenuState::processEvents()
 			break;
 		case sf::Event::Resized:
 			// onResize();
-			m_engineSharedContext.view = getLetterboxView(
-					m_engineSharedContext.view
+			m_enSharedContext.view = getLetterboxView(
+					m_enSharedContext.view
 					, evt.size.width
 					, evt.size.height );
 			break;
@@ -230,12 +230,12 @@ void MainMenuState::processEvents()
 		case sf::Event::KeyPressed:
 			switch ( evt.key.code ) {
 			case sf::Keyboard::Space:
-				m_engineSharedContext.reqPlaySound = 1;
+				m_enSharedContext.reqPlaySound = 1;
 				m_next = StateMachine::build
 					<CountdownState> ( m_machine
 						, m_window
 						,
-						m_engineSharedContext
+						m_enSharedContext
 						, true );
 				break;
 			case sf::Keyboard::F2:
@@ -298,11 +298,12 @@ void MainMenuState::processEvents()
 				break;
 			case sf::Keyboard::L:
 				{
-					m_moveable = !m_moveable;
+					m_enSharedContext.winMoveable =
+						!m_enSharedContext.winMoveable;
 					#if defined DBG
 					std::cout <<
 					"Toggled moveable. New value: "	<<
-					m_moveable << "\n";
+					m_enSharedContext.winMoveable << "\n";
 					#endif
 				}
 				break;

@@ -10,7 +10,7 @@ IntroState::IntroState( StateMachine &machine
 	: State{ machine, window, context, replace }, m_myObjNameStr(
 		"IntroState" )
 {
-	m_engineSharedContext.tIntroFirstLaunchTime =
+	m_enSharedContext.tIntroFirstLaunchTime =
 		std::chrono::steady_clock::now();
 	initializeState();
 }
@@ -26,7 +26,7 @@ void IntroState::initializeState()
 {
 	// go straight in to mainmenuState - keep this for future use
 	m_next = StateMachine::build <MainMenuState> ( m_machine, m_window
-			, m_engineSharedContext, true );
+			, m_enSharedContext, true );
 }
 
 void IntroState::pause()
@@ -70,9 +70,9 @@ void IntroState::update()
 
 void IntroState::draw()
 {
-	m_engineSharedContext.frameID++;
+	m_enSharedContext.frameID++;
 	m_window.clear();
-	m_window.setView( m_engineSharedContext.view );
+	m_window.setView( m_enSharedContext.view );
 	m_window.draw( m_statisticsText );
 	m_window.display();
 }
@@ -87,8 +87,8 @@ void IntroState::processEvents()
 			break;
 		case sf::Event::Resized:
 			// onResize();
-			m_engineSharedContext.view = getLetterboxView(
-					m_engineSharedContext.view
+			m_enSharedContext.view = getLetterboxView(
+					m_enSharedContext.view
 					, evt.size.width
 					, evt.size.height );
 			break;
@@ -105,7 +105,7 @@ void IntroState::processEvents()
 						( m_machine
 						, m_window
 						,
-						m_engineSharedContext
+						m_enSharedContext
 						, true );
 				break;
 			case sf::Keyboard::Q:

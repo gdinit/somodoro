@@ -126,7 +126,7 @@ void CountdownState::update()
 		std::cout << "Terminating due to returnToMainMenuRequested=1\n";
 		#endif
 		m_next = StateMachine::build <MainMenuState>
-				( m_machine, m_window, m_engineSharedContext
+				( m_machine, m_window, m_enSharedContext
 				, true );
 	}
 
@@ -137,10 +137,10 @@ void CountdownState::update()
 		// obtain current screen res - need to pass it to game objects
 		m_res = static_cast <sf::Vector2f>
 			( m_window.getSize() );
-		if ( m_engineSharedContext.mustMainMenu == true ) {
+		if ( m_enSharedContext.mustMainMenu == true ) {
 			m_next = StateMachine::build <MainMenuState> (
 					m_machine, m_window
-					, m_engineSharedContext
+					, m_enSharedContext
 					, true );
 		}
 		// update statistics for the debug overlay
@@ -175,16 +175,16 @@ void CountdownState::update()
 
 void CountdownState::draw()
 {
-	m_engineSharedContext.frameID++;
+	m_enSharedContext.frameID++;
 	m_window.clear( m_countdownBgColor );
 	m_grabbedWindow = m_windowActive
-		&& m_moveable
+		&& m_enSharedContext.winMoveable
 		&& sf::Mouse::isButtonPressed( sf::Mouse::Left );
 	if ( m_grabbedWindow ) {
 		m_window.setPosition( sf::Mouse::getPosition() +
 			m_grabbedOffset );
 	}
-	m_window.setView( m_engineSharedContext.view );
+	m_window.setView( m_enSharedContext.view );
 	if ( SETTINGS->inGameOverlay ) {
 		m_window.draw( m_statisticsText );
 	}
@@ -216,8 +216,8 @@ void CountdownState::resume()
 	#endif
 
 	// if there is a pending play sound request, play it
-	if ( m_engineSharedContext.reqPlaySound ) {
-		m_engineSharedContext.reqPlaySound = 0;
+	if ( m_enSharedContext.reqPlaySound ) {
+		m_enSharedContext.reqPlaySound = 0;
 		m_sClicked.play();
 	}
 }
@@ -240,8 +240,8 @@ void CountdownState::processEvents()
 			break;
 		case sf::Event::Resized:
 			// onResize();
-			m_engineSharedContext.view = getLetterboxView(
-					m_engineSharedContext.view
+			m_enSharedContext.view = getLetterboxView(
+					m_enSharedContext.view
 					, evt.size.width
 					, evt.size.height );
 			break;
@@ -262,7 +262,7 @@ void CountdownState::processEvents()
 			case sf::Keyboard::M:
 				m_next = StateMachine::build
 					<MainMenuState> ( m_machine, m_window
-						, m_engineSharedContext, true );
+						, m_enSharedContext, true );
 				break;
 			case sf::Keyboard::F2:
 				this->tglDbgShowOverlay();
@@ -324,11 +324,12 @@ void CountdownState::processEvents()
 				break;
 			case sf::Keyboard::L:
 				{
-					m_moveable = !m_moveable;
+					m_enSharedContext.winMoveable =
+						!m_enSharedContext.winMoveable;
 					#if defined DBG
 					std::cout <<
 					"Toggled moveable. New value: "	<<
-					m_moveable << "\n";
+					m_enSharedContext.winMoveable << "\n";
 					#endif
 				}
 				break;
@@ -456,8 +457,8 @@ void CountdownState::loadSounds()
 
 void CountdownState::playSoundIfRequested()
 {
-	if ( m_engineSharedContext.reqPlaySound ) {
-		m_engineSharedContext.reqPlaySound = 0;
+	if ( m_enSharedContext.reqPlaySound ) {
+		m_enSharedContext.reqPlaySound = 0;
 		playSoundClicked();
 	}
 }

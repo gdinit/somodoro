@@ -73,7 +73,7 @@ protected:
 	std::unique_ptr <State>		m_next;
 	StateMachine &			m_machine;
 	sf::RenderWindow &		m_window;
-	EngineSharedContext &		m_engineSharedContext;
+	EngineSharedContext &		m_enSharedContext;
 	bool				m_replacing;
 	static const sf::Time		TimePerFrame;
 	int				m_statisticsNumFrames = 0;

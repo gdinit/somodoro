@@ -80,13 +80,13 @@ void Application::createWindow()
 			, sf::Style::None );
 		// , sf::Style::Resize );
 	}
-	m_engineSharedContext.view.setSize( w, h );
-	m_engineSharedContext.view.setCenter(
-		m_engineSharedContext.view.getSize().x / 2
-		, m_engineSharedContext.view.getSize().y / 2 );
-	m_engineSharedContext.view = getLetterboxView(
-			m_engineSharedContext.view, w, h );
-	m_engineSharedContext.pWindow = &m_window;
+	m_enSharedContext.view.setSize( w, h );
+	m_enSharedContext.view.setCenter(
+		m_enSharedContext.view.getSize().x / 2
+		, m_enSharedContext.view.getSize().y / 2 );
+	m_enSharedContext.view = getLetterboxView(
+			m_enSharedContext.view, w, h );
+	m_enSharedContext.pWindow = &m_window;
 }
 
 void Application::loadSettings()
@@ -111,7 +111,7 @@ void Application::run()
 
 	m_machine.run( StateMachine::build <IntroState> ( m_machine
 			, m_window
-			, m_engineSharedContext
+			, m_enSharedContext
 			, true ) );
 
 	// Main Loop

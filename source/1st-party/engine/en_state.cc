@@ -12,7 +12,7 @@ State::State( StateMachine &machine
 	, bool replace )
 	: m_machine{ machine }
 	, m_window{ window }
-	, m_engineSharedContext{ context }
+	, m_enSharedContext{ context }
 	, m_replacing{ replace }
 {
 }
@@ -73,7 +73,7 @@ void State::updateDebugOverlayTextIfEnabled( bool b )
 				+ "\nFrameTime: " + std::to_string( mil / n )
 				// FrameID
 				+ " us\nFID: " + std::to_string(
-					m_engineSharedContext.frameID
+					m_enSharedContext.frameID
 					)
 				// RunTime
 				+ "\nRunTime: " + std::to_string(
@@ -83,7 +83,7 @@ void State::updateDebugOverlayTextIfEnabled( bool b )
 						    time_point( std::chrono::
 							    steady_clock::now()
 							    ) )	-
-						m_engineSharedContext.
+						m_enSharedContext.
 						tIntroFirstLaunchTime ).count()
 					) + " s\n"
 				// Close
@@ -110,15 +110,14 @@ void State::updateDebugOverlayTextIfEnabled()
 				asMicroseconds() / m_statisticsNumFrames )
 			// FrameID
 			+ " us\nFID: " + std::to_string(
-				m_engineSharedContext.frameID )
+				m_enSharedContext.frameID )
 			// RunTime
 			+ "\nRunTime: " + std::to_string(
 				std::chrono::duration_cast <std::chrono::
 					seconds> (
 					( std::chrono::steady_clock::time_point(
 						  std::chrono::steady_clock::
-						  now() ) ) -
-					m_engineSharedContext.
+						  now() ) ) - m_enSharedContext.
 					tIntroFirstLaunchTime ).
 				count() ) + " s\n"
 			// Close

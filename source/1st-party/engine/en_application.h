@@ -24,7 +24,7 @@ private:
 	const t_objectName	m_myObjNameStr;
 	StateMachine		m_machine;
 	sf::RenderWindow	m_window;
-	EngineSharedContext	m_engineSharedContext;
+	EngineSharedContext	m_enSharedContext;
 };
 
 // EN_APPLICATION_H

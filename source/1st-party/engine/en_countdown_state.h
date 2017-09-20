@@ -100,7 +100,6 @@ private:
 	stdTimePoint		m_TPstart;
 	stdTimePoint		m_TPlatest;
 	bool			m_centerOriginNeeded = true;
-	bool			m_moveable = false;
 	bool			m_timerLive = false;
 	// SOUNDS
 	sf::SoundBuffer		m_sbClicked;
