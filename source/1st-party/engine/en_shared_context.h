@@ -26,6 +26,7 @@ struct EngineSharedContext
 	bool winMoveable = 1;
 	// countdown reduced size, so MainMenu Must Resize back
 	bool winMMMustResize = 0;
+	bool winAutoResize = 0;
 };
 
 // EN_SHARED_CONTEXT_H
