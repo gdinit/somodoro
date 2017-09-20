@@ -26,6 +26,9 @@ struct EngineSharedContext
 	// Sound
 	bool reqSndPlyFromPlay = 0;
 	bool reqSndPlyFromPause = 0;
+
+	// Sound Stuff
+	bool reqPlayRewindSnd = 0;
 };
 
 // EN_SHARED_CONTEXT_H

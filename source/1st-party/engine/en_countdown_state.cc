@@ -20,9 +20,12 @@ CountdownState::CountdownState( StateMachine &machine
 	: State{ machine, window, context, replace }
 	, m_myObjNameStr( "CountdownState" )
 {
-	m_timerLive = true;
+	loadSounds();
+	playSoundIfRequested();
 	// Reset to prevent instant-game-over next time
 	GLOBALS->returnToMainMenuRequested = 0;
+	m_timerLive = true;
+	// TODO: remove initializeState() - move all into ctor
 	initializeState();
 }
 
@@ -74,23 +77,6 @@ void CountdownState::initializeState()
 	// m_countdownText.setPosition( 5.f, 5.f );
 	m_countdownText.setCharacterSize( FONT_SIZE_PX );
 	m_countdownText.setFillColor( sf::Color::White );
-
-	// SOUNDS
-	// TODO place this in a function
-	if ( !m_sbClicked.loadFromFile(
-		     "assets/sounds/button_clicked2.wav" ) ) {
-	}
-	m_sClicked.setBuffer( m_sbClicked );
-
-	// if there is a pending play sound request, play it
-	if ( m_engineSharedContext.reqSndPlyFromPlay ) {
-		m_engineSharedContext.reqSndPlyFromPlay = 0;
-		m_sClicked.play();
-	}
-
-	if ( !m_sbBlip2.loadFromFile( "assets/sounds/blip1.wav" ) ) {
-	}
-	m_sBlip2.setBuffer( m_sbBlip2 );
 
 	// START A NEW GAME
 	m_windowSize = m_window.getSize();
@@ -458,6 +444,30 @@ void CountdownState::centerText()
 	}
 	centerOrigin( m_countdownText );
 	m_countdownText.setPosition( m_windowSize.x / 2, m_windowSize.y / 2 );
+}
+
+void CountdownState::loadSounds()
+{
+	if ( !m_sbClicked.loadFromFile(
+		     "assets/sounds/clicked.wav" ) ) {
+	}
+	m_sClicked.setBuffer( m_sbClicked );
+}
+
+void CountdownState::playSoundIfRequested()
+{
+	if ( m_engineSharedContext.reqPlayRewindSnd ) {
+		m_engineSharedContext.reqPlayRewindSnd = 0;
+		playSoundClicked();
+	}
+}
+
+void CountdownState::playSoundClicked()
+{
+	#if defined DBG
+	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
+	#endif
+	m_sClicked.play();
 }
 
 // ===================================80 chars=================================|

@@ -24,22 +24,6 @@ MainMenuState::~MainMenuState()
 	#if defined DBG
 	std::cout << "[DEBUG]\tDestructed state:\t" << m_myObjNameStr << "\n";
 	#endif
-
-	////////////////////////////////////////////////////////////////////////
-	// SOUNDS - move to separate class
-	//
-	// TODO place playSound(param) in a function
-	//
-	// TODO rename this to: button_clicked1 or something shorter
-	if ( !m_sbClicked.loadFromFile(
-		     "assets/sounds/button_clicked2.wav" ) ) {
-	}
-	m_sClicked.setBuffer( m_sbClicked );
-	//
-	// mouse over sound?
-	if ( !m_sbBlip2.loadFromFile( "assets/sounds/blip1.wav" ) ) {
-	}
-	m_sBlip2.setBuffer( m_sbBlip2 );
 }
 
 void MainMenuState::initializeState()
@@ -167,8 +151,7 @@ void MainMenuState::draw()
 	// =====================================================================
 	if ( ImGui::ImageButton( m_tex1Start, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
-		std::cout << "playing a sound!\n";
-		m_sClicked.play();
+		m_engineSharedContext.reqPlayRewindSnd = 1;
 		m_next = StateMachine::build <CountdownState> ( m_machine
 				, m_window
 				, m_engineSharedContext, true );
@@ -176,6 +159,7 @@ void MainMenuState::draw()
 	// =====================================================================
 	if ( ImGui::ImageButton( m_tex2Short, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
+		m_engineSharedContext.reqPlayRewindSnd = 1;
 		m_next = StateMachine::build <CountdownState> ( m_machine
 				, m_window
 				, m_engineSharedContext, true );
@@ -246,8 +230,7 @@ void MainMenuState::processEvents()
 		case sf::Event::KeyPressed:
 			switch ( evt.key.code ) {
 			case sf::Keyboard::Space:
-				std::cout << "playing a sound!\n";
-				m_sClicked.play();
+				m_engineSharedContext.reqPlayRewindSnd = 1;
 				m_next = StateMachine::build
 					<CountdownState> ( m_machine
 						, m_window

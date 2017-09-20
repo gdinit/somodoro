@@ -66,6 +66,9 @@ public:
 	void	calculateUpdateTimer();
 	void	updateText();
 	void	centerText();
+	void	loadSounds();
+	void	playSoundIfRequested();
+	void	playSoundClicked();
 
 private:
 	const t_objectName	m_myObjNameStr;
@@ -76,11 +79,6 @@ private:
 	// TODO move this to app
 	float
 				m_desiredAspectRatio;
-
-	sf::SoundBuffer		m_sbBlip2;
-	sf::Sound		m_sBlip2;
-	sf::SoundBuffer		m_sbClicked;
-	sf::Sound		m_sClicked;
 	// imgui stuff
 	sf::Clock		m_deltaClock;
 	int32			m_clicked;
@@ -104,6 +102,9 @@ private:
 	bool			m_centerOriginNeeded = true;
 	bool			m_moveable = false;
 	bool			m_timerLive = false;
+	// SOUNDS
+	sf::SoundBuffer		m_sbClicked;
+	sf::Sound		m_sClicked;
 };
 
 // EN_COUNTDOWN_STATE_H
