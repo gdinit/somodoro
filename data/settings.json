@@ -34,7 +34,7 @@
   "m_windowMoveable": 1,
 
   "AUTO-DECREASE WINDOW SIZE DURING COUNTDOWNS?. TOGGLED VIA HOTKEY        ": 0,
-  "winAutoResize": true,
+  "winAutoResize": false,
 
   "LAST LINE DO NOT DELETE                                                 ": 0
 }

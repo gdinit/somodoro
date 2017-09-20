@@ -276,6 +276,15 @@ void CountdownState::processEvents()
 				this->
 				tglDbgDFPSConsOutput();
 				break;
+			case sf::Keyboard::L:
+				if ( ( sf::Keyboard::isKeyPressed( sf::Keyboard
+					       ::RControl ) ) ||
+				     ( sf::Keyboard::isKeyPressed( sf::Keyboard
+					       ::
+					       LControl ) ) ) {
+					winToggleMoveable();
+				}
+				break;
 			default:
 				break;
 			}
@@ -289,9 +298,6 @@ void CountdownState::processEvents()
 			case sf::Keyboard::Subtract:
 			case sf::Keyboard::Num0:
 				winSizeDecrease( 1 );
-				break;
-			case sf::Keyboard::L:
-				winToggleMoveable();
 				break;
 			default:
 				break;
