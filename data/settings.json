@@ -11,9 +11,11 @@
   "m_countdownBgColorB": 55,
  
   "COUNTDOWN IN SECONDS (25 minutes x 60 seconds = 1500)                   ": 0,
-  "m_countdownSeconds": 1500,
-  "1m_countdownSeconds": 3,
+  "m_secsPomodoro": 1500,
+  "m_secsBreakShort": 300,
+  "m_secsBreakLong": 900,
 
+  "ALLOW WINDOW DRAG & DROP. TOGGLED VIA HOTKEY                            ": 0,
   "m_windowMoveable": 1,
 
   "LAST LINE DO NOT DELETE                                                 ": 0

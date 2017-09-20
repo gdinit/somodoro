@@ -104,16 +104,22 @@ void CountdownState::initializeState()
 			m_countdownBgColorG = it.value();
 		} else if ( it.key() == "m_countdownBgColorB" ) {
 			m_countdownBgColorB = it.value();
-		} else if ( it.key() == "m_countdownSeconds" ) {
-			m_countdownSeconds = it.value();
+		} else if ( it.key() == "m_secsPomodoro" ) {
+			m_secsPomodoro = it.value();
+		} else if ( it.key() == "m_secsBreakShort" ) {
+			m_secsBreakShort = it.value();
+		} else if ( it.key() == "m_secsBreakLong" ) {
+			m_secsBreakLong = it.value();
 		}
 	}
 	i.close();
 	m_countdownBgColor.r = m_countdownBgColorR;
 	m_countdownBgColor.g = m_countdownBgColorG;
 	m_countdownBgColor.b = m_countdownBgColorB;
-	std::cout << "Pomodoro started - counting down: " <<
-	m_countdownSeconds << " seconds.\n";
+	std::cout 
+	<< "Short Break is: " << m_secsBreakShort << " seconds.\n"
+	<< "Long Break is: " << m_secsBreakLong << " seconds.\n"
+	<< "Pomodoro started - counting down: " << m_secsPomodoro << " seconds.\n";
 
 	// TODO change this to steady clock
 	m_TPstart = std::chrono::system_clock::now();
@@ -350,10 +356,10 @@ void CountdownState::calculateUpdateTimer()
 {
 	m_TPlatest = std::chrono::system_clock::now();
 	std::chrono::duration <double> elapsed_secs = m_TPlatest - m_TPstart;
-	m_countdownSecondsRemaining = m_countdownSeconds - round(
+	m_countdownSecondsRemaining = m_secsPomodoro - round(
 			elapsed_secs.count() );
 
-	if ( elapsed_secs.count() >= m_countdownSeconds ) {
+	if ( elapsed_secs.count() >= m_secsPomodoro ) {
 		m_timerLive = false;
 	}
 

@@ -94,7 +94,9 @@ private:
 	int32			m_countdownBgColorR = 0;
 	int32			m_countdownBgColorG = 0;
 	int32			m_countdownBgColorB = 0;
-	int32			m_countdownSeconds = 0;
+	int32			m_secsPomodoro = 0;
+	int32			m_secsBreakShort = 0;	
+	int32			m_secsBreakLong = 0;	
 	int32			m_countdownSecondsRemaining = 0;
 
 	sf::Font		m_countdownFont;
