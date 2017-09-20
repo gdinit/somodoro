@@ -40,9 +40,6 @@ MainMenuState::~MainMenuState()
 	if ( !m_sbBlip2.loadFromFile( "assets/sounds/blip1.wav" ) ) {
 	}
 	m_sBlip2.setBuffer( m_sbBlip2 );
-
-
-
 }
 
 void MainMenuState::initializeState()
@@ -249,8 +246,8 @@ void MainMenuState::processEvents()
 		case sf::Event::KeyPressed:
 			switch ( evt.key.code ) {
 			case sf::Keyboard::Space:
-			std::cout << "playing a sound!\n";
-			m_sClicked.play();
+				std::cout << "playing a sound!\n";
+				m_sClicked.play();
 				m_next = StateMachine::build
 					<CountdownState> ( m_machine
 						, m_window

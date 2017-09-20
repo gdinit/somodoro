@@ -105,7 +105,6 @@ private:
 	sf::Sound		m_sBlip2;
 	sf::SoundBuffer		m_sbClicked;
 	sf::Sound		m_sClicked;
-
 };
 
 // EN_MAIN_MENU_STATE_H
