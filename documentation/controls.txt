@@ -1,14 +1,16 @@
 ------------------------------------------------------------------------
-CONTROLS
+KEYBOARD SHORTCUTS
 
-
-
-MAIN MENU SCREEN CONTROLS
+MAIN MENU SCREEN
+Shortcut: Function (Alternative)
+Q	: Exit program (ESC)
 Space	: Start a new Pomodoro
-ESC or Q: Exit program
+NumPad+	: Increase window size (9)
+NumPad-	: Decrease window size (0)
 
-
-
-COUNTDOWN SCREEN CONTROLS
-M	: Main Menu
-ESC or Q: Exit program
+COUNTDOWN SCREEN
+Shortcut: Function (Alternative)
+Q	: Exit program
+M	: Main Menu (ESC)
+NumPad+	: Increase window size (9)
+NumPad-	: Decrease window size (0)
