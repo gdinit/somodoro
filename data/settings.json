@@ -37,7 +37,7 @@
   "screenResolutionHeight": 105,
 
   "AUTO-DECREASE WINDOW SIZE DURING COUNTDOWNS?. TOGGLED VIA HOTKEY        ": 0,
-  "winAutoResize": false,
+  "THIS-DOESNT-WORK-CURRENTLY...winAutoResize": false,
 
   "LAST LINE DO NOT DELETE                                                 ": 0
 }
