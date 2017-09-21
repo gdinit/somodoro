@@ -17,11 +17,23 @@ the tomato-shaped kitchen timer that Cirillo used as a university student.
 
 Screenshots
 --------------
-Here is two!
+Here is a few!
 
-<img src="extras/github_readme_screenshots/1.png" height="512" alt="1"/>
+#### Main Menu
+<img src="extras/github_readme_screenshots/1-main-menu.png.png" height="157" alt="1"/>
 
-<img src="extras/github_readme_screenshots/2.png" height="512" alt="2"/> 
+
+#### Pomodoro
+<img src="extras/github_readme_screenshots/2-pomodoro.png.png" height="157" alt="2"/> 
+
+
+#### Short Break
+<img src="extras/github_readme_screenshots/3-short-break.png.png" height="157" alt="2"/> 
+
+
+#### Long Break
+<img src="extras/github_readme_screenshots/4-long-break.png.png" height="157" alt="2"/> 
+
 
 Install
 -------
