@@ -68,7 +68,6 @@ private:
 	float			m_desiredAspectRatio;
 	// imgui stuff
 	sf::Clock		m_deltaClock;
-	int32			m_clicked;
 	// TODO clean-up this. imgui image button tests.
 	sf::Texture		m_tex1Start;
 	sf::Texture		m_tex2Short;

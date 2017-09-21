@@ -86,7 +86,6 @@ private:
 				m_desiredAspectRatio;
 	// imgui stuff
 	sf::Clock		m_deltaClock;
-	int32			m_clicked;
 	// pomodoro stuff
 	sf::Vector2i		m_grabbedOffset;
 	bool			m_grabbedWindow = false;

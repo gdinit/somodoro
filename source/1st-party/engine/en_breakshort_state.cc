@@ -68,7 +68,6 @@ BreakshortState::BreakshortState( StateMachine &machine
 	// SFML::ImGui Tests
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
-	m_clicked = 0;
 	////////////////////////////////////////
 
 	// TODO move this to a function
