@@ -40,15 +40,15 @@ MainMenuState::MainMenuState( StateMachine &machine
 	m_statisticsText.setFillColor( sf::Color::White );
 	updateDebugOverlayTextIfEnabled( true );
 	////////////////////////////////////////
-	// SFML::ImGui Tests
+	// ImGui Stuff
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
-	////////////////////////////////////////
-	m_bgColor = sf::Color::Black;
-	m_tintColor = sf::Color::Black;
+	// TODO delete this m_bgColor = sf::Color::Black;
+	// TODO delete this m_tintColor = sf::Color::Black;
 	m_tex1Start.loadFromFile( "assets/textures/start.png" );
 	m_tex2Short.loadFromFile( "assets/textures/short.png" );
 	m_tex3Long.loadFromFile( "assets/textures/long.png" );
+	////////////////////////////////////////
 
 	std::ifstream	i( "data/settings.json" );
 	nlohmann::json	j;

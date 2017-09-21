@@ -84,8 +84,10 @@ private:
 	// TODO move this to app
 	float
 				m_desiredAspectRatio;
-	// imgui stuff
+	// ImGui Stuff
 	sf::Clock		m_deltaClock;
+	sf::Texture		m_tex1Start;
+	sf::Sprite		m_spr1Start;
 	// pomodoro stuff
 	sf::Vector2i		m_grabbedOffset;
 	bool			m_grabbedWindow = false;

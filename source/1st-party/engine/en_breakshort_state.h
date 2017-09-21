@@ -84,7 +84,7 @@ private:
 	// TODO move this to app
 	float
 				m_desiredAspectRatio;
-	// imgui stuff
+	// ImGui Stuff
 	sf::Clock		m_deltaClock;
 	// pomodoro stuff
 	sf::Vector2i		m_grabbedOffset;

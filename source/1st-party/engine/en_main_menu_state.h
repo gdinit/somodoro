@@ -66,9 +66,9 @@ private:
 	sf::Vector2u		m_windowSize;
 	// TODO move this to app
 	float			m_desiredAspectRatio;
-	// imgui stuff
-	sf::Clock		m_deltaClock;
+	// ImGui Stuff
 	// TODO clean-up this. imgui image button tests.
+	sf::Clock		m_deltaClock;
 	sf::Texture		m_tex1Start;
 	sf::Texture		m_tex2Short;
 	sf::Texture		m_tex3Long;

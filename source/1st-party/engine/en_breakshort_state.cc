@@ -65,7 +65,7 @@ BreakshortState::BreakshortState( StateMachine &machine
 	m_res.y = static_cast <float> ( m_windowSize.y );
 
 	////////////////////////////////////////
-	// SFML::ImGui Tests
+	// ImGui Stuff
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
 	////////////////////////////////////////

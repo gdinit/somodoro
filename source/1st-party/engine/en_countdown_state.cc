@@ -47,7 +47,12 @@ CountdownState::CountdownState( StateMachine &machine
 	m_statisticsText.setCharacterSize( 12u );
 	m_statisticsText.setFillColor( sf::Color::White );
 	updateDebugOverlayTextIfEnabled( true );
-
+	////////////////////////////////////////
+	// ImGui Stuff
+	m_deltaClock.restart();
+	ImGui::SFML::Init( m_window );
+	m_tex1Start.loadFromFile( "assets/textures/start.png" );
+	////////////////////////////////////////
 	// countdown font
 	// m_countdownFont.loadFromFile( "assets/fonts/sansation.ttf" );
 	m_countdownFont.loadFromFile( "assets/fonts/monofont.ttf" );
@@ -65,7 +70,7 @@ CountdownState::CountdownState( StateMachine &machine
 	m_res.y = static_cast <float> ( m_windowSize.y );
 
 	////////////////////////////////////////
-	// SFML::ImGui Tests
+	// ImGui Stuff
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
 	////////////////////////////////////////
@@ -185,6 +190,42 @@ void CountdownState::draw()
 			m_grabbedOffset );
 	}
 	m_window.setView( m_enSharedContext.view );
+	ImGui::SFML::Update( m_window, m_deltaClock.restart() );
+	// =====================================================================
+	ImGuiWindowFlags window_flags = 0;
+	window_flags |= ImGuiWindowFlags_NoTitleBar;
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoScrollbar;
+	window_flags |= ImGuiWindowFlags_NoCollapse;
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoMove;
+	// window_flags |= ImGuiWindowFlags_MenuBar;
+	// window_flags |= ImGuiWindowFlags_ShowBorders;
+	//
+	// ImGui::SetNextWindowPos( ImVec2( m_windowSize.x / 2, m_windowSize.y
+	/// 2 ), ImGuiCond_Always );
+	//
+	// FIXME hardcoded value. not safe. should be calculated
+	ImGui::SetNextWindowSize( ImVec2( 160, 160 ), ImGuiCond_Always );
+	ImGui::SetNextWindowPosCenter( ImGuiCond_Always );
+	//
+	// boolPOpen: Click upper right corner to close a window, available when 
+	// 'bool* p_open' is passed to ImGui::Begin()
+	bool boolPOpen = true;
+	ImVec2 sizeOnFirstUse = ImVec2(300,300);
+	float bgAlpha = 0.f;
+	ImGui::Begin( " ", &boolPOpen, sizeOnFirstUse, bgAlpha, window_flags );
+	// =====================================================================
+	if ( ImGui::ImageButton( m_tex1Start, -1, sf::Color::Green
+		     , sf::Color::White ) ) {
+		m_enSharedContext.reqPlaySound = 1;
+		m_next = StateMachine::build <CountdownState> ( m_machine
+				, m_window, m_enSharedContext, true );
+	}
+	// =====================================================================
+	ImGui::End();
+	ImGui::SFML::Render( m_window );
+
 	if ( SETTINGS->inGameOverlay ) {
 		m_window.draw( m_statisticsText );
 	}
