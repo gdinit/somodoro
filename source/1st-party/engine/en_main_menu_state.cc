@@ -267,14 +267,16 @@ void MainMenuState::processEvents()
 				" Goodbye!\n";
 				m_machine.quit();
 				break;
-			case sf::Keyboard::Add:
-			case sf::Keyboard::Num9:
-				winSizeIncrease( 1 );
-				break;
-			case sf::Keyboard::Subtract:
-			case sf::Keyboard::Num0:
-				winSizeDecrease( 1 );
-				break;
+			// Disabling windows size change as it is really badly
+			// implemented at the moment
+			// case sf::Keyboard::Add:
+			// case sf::Keyboard::Num9:
+			// winSizeIncrease( 1 );
+			// break;
+			// case sf::Keyboard::Subtract:
+			// case sf::Keyboard::Num0:
+			// winSizeDecrease( 1 );
+			// break;
 			case sf::Keyboard::L:
 				winToggleMoveable();
 				break;

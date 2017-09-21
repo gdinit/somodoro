@@ -21,8 +21,10 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Audio.hpp>
+// ===ImGui Stuff ==============================================================
 #include <imgui.h>
 #include <imgui-SFML.h>
+// =============================================================================
 
 // to in-line document
 // Required for std::unique_ptr
@@ -83,10 +85,9 @@ private:
 	// TODO move this to app
 	float
 				m_desiredAspectRatio;
-	// ImGui Stuff
+	// ===ImGui Stuff ======================================================
 	sf::Clock		m_deltaClock;
-	sf::Texture		m_texMainMenu;
-	// pomodoro stuff
+	// =====================================================================
 	sf::Vector2i		m_grabbedOffset;
 	bool			m_grabbedWindow = false;
 	bool			m_windowActive = true;

@@ -290,14 +290,16 @@ void BreakshortState::processEvents()
 			break;
 		case sf::Event::KeyReleased:
 			switch ( evt.key.code ) {
-			case sf::Keyboard::Add:
-			case sf::Keyboard::Num9:
-				winSizeIncrease( 1 );
-				break;
-			case sf::Keyboard::Subtract:
-			case sf::Keyboard::Num0:
-				winSizeDecrease( 1 );
-				break;
+			// Disabling windows size change as it is really badly
+			// implemented at the moment
+			// case sf::Keyboard::Add:
+			// case sf::Keyboard::Num9:
+			// winSizeIncrease( 1 );
+			// break;
+			// case sf::Keyboard::Subtract:
+			// case sf::Keyboard::Num0:
+			// winSizeDecrease( 1 );
+			// break;
 			default:
 				break;
 			}
