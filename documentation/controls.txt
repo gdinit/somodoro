@@ -5,14 +5,17 @@ MAIN MENU SCREEN
 Shortcut: Function (Alternative)
 Q	: Exit program (ESC)
 Space	: Start a new Pomodoro
-NumPad+	: Increase window size (9)
-NumPad-	: Decrease window size (0)
 CTRL + L: Lock/unlock window dragging
 
 COUNTDOWN/BREAK SCREENS
 Shortcut: Function (Alternative)
 Q	: Exit program
 M	: Main Menu (ESC)
+CTRL + L: Lock/unlock window dragging
+
+
+-------------------------------------
+PLANNED FEATURE & KEYBOARD SHORTCUTS
 NumPad+	: Increase window size (9)
 NumPad-	: Decrease window size (0)
-CTRL + L: Lock/unlock window dragging
+-------------------------------------
