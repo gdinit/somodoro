@@ -10,7 +10,8 @@ extern std::unique_ptr <Globals>	GLOBALS;
 // Used to increase/decrease window size with hotkeys
 #define SIZE_STEP_PX 20
 #define MIN_SIZE_PX 40
-#define FONT_SIZE_PX 74
+// #define FONT_SIZE_PX 74
+#define FONT_SIZE_PX 60
 
 CountdownState::CountdownState( StateMachine &machine
 	, sf::RenderWindow &window
@@ -47,12 +48,10 @@ CountdownState::CountdownState( StateMachine &machine
 	m_statisticsText.setCharacterSize( 12u );
 	m_statisticsText.setFillColor( sf::Color::White );
 	updateDebugOverlayTextIfEnabled( true );
-	////////////////////////////////////////
-	// ImGui Stuff
+	// === ImGui Stuff =====================================================
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
-	m_texMainMenu.loadFromFile( "assets/textures/main-menu.png" );
-	////////////////////////////////////////
+	// =====================================================================
 	// countdown font
 	// m_countdownFont.loadFromFile( "assets/fonts/sansation.ttf" );
 	m_countdownFont.loadFromFile( "assets/fonts/monofont.ttf" );
@@ -184,8 +183,9 @@ void CountdownState::draw()
 			m_grabbedOffset );
 	}
 	m_window.setView( m_enSharedContext.view );
+
+	// === ImGui Stuff =====================================================
 	ImGui::SFML::Update( m_window, m_deltaClock.restart() );
-	// =====================================================================
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	window_flags |= ImGuiWindowFlags_NoResize;
@@ -193,58 +193,26 @@ void CountdownState::draw()
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoMove;
-	// window_flags |= ImGuiWindowFlags_MenuBar;
-	// window_flags |= ImGuiWindowFlags_ShowBorders;
-	// =====================================================================
-	// Button picture 'main-menu.png' is 80x30 px.
-	#define BUTTON_SIZE_X 80
-	#define BUTTON_SIZE_Y 30
-	#define EDGE_EXTRA_ROOM 25
-	int	imguiWinSizeX = BUTTON_SIZE_X + EDGE_EXTRA_ROOM;
-	int	imguiWinSizeY = BUTTON_SIZE_Y + EDGE_EXTRA_ROOM;
-	// =====================================================================
-	ImGui::SetNextWindowPos( ImVec2( m_winPosX
-			, m_winPosY ), ImGuiCond_Always );
-	//
-	// FIXME hardcoded value. not safe. should be calculated
-	// ImGui::SetNextWindowSize( ImVec2( 160, 160 ), ImGuiCond_Always );
-	ImGui::SetNextWindowSize( ImVec2( imguiWinSizeX, imguiWinSizeY )
-		, ImGuiCond_Always );
-	// ImGui::SetNextWindowPosCenter( ImGuiCond_Always );
-	// ImGui::SetNextWindowPos( ImVec2( 0, 100 ), ImGuiSetCond_FirstUseEver
-	// );
-	//
-	// boolPOpen: Click upper right corner to close a window, available when
-	// 'bool* p_open' is passed to ImGui::Begin()
-	bool	boolPOpen = true;
-	// ImVec2	sizeOnFirstUse = ImVec2( IMGUI_WIN_SIZE_X,
-	// IMGUI_WIN_SIZE_Y );
-	// ImVec2	sizeOnFirstUse = ImVec2( m_windowSize.x, m_windowSize.y
-	// );
-	ImVec2	sizeOnFirstUse = ImVec2( BUTTON_SIZE_X, BUTTON_SIZE_Y );
-	//
+	ImGui::SetNextWindowPos( ImVec2( 0, 0 ), ImGuiCond_Always );
+	ImGui::SetNextWindowSize( ImVec2( -1, -1 ), ImGuiCond_Always );
+	bool	boolPOpen = false;
+	ImVec2	sizeOnFirstUse = ImVec2( -1, -1 );
 	float	bgAlpha = 0.f;
-	// float	bgAlpha = 200.f;
 	ImGui::Begin( " ", &boolPOpen, sizeOnFirstUse, bgAlpha, window_flags );
-	// =====================================================================
-	if ( ImGui::ImageButton( m_texMainMenu, -1, sf::Color::Green
-		     , sf::Color::White ) ) {
+	if ( ImGui::Button( "Main Menu" ) ) {
 		playSoundClicked();
 		// m_enSharedContext.reqPlaySound = 1;
 		m_next = StateMachine::build <MainMenuState> ( m_machine
 				, m_window, m_enSharedContext, true );
 	}
-	// =====================================================================
 	ImGui::End();
 	ImGui::SFML::Render( m_window );
+	// =====================================================================
 
 	if ( SETTINGS->inGameOverlay ) {
 		m_window.draw( m_statisticsText );
 	}
-
 	m_window.draw( m_countdownText );
-
-	// Display only if PauseState is not doing it.
 	m_window.display();
 }
 
@@ -279,7 +247,9 @@ void CountdownState::processEvents()
 {
 	sf::Event evt;
 	while ( m_window.pollEvent( evt ) ) {
+		// === ImGui Stuff =============================================
 		ImGui::SFML::ProcessEvent( evt );
+		// =============================================================
 		switch ( evt.type ) {
 		case sf::Event::Closed:
 			m_machine.quit();
@@ -343,14 +313,16 @@ void CountdownState::processEvents()
 			break;
 		case sf::Event::KeyReleased:
 			switch ( evt.key.code ) {
-			case sf::Keyboard::Add:
-			case sf::Keyboard::Num9:
-				winSizeIncrease( 1 );
-				break;
-			case sf::Keyboard::Subtract:
-			case sf::Keyboard::Num0:
-				winSizeDecrease( 1 );
-				break;
+			// Disabling windows size change as it is really badly
+			// implemented at the moment
+			// case sf::Keyboard::Add:
+			// case sf::Keyboard::Num9:
+			// winSizeIncrease( 1 );
+			// break;
+			// case sf::Keyboard::Subtract:
+			// case sf::Keyboard::Num0:
+			// winSizeDecrease( 1 );
+			// break;
 			default:
 				break;
 			}
