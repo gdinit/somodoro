@@ -61,8 +61,6 @@ public:
 
 private:
 	const t_objectName	m_myObjNameStr;
-	sf::Texture		m_textureWhite;
-	sf::Vector2u		m_textureSize;
 	sf::Vector2u		m_windowSize;
 	// TODO move this to app
 	float			m_desiredAspectRatio;
@@ -72,27 +70,9 @@ private:
 	sf::Texture		m_tex1Start;
 	sf::Texture		m_tex2Short;
 	sf::Texture		m_tex3Long;
-	sf::Sprite		m_spr1Start;
-	sf::Sprite		m_spr2Short;
-	sf::Sprite		m_spr3Long;
-	sf::Sprite		m_iconstex;
 	sf::Vector2f		m_position = { 0, 0 };
 	sf::Vector2f		m_dimension = { 0, 0 };
 	//
-	float			m_btnPlayXPosRatio = 0;
-	float			m_btnPlayYPosRatio = 0;
-	float			m_btnPlayWidthRatio = 0;
-	float			m_btnPlayHeightRatio = 0;
-	//
-	float			m_btnCredXPosRatio = 0;
-	float			m_btnCredYPosRatio = 0;
-	float			m_btnCredWidthRatio = 0;
-	float			m_btnCredHeightRatio = 0;
-	//
-	float			m_btnExitXPosRatio = 0;
-	float			m_btnExitYPosRatio = 0;
-	float			m_btnExitWidthRatio = 0;
-	float			m_btnExitHeightRatio = 0;
 	sf::Color		m_bgColor;
 	sf::Color		m_tintColor;
 	// pomodoro stuff
