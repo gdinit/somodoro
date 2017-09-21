@@ -1,7 +1,9 @@
 {
   "========================================================================": 0,
   "MAINMENU SCREEN COLOR CODE (R,G,B)                                      ": 0,
-  "m_mainmenuBgColorR": 255,
+  "navy  #000080 rgb(0,0,128)                                              ": 0,
+  "maroon  #800000 rgb(128,0,0)                                            ": 0,
+  "m_mainmenuBgColorR": 128,
   "m_mainmenuBgColorG": 0,
   "m_mainmenuBgColorB": 0,
 
@@ -17,7 +19,7 @@
   "m_breakshortBgColorB": 0,
  
   "BREAKLONG SCREEN COLOR CODE (R,G,B)                                     ": 0,
-  "mediumblue  #0000CD   rgb(0,0,205)                                  ": 0,
+  "mediumblue  #0000CD   rgb(0,0,205)                                      ": 0,
   "m_breaklongBgColorR": 0,
   "m_breaklongBgColorG": 0,
   "m_breaklongBgColorB": 205,
