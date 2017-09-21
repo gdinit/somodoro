@@ -14,6 +14,11 @@
 // Required for SFML setIcon
 #include <SFML/Graphics.hpp>
 
+// Required for JSON
+#include "3rd-party/json-nlohmann/v.2.1.1/json.hpp"
+// Required for JSON
+#include <fstream>
+
 class Application
 {
 public:

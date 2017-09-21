@@ -53,11 +53,32 @@ sf::View getLetterboxView( sf::View view, int windowWidth, int windowHeight ) {
 
 int Application::createWindow()
 {
+	int32		tmp_screenResW = -1;
+	int32		tmp_screenResH = -1;
+
+	std::ifstream	i( "data/settings.json" );
+	nlohmann::json	j;
+	i >> j;
+	for ( nlohmann::json::iterator it = j.begin(); it != j.end(); ++it ) {
+		if ( it.key() == "screenResolutionWidth" ) {
+			tmp_screenResW = it.value();
+		} else if ( it.key() == "screenResolutionHeight" ) {
+			tmp_screenResH = it.value();
+		}
+	}
+	i.close();
+	PDASSERT( ( tmp_screenResW > 0 )
+		,
+		"ERROR: tmp_screenResW must be > 0!\tIt is: " << tmp_screenResW <<
+		"\n" );
+	PDASSERT( ( tmp_screenResH > 0 )
+		,
+		"ERROR: tmp_screenResH must be > 0!\tIt is: " << tmp_screenResH <<
+		"\n" );
+
 	sf::VideoMode	desktopVM = sf::VideoMode::getDesktopMode();
 
-	int32		w = 0, h = 0;
-	w = CONST_SCREENRES_W;
-	h = CONST_SCREENRES_W / 1.333333333333333;
+	int32		w = tmp_screenResW, h = tmp_screenResH;
 	if ( CONST_WIN_FULLSCREEN ) {
 		// use:	fixed-res & fullscreen
 		#if defined DBG

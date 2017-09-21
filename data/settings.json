@@ -32,6 +32,10 @@
   "ALLOW WINDOW DRAG & DROP. TOGGLED VIA HOTKEY                            ": 0,
   "m_windowMoveable": 1,
 
+  "SCREEN SIZE                                                             ": 0,
+  "screenResolutionWidth": 140,
+  "screenResolutionHeight": 105,
+
   "AUTO-DECREASE WINDOW SIZE DURING COUNTDOWNS?. TOGGLED VIA HOTKEY        ": 0,
   "winAutoResize": false,
 
