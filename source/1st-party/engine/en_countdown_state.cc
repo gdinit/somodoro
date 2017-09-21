@@ -51,7 +51,7 @@ CountdownState::CountdownState( StateMachine &machine
 	// ImGui Stuff
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
-	m_tex4MainMenu.loadFromFile( "assets/textures/4-main-menu.png" );
+	m_texMainMenu.loadFromFile( "assets/textures/main-menu.png" );
 	////////////////////////////////////////
 	// countdown font
 	// m_countdownFont.loadFromFile( "assets/fonts/sansation.ttf" );
@@ -195,22 +195,39 @@ void CountdownState::draw()
 	window_flags |= ImGuiWindowFlags_NoMove;
 	// window_flags |= ImGuiWindowFlags_MenuBar;
 	// window_flags |= ImGuiWindowFlags_ShowBorders;
-	//
-	// ImGui::SetNextWindowPos( ImVec2( m_windowSize.x / 2, m_windowSize.y
-	/// 2 ), ImGuiCond_Always );
+	// =====================================================================
+	// Button picture 'main-menu.png' is 80x30 px.
+	#define BUTTON_SIZE_X 80
+	#define BUTTON_SIZE_Y 30
+	#define EDGE_EXTRA_ROOM 25
+	int	imguiWinSizeX = BUTTON_SIZE_X + EDGE_EXTRA_ROOM;
+	int	imguiWinSizeY = BUTTON_SIZE_Y + EDGE_EXTRA_ROOM;
+	// =====================================================================
+	ImGui::SetNextWindowPos( ImVec2( m_winPosX
+			, m_winPosY ), ImGuiCond_Always );
 	//
 	// FIXME hardcoded value. not safe. should be calculated
-	ImGui::SetNextWindowSize( ImVec2( 160, 160 ), ImGuiCond_Always );
-	ImGui::SetNextWindowPosCenter( ImGuiCond_Always );
+	// ImGui::SetNextWindowSize( ImVec2( 160, 160 ), ImGuiCond_Always );
+	ImGui::SetNextWindowSize( ImVec2( imguiWinSizeX, imguiWinSizeY )
+		, ImGuiCond_Always );
+	// ImGui::SetNextWindowPosCenter( ImGuiCond_Always );
+	// ImGui::SetNextWindowPos( ImVec2( 0, 100 ), ImGuiSetCond_FirstUseEver
+	// );
 	//
 	// boolPOpen: Click upper right corner to close a window, available when
 	// 'bool* p_open' is passed to ImGui::Begin()
 	bool	boolPOpen = true;
-	ImVec2	sizeOnFirstUse = ImVec2( 300, 300 );
+	// ImVec2	sizeOnFirstUse = ImVec2( IMGUI_WIN_SIZE_X,
+	// IMGUI_WIN_SIZE_Y );
+	// ImVec2	sizeOnFirstUse = ImVec2( m_windowSize.x, m_windowSize.y
+	// );
+	ImVec2	sizeOnFirstUse = ImVec2( BUTTON_SIZE_X, BUTTON_SIZE_Y );
+	//
 	float	bgAlpha = 0.f;
+	// float	bgAlpha = 200.f;
 	ImGui::Begin( " ", &boolPOpen, sizeOnFirstUse, bgAlpha, window_flags );
 	// =====================================================================
-	if ( ImGui::ImageButton( m_tex4MainMenu, -1, sf::Color::Green
+	if ( ImGui::ImageButton( m_texMainMenu, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
 		playSoundClicked();
 		// m_enSharedContext.reqPlaySound = 1;
@@ -512,6 +529,8 @@ void CountdownState::winSizeIncrease( int times )
 		m_myObjNameStr << "\n";
 		#endif
 		m_window.setSize( nSize );
+		m_winPosX += SIZE_STEP_PX;
+		m_winPosY += SIZE_STEP_PX;
 	}
 }
 
@@ -529,6 +548,8 @@ void CountdownState::winSizeDecrease( int times )
 
 		if ( nSize.x > MIN_SIZE_PX && nSize.y > MIN_SIZE_PX ) {
 			m_window.setSize( nSize );
+			m_winPosX -= SIZE_STEP_PX;
+			m_winPosY -= SIZE_STEP_PX;
 		}
 	}
 }

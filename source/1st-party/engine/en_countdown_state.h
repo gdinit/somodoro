@@ -86,7 +86,7 @@ private:
 				m_desiredAspectRatio;
 	// ImGui Stuff
 	sf::Clock		m_deltaClock;
-	sf::Texture		m_tex4MainMenu;
+	sf::Texture		m_texMainMenu;
 	// pomodoro stuff
 	sf::Vector2i		m_grabbedOffset;
 	bool			m_grabbedWindow = false;
@@ -111,6 +111,8 @@ private:
 	sf::Sound		m_sWindingUp;
 	sf::SoundBuffer		m_sbChime;
 	sf::Sound		m_sChime;
+	int32			m_winPosX = 30;
+	int32			m_winPosY = 74;
 };
 
 // EN_COUNTDOWN_STATE_H
