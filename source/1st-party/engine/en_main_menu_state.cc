@@ -151,11 +151,11 @@ void MainMenuState::draw()
 	ImGui::SetNextWindowSize( ImVec2( 160, 160 ), ImGuiCond_Always );
 	ImGui::SetNextWindowPosCenter( ImGuiCond_Always );
 	//
-	// boolPOpen: Click upper right corner to close a window, available when 
+	// boolPOpen: Click upper right corner to close a window, available when
 	// 'bool* p_open' is passed to ImGui::Begin()
-	bool boolPOpen = true;
-	ImVec2 sizeOnFirstUse = ImVec2(100,100);
-	float bgAlpha = 0.f;
+	bool	boolPOpen = true;
+	ImVec2	sizeOnFirstUse = ImVec2( 100, 100 );
+	float	bgAlpha = 0.f;
 	ImGui::Begin( " ", &boolPOpen, sizeOnFirstUse, bgAlpha, window_flags );
 	// =====================================================================
 	if ( ImGui::ImageButton( m_tex1Start, -1, sf::Color::Green

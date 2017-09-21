@@ -86,8 +86,7 @@ private:
 				m_desiredAspectRatio;
 	// ImGui Stuff
 	sf::Clock		m_deltaClock;
-	sf::Texture		m_tex1Start;
-	sf::Sprite		m_spr1Start;
+	sf::Texture		m_tex4MainMenu;
 	// pomodoro stuff
 	sf::Vector2i		m_grabbedOffset;
 	bool			m_grabbedWindow = false;

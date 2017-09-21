@@ -51,7 +51,7 @@ CountdownState::CountdownState( StateMachine &machine
 	// ImGui Stuff
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
-	m_tex1Start.loadFromFile( "assets/textures/start.png" );
+	m_tex4MainMenu.loadFromFile( "assets/textures/4-main-menu.png" );
 	////////////////////////////////////////
 	// countdown font
 	// m_countdownFont.loadFromFile( "assets/fonts/sansation.ttf" );
@@ -68,12 +68,6 @@ CountdownState::CountdownState( StateMachine &machine
 	m_windowSize = m_window.getSize();
 	m_res.x = static_cast <float> ( m_windowSize.x );
 	m_res.y = static_cast <float> ( m_windowSize.y );
-
-	////////////////////////////////////////
-	// ImGui Stuff
-	m_deltaClock.restart();
-	ImGui::SFML::Init( m_window );
-	////////////////////////////////////////
 
 	std::ifstream	i( "data/settings.json" );
 	nlohmann::json	j;
@@ -209,17 +203,18 @@ void CountdownState::draw()
 	ImGui::SetNextWindowSize( ImVec2( 160, 160 ), ImGuiCond_Always );
 	ImGui::SetNextWindowPosCenter( ImGuiCond_Always );
 	//
-	// boolPOpen: Click upper right corner to close a window, available when 
+	// boolPOpen: Click upper right corner to close a window, available when
 	// 'bool* p_open' is passed to ImGui::Begin()
-	bool boolPOpen = true;
-	ImVec2 sizeOnFirstUse = ImVec2(300,300);
-	float bgAlpha = 0.f;
+	bool	boolPOpen = true;
+	ImVec2	sizeOnFirstUse = ImVec2( 300, 300 );
+	float	bgAlpha = 0.f;
 	ImGui::Begin( " ", &boolPOpen, sizeOnFirstUse, bgAlpha, window_flags );
 	// =====================================================================
-	if ( ImGui::ImageButton( m_tex1Start, -1, sf::Color::Green
+	if ( ImGui::ImageButton( m_tex4MainMenu, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
-		m_enSharedContext.reqPlaySound = 1;
-		m_next = StateMachine::build <CountdownState> ( m_machine
+		playSoundClicked();
+		// m_enSharedContext.reqPlaySound = 1;
+		m_next = StateMachine::build <MainMenuState> ( m_machine
 				, m_window, m_enSharedContext, true );
 	}
 	// =====================================================================
