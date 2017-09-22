@@ -22,8 +22,6 @@ MainMenuState::MainMenuState( StateMachine &machine
 	std::cout << "[DEBUG]\tCreated state:\t\t" << m_myObjNameStr << "\n";
 	#endif
 	restartStateClock();
-	loadSounds();
-	playSoundClicked();
 	// resize stuff here
 	// TODO base these values on config variables
 	m_desiredAspectRatio = 640.f / 480.f;
@@ -145,24 +143,18 @@ void MainMenuState::draw()
 	// =====================================================================
 	if ( ImGui::ImageButton( m_tex1Start, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
-		// m_enSharedContext.reqPlaySound = 1;
-		playSoundClicked();
 		m_next = StateMachine::build <CountdownState> ( m_machine
 				, m_window, m_enSharedContext, true );
 	}
 	// =====================================================================
 	if ( ImGui::ImageButton( m_tex2Short, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
-		// m_enSharedContext.reqPlaySound = 1;
-		playSoundClicked();
 		m_next = StateMachine::build <BreakState> ( m_machine
 				, m_window, m_enSharedContext, true );
 	}
 	// =====================================================================
 	if ( ImGui::ImageButton( m_tex3Long, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
-		// m_enSharedContext.reqPlaySound = 1;
-		playSoundClicked();
 		m_next = StateMachine::build <BreaklongState> ( m_machine
 				, m_window, m_enSharedContext, true );
 	}
@@ -222,7 +214,6 @@ void MainMenuState::processEvents()
 		case sf::Event::KeyPressed:
 			switch ( evt.key.code ) {
 			case sf::Keyboard::Space:
-				m_enSharedContext.reqPlaySound = 1;
 				m_next = StateMachine::build
 					<CountdownState> ( m_machine
 						, m_window
@@ -391,22 +382,6 @@ void MainMenuState::winAutoToggleMoveableIfNecessary()
 		std::cout << "[DEBUG] Automatically turned off moveable!\n";
 		#endif
 	}
-}
-
-void MainMenuState::loadSounds()
-{
-	if ( !m_sbClicked.loadFromFile(
-		     "assets/sounds/clicked.wav" ) ) {
-	}
-	m_sClicked.setBuffer( m_sbClicked );
-}
-
-void MainMenuState::playSoundClicked()
-{
-	#if defined DBG
-	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
-	#endif
-	m_sClicked.play();
 }
 
 void MainMenuState::readSettings()
