@@ -88,10 +88,10 @@ private:
 	bool			m_grabbedWindow = false;
 	bool			m_windowActive = true;
 	// This should be overwritten by JSON parser
-	sf::Color		m_countdownBgColor = sf::Color::Yellow;
-	int32			m_countdownBgColorR = 0;
-	int32			m_countdownBgColorG = 0;
-	int32			m_countdownBgColorB = 0;
+	sf::Color		m_pomodoroBgColor = sf::Color::Yellow;
+	int32			m_pomodoroBgColorR = 0;
+	int32			m_pomodoroBgColorG = 0;
+	int32			m_pomodoroBgColorB = 0;
 	int32			m_pomodoroSecs = 0;
 	int32			m_countdownSecondsRemaining = 0;
 	sf::Font		m_countdownFont;
@@ -109,7 +109,7 @@ private:
 	sf::Sound		m_sChime;
 	int32			m_winPosX = 30;
 	int32			m_winPosY = 74;
-	int32			m_fontSizePxPomodoro = -1;
+	int32			m_pomodoroFontSize = -1;
 };
 
 // EN_COUNTDOWN_STATE_H

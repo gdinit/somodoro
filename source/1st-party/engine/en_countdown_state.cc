@@ -45,7 +45,7 @@ CountdownState::CountdownState( StateMachine &machine
 
 	m_countdownFont.loadFromFile( "assets/fonts/monofont.ttf" );
 	m_countdownText.setFont( m_countdownFont );
-	m_countdownText.setCharacterSize( m_fontSizePxPomodoro );
+	m_countdownText.setCharacterSize( m_pomodoroFontSize );
 	m_countdownText.setFillColor( sf::Color::White );
 
 	// TODO change this to steady clock
@@ -118,7 +118,7 @@ void CountdownState::update()
 void CountdownState::draw()
 {
 	m_enSharedContext.frameID++;
-	m_window.clear( m_countdownBgColor );
+	m_window.clear( m_pomodoroBgColor );
 	m_grabbedWindow = m_windowActive
 		&& m_enSharedContext.winMoveable
 		&& sf::Mouse::isButtonPressed( sf::Mouse::Left );
@@ -504,16 +504,16 @@ void CountdownState::readSettings()
 	nlohmann::json	j;
 	i >> j;
 	for ( nlohmann::json::iterator it = j.begin(); it != j.end(); ++it ) {
-		if ( it.key() == "m_countdownBgColorR" ) {
-			m_countdownBgColorR = it.value();
-		} else if ( it.key() == "m_countdownBgColorG" ) {
-			m_countdownBgColorG = it.value();
-		} else if ( it.key() == "m_countdownBgColorB" ) {
-			m_countdownBgColorB = it.value();
+		if ( it.key() == "m_pomodoroBgColorR" ) {
+			m_pomodoroBgColorR = it.value();
+		} else if ( it.key() == "m_pomodoroBgColorG" ) {
+			m_pomodoroBgColorG = it.value();
+		} else if ( it.key() == "m_pomodoroBgColorB" ) {
+			m_pomodoroBgColorB = it.value();
 		} else if ( it.key() == "m_pomodoroSecs" ) {
 			m_pomodoroSecs = it.value();
-		} else if ( it.key() == "m_fontSizePxPomodoro" ) {
-			m_fontSizePxPomodoro = it.value();
+		} else if ( it.key() == "m_pomodoroFontSize" ) {
+			m_pomodoroFontSize = it.value();
 		} else if ( it.key() == "winAutoResize" ) {
 			m_enSharedContext.winAutoResize = it.value();
 			std::cout << "m_enSharedContext.winAutoResize is: " <<
@@ -521,12 +521,12 @@ void CountdownState::readSettings()
 		}
 	}
 	i.close();
-	m_countdownBgColor.r = m_countdownBgColorR;
-	m_countdownBgColor.g = m_countdownBgColorG;
-	m_countdownBgColor.b = m_countdownBgColorB;
-	PDASSERT( ( m_fontSizePxPomodoro > 0 )
+	m_pomodoroBgColor.r = m_pomodoroBgColorR;
+	m_pomodoroBgColor.g = m_pomodoroBgColorG;
+	m_pomodoroBgColor.b = m_pomodoroBgColorB;
+	PDASSERT( ( m_pomodoroFontSize > 0 )
 		,
-		"ERROR: m_fontSizePxPomodoro must be > 0!\tIt is: " << m_fontSizePxPomodoro <<
+		"ERROR: m_pomodoroFontSize must be > 0!\tIt is: " << m_pomodoroFontSize <<
 		"\n" );
 }
 

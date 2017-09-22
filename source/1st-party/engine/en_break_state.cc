@@ -427,7 +427,6 @@ void BreakState::winSizeDecrease( int times )
 		"\tnewSize: " << nSize.x << "," << nSize.y << "\t//" <<
 		m_myObjNameStr << "\n";
 		#endif
-
 		if ( nSize.x > MIN_SIZE_PX && nSize.y > MIN_SIZE_PX ) {
 			m_window.setSize( nSize );
 			m_winPosX -= SIZE_STEP_PX;
@@ -527,10 +526,10 @@ void BreakState::readSettingsFromJson()
 			m_breakshortSecs = it.value();
 		} else if ( it.key() == "m_breaklongSecs" ) {
 			m_breaklongSecs = it.value();
-		} else if ( it.key() == "m_fontSizePxBreakshort" ) {
-			m_fontSizePxBreakshort = it.value();
-		} else if ( it.key() == "m_fontSizePxBreaklong" ) {
-			m_fontSizePxBreaklong = it.value();
+		} else if ( it.key() == "m_breakshortFontSize" ) {
+			m_breakshortFontSize = it.value();
+		} else if ( it.key() == "m_breaklongFontSize" ) {
+			m_breaklongFontSize = it.value();
 		} else if ( it.key() == "winAutoResize" ) {
 			m_enSharedContext.winAutoResize = it.value();
 			std::cout << "m_enSharedContext.winAutoResize is: " <<
@@ -549,7 +548,7 @@ void BreakState::assignSettingsBasedOnBreakType()
 		m_breakBgColor.b = m_breakshortBgColorB;
 		m_breakFont.loadFromFile( "assets/fonts/monofont.ttf" );
 		m_breakText.setFont( m_breakFont );
-		m_breakText.setCharacterSize( m_fontSizePxBreakshort );
+		m_breakText.setCharacterSize( m_breakshortFontSize );
 		m_breakText.setFillColor( sf::Color::White );
 	} else if ( m_breakType == 1 ) {
 		m_breakSecs = m_breaklongSecs;
@@ -557,8 +556,8 @@ void BreakState::assignSettingsBasedOnBreakType()
 		m_breakBgColor.g = m_breaklongBgColorG;
 		m_breakBgColor.b = m_breaklongBgColorB;
 		m_breakFont.loadFromFile( "assets/fonts/monofont.ttf" );
-		m_breakText.setFont( m_breaklongFont );
-		m_breakText.setCharacterSize( m_fontSizePxBreaklong );
+		m_breakText.setFont( m_breakFont );
+		m_breakText.setCharacterSize( m_breaklongFontSize );
 		m_breakText.setFillColor( sf::Color::White );
 	}
 
@@ -572,9 +571,13 @@ void BreakState::assignSettingsBasedOnBreakType()
 void BreakState::validateSettings()
 {
 	// TODO add more PDASSERT()s to validate every setting!
-	PDASSERT( ( m_fontSizePxBreakshort > 0 )
+	PDASSERT( ( m_breakshortFontSize > 0 )
 		,
-		"ERROR: m_fontSizePxBreakshort must be > 0!\tIt is: " << m_fontSizePxBreakshort <<
+		"ERROR: m_breakshortFontSize must be > 0!\tIt is: " << m_breakshortFontSize <<
+		"\n" );
+	PDASSERT( ( m_breaklongFontSize > 0 )
+		,
+		"ERROR: m_breakshortFontSize must be > 0!\tIt is: " << m_breakshortFontSize <<
 		"\n" );
 }
 

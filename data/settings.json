@@ -12,9 +12,9 @@
   "m_mainmenuBgColorB": 0,
 
   "COUNTDOWN SCREEN COLOR CODE (R,G,B)                                     ": 0,
-  "m_countdownBgColorR": 138,
-  "m_countdownBgColorG": 22,
-  "m_countdownBgColorB": 55,
+  "m_pomodoroBgColorR": 138,
+  "m_pomodoroBgColorG": 22,
+  "m_pomodoroBgColorB": 55,
  
   "BREAKSHORT SCREEN COLOR CODE (R,G,B)                                    ": 0,
   "darkgreen   #006400   rgb(0,100,0)                                      ": 0,
@@ -29,9 +29,9 @@
   "m_breaklongBgColorB": 205,
  
   "COUNTDOWN FONT SIZE                                 )                   ": 0,
-  "m_fontSizePxPomodoro": 60,
-  "m_fontSizePxBreakshort": 60,
-  "m_fontSizePxBreaklong": 60,
+  "m_pomodoroFontSize": 60,
+  "m_breakshortFontSize": 60,
+  "m_breaklongFontSize": 60,
 
   "COUNTDOWN IN SECONDS (25 minutes x 60 seconds = 1500)                   ": 0,
   "m_pomodoroSecs": 1500,

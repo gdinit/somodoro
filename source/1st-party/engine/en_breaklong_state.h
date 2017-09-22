@@ -108,7 +108,7 @@ private:
 	sf::Sound		m_sChime;
 	int32			m_winPosX = 30;
 	int32			m_winPosY = 74;
-	int32			m_fontSizePxBreaklong = -1;
+	int32			m_breaklongFontSize = -1;
 	int32			m_breakType;
 	sf::Color		m_breakBgColor = sf::Color::Red;
 };

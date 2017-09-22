@@ -68,8 +68,8 @@ BreaklongState::BreaklongState( StateMachine &machine
 			m_breaklongBgColorB = it.value();
 		} else if ( it.key() == "m_breaklongSecs" ) {
 			m_breaklongSecs = it.value();
-		} else if ( it.key() == "m_fontSizePxBreaklong" ) {
-			m_fontSizePxBreaklong = it.value();
+		} else if ( it.key() == "m_breaklongFontSize" ) {
+			m_breaklongFontSize = it.value();
 		} else if ( it.key() == "winAutoResize" ) {
 			m_enSharedContext.winAutoResize = it.value();
 			std::cout << "m_enSharedContext.winAutoResize is: " <<
@@ -78,9 +78,9 @@ BreaklongState::BreaklongState( StateMachine &machine
 	}
 	i.close();
 
-	PDASSERT( ( m_fontSizePxBreaklong > 0 )
+	PDASSERT( ( m_breaklongFontSize > 0 )
 		,
-		"ERROR: m_fontSizePxBreaklong must be > 0!\tIt is: " << m_fontSizePxBreaklong <<
+		"ERROR: m_breaklongFontSize must be > 0!\tIt is: " << m_breaklongFontSize <<
 		"\n" );
 
 	m_breakBgColor.r = m_breaklongBgColorR;
@@ -91,7 +91,7 @@ BreaklongState::BreaklongState( StateMachine &machine
 
 	m_breaklongFont.loadFromFile( "assets/fonts/monofont.ttf" );
 	m_breaklongText.setFont( m_breaklongFont );
-	m_breaklongText.setCharacterSize( m_fontSizePxBreaklong );
+	m_breaklongText.setCharacterSize( m_breaklongFontSize );
 	m_breaklongText.setFillColor( sf::Color::White );
 
 	// TODO change this to steady clock
