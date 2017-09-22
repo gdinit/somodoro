@@ -28,13 +28,13 @@
   "m_breaklongBgColorG": 0,
   "m_breaklongBgColorB": 205,
  
-  "COUNTDOWN FONT SIZE                                 )                   ": 0,
+  "COUNTDOWN FONT SIZE                                                     ": 0,
   "m_pomodoroFontSize": 60,
   "m_breakshortFontSize": 60,
   "m_breaklongFontSize": 60,
 
   "COUNTDOWN IN SECONDS (25 minutes x 60 seconds = 1500)                   ": 0,
-  "m_pomodoroSecs": 1500,
+  "m_pomodoroSecs": 5,
   "m_breakshortSecs": 300,
   "m_breaklongSecs": 900,
 
@@ -47,8 +47,8 @@
   "winMoveable": false,
 
   "SCREEN SIZE                                                             ": 0,
-  "screenResolutionWidth": 140,
-  "screenResolutionHeight": 105,
+  "screenResolutionWidth": 130,
+  "screenResolutionHeight": 90,
 
   "AUTO-DECREASE WINDOW SIZE DURING COUNTDOWNS?. TOGGLED VIA HOTKEY        ": 0,
   "THIS-DOESNT-WORK-CURRENTLY...winAutoResize": false,

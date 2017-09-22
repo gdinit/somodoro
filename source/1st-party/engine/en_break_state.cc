@@ -115,11 +115,21 @@ void BreakState::draw()
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoMove;
+	//
+	#define IMGUIWINMAINMENU_POS_X 0
+	#define IMGUIWINMAINMENU_POS_Y 0
+	//
+	#define IMGUIWINMAINMENU_SIZE_X 80
+	#define IMGUIWINMAINMENU_SIZE_Y 38
+	//
 	ImGui::SetNextWindowPos( ImVec2( 0, 0 ), ImGuiCond_Always );
-	ImGui::SetNextWindowSize( ImVec2( -1, -1 ), ImGuiCond_Always );
+	ImGui::SetNextWindowSize( ImVec2( IMGUIWINMAINMENU_SIZE_X
+			, IMGUIWINMAINMENU_SIZE_Y ), ImGuiCond_Always );
 	bool	boolPOpen = false;
-	ImVec2	sizeOnFirstUse = ImVec2( -1, -1 );
+	ImVec2	sizeOnFirstUse = ImVec2( IMGUIWINMAINMENU_SIZE_X
+			, IMGUIWINMAINMENU_SIZE_Y );
 	float	bgAlpha = 0.f;
+	//
 	ImGui::Begin( " ", &boolPOpen, sizeOnFirstUse, bgAlpha
 		, window_flags );
 	if ( ImGui::Button( "Main Menu" ) ) {
@@ -343,8 +353,7 @@ void BreakState::centerText()
 		centerOrigin( m_breakText );
 	}
 	centerOrigin( m_breakText );
-	m_breakText.setPosition( m_windowSize.x / 2
-		, m_windowSize.y / 2 );
+	m_breakText.setPosition( m_windowSize.x / 2, m_windowSize.y * .65 );
 }
 
 void BreakState::loadSounds()

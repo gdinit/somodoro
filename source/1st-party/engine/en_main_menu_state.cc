@@ -110,8 +110,9 @@ void MainMenuState::draw()
 		m_window.setPosition( sf::Mouse::getPosition() +
 			m_grabbedOffset );
 	}
+	// === ImGui Stuff =====================================================
+	// Common
 	ImGui::SFML::Update( m_window, m_deltaClock.restart() );
-	// =====================================================================
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
 	window_flags |= ImGuiWindowFlags_NoResize;
@@ -119,46 +120,140 @@ void MainMenuState::draw()
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 	window_flags |= ImGuiWindowFlags_NoResize;
 	window_flags |= ImGuiWindowFlags_NoMove;
-	// window_flags |= ImGuiWindowFlags_MenuBar;
-	// window_flags |= ImGuiWindowFlags_ShowBorders;
-	//
-	// ImGui::SetNextWindowPos( ImVec2( m_windowSize.x / 2, m_windowSize.y
-	/// 2 ), ImGuiCond_Always );
-	//
-	// FIXME hardcoded value. not safe. should be calculated
 	ImGui::SetNextWindowSize( ImVec2( 160, 160 ), ImGuiCond_Always );
 	ImGui::SetNextWindowPosCenter( ImGuiCond_Always );
-	//
 	// boolPOpen: Click upper right corner to close a window, available when
 	// 'bool* p_open' is passed to ImGui::Begin()
-	bool	boolPOpen = true;
-	ImVec2	sizeOnFirstUse = ImVec2( 100, 100 );
 	float	bgAlpha = 0.f;
-	ImGui::Begin( " ", &boolPOpen, sizeOnFirstUse, bgAlpha, window_flags );
+	bool	boolPOpen = true;
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
 	// =====================================================================
+	// ImGUI-Window1-START
+	//
+	#define IMGUIWIN1_POS_X 0
+	#define IMGUIWIN1_POS_Y 0
+	//
+	#define IMGUIWIN1_SIZE_X 100
+	#define IMGUIWIN1_SIZE_Y 45
+	//
+	ImGui::SetNextWindowSize( ImVec2( IMGUIWIN1_SIZE_X, IMGUIWIN1_SIZE_Y
+			)
+		, ImGuiCond_Always );
+	ImGui::SetNextWindowPos( ImVec2( IMGUIWIN1_POS_X, IMGUIWIN1_POS_Y )
+		, ImGuiCond_Always );
+	//
+	ImVec2 sizeOnFirstUse1 = ImVec2( IMGUIWIN1_SIZE_X
+			, IMGUIWIN1_SIZE_Y );
+	//
+	ImGui::Begin( " #1", &boolPOpen, sizeOnFirstUse1, bgAlpha
+		, window_flags );
+
 	if ( ImGui::ImageButton( m_tex1Start, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
+		m_enSharedContext.nextBreakIsShort = true;
 		m_next = StateMachine::build <CountdownState> ( m_machine
 				, m_window, m_enSharedContext, true );
 	}
+	ImGui::End();
 	// =====================================================================
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	// =====================================================================
+	// ImGUI-Window2-SHORT
+	//
+	#define IMGUIWIN2_POS_X 0
+	#define IMGUIWIN2_POS_Y 44
+	//
+	#define IMGUIWIN2_SIZE_X 60
+	#define IMGUIWIN2_SIZE_Y 40
+	//
+	ImGui::SetNextWindowSize( ImVec2( IMGUIWIN2_SIZE_X, IMGUIWIN2_SIZE_Y
+			)
+		, ImGuiCond_Always );
+	ImGui::SetNextWindowPos( ImVec2( IMGUIWIN2_POS_X, IMGUIWIN2_POS_Y )
+		, ImGuiCond_Always );
+	//
+	ImVec2 sizeOnFirstUse2 = ImVec2( IMGUIWIN2_SIZE_X
+			, IMGUIWIN2_SIZE_Y );
+	//
+	ImGui::Begin( " #2", &boolPOpen, sizeOnFirstUse2, bgAlpha
+		, window_flags );
+
 	if ( ImGui::ImageButton( m_tex2Short, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
 		m_enSharedContext.nextBreakIsShort = true;
 		m_next = StateMachine::build <BreakState> ( m_machine
 				, m_window, m_enSharedContext, true );
 	}
+	ImGui::End();
 	// =====================================================================
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	// =====================================================================
+	// ImGUI-Window3-LONG
+	#define IMGUIWIN3_POS_X 60
+	#define IMGUIWIN3_POS_Y 44
+	//
+	#define IMGUIWIN3_SIZE_X 60
+	#define IMGUIWIN3_SIZE_Y 40
+	//
+	ImGui::SetNextWindowSize( ImVec2( IMGUIWIN3_SIZE_X, IMGUIWIN3_SIZE_Y )
+		, ImGuiCond_Always );
+	ImGui::SetNextWindowPos( ImVec2( IMGUIWIN3_POS_X, IMGUIWIN3_POS_Y )
+		, ImGuiCond_Always );
+	//
+	ImVec2 sizeOnFirstUse3 = ImVec2( IMGUIWIN3_SIZE_X, IMGUIWIN3_SIZE_Y );
+	//
+	ImGui::Begin( " #3", &boolPOpen, sizeOnFirstUse3, bgAlpha
+		, window_flags );
 	if ( ImGui::ImageButton( m_tex3Long, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
 		m_enSharedContext.nextBreakIsShort = false;
 		m_next = StateMachine::build <BreakState> ( m_machine
 				, m_window, m_enSharedContext, true );
 	}
-	// =====================================================================
 	ImGui::End();
+	// =====================================================================
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	// =====================================================================
 	ImGui::SFML::Render( m_window );
 	// =====================================================================
+	//
+	//
+	//
+	//
+	//
+	//
+	//
 	if ( SETTINGS->inGameOverlay ) {
 		m_window.draw( m_statisticsText );
 	}
