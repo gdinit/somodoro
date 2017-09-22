@@ -47,7 +47,7 @@ __tmp__*.txt
 **/source.tmp.cleaned-up
 
 # INCLUDE everything under these directories -- list this at the very bottom
-!dependencies/*
+!extras/dependencies/*
 
 /cmake-build-debug/
 #/.idea/
