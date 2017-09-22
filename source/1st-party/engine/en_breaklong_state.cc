@@ -46,8 +46,7 @@ BreaklongState::BreaklongState( StateMachine &machine
 	m_statisticsText.setCharacterSize( 12u );
 	m_statisticsText.setFillColor( sf::Color::White );
 	updateDebugOverlayTextIfEnabled( true );
-	// === ImGui Stuff
-	// =====================================================
+	// === ImGui Stuff =====================================================
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
 	// =====================================================================
@@ -188,8 +187,7 @@ void BreaklongState::draw()
 	}
 	m_window.setView( m_enSharedContext.view );
 
-	// === ImGui Stuff
-	// =====================================================
+	// === ImGui Stuff =====================================================
 	ImGui::SFML::Update( m_window, m_deltaClock.restart() );
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
@@ -234,8 +232,7 @@ void BreaklongState::processEvents()
 {
 	sf::Event evt;
 	while ( m_window.pollEvent( evt ) ) {
-		// === ImGui Stuff
-		// =============================================
+		// === ImGui Stuff =============================================
 		ImGui::SFML::ProcessEvent( evt );
 		// =============================================================
 		switch ( evt.type ) {
@@ -578,7 +575,6 @@ void BreaklongState::winAutoResizeIfRequested()
 	}
 }
 
-// ===================================80
-// chars=================================|
+// ===================================80 chars=================================|
 /* EOF */
 
