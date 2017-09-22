@@ -113,6 +113,7 @@ private:
 	sf::Sound		m_sChime;
 	int32			m_winPosX = 30;
 	int32			m_winPosY = 74;
+	int32			m_fontSizePxPomodoro = -1;
 };
 
 // EN_COUNTDOWN_STATE_H

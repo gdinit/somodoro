@@ -10,8 +10,6 @@ extern std::unique_ptr <Globals>	GLOBALS;
 // Used to increase/decrease window size with hotkeys
 #define SIZE_STEP_PX 20
 #define MIN_SIZE_PX 40
-// #define FONT_SIZE_PX 74
-#define FONT_SIZE_PX 60
 
 CountdownState::CountdownState( StateMachine &machine
 	, sf::RenderWindow &window
@@ -52,16 +50,6 @@ CountdownState::CountdownState( StateMachine &machine
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
 	// =====================================================================
-	// countdown font
-	// m_countdownFont.loadFromFile( "assets/fonts/sansation.ttf" );
-	m_countdownFont.loadFromFile( "assets/fonts/monofont.ttf" );
-	m_countdownText.setFont( m_countdownFont );
-	// centerOrigin( m_countdownText );
-	// m_countdownText.setPosition( m_windowSize.x / 2, m_windowSize.y / 2
-	// );
-	// m_countdownText.setPosition( 5.f, 5.f );
-	m_countdownText.setCharacterSize( FONT_SIZE_PX );
-	m_countdownText.setFillColor( sf::Color::White );
 
 	// START A NEW GAME
 	m_windowSize = m_window.getSize();
@@ -80,6 +68,8 @@ CountdownState::CountdownState( StateMachine &machine
 			m_countdownBgColorB = it.value();
 		} else if ( it.key() == "m_secsPomodoro" ) {
 			m_secsPomodoro = it.value();
+		} else if ( it.key() == "m_fontSizePxPomodoro" ) {
+			m_fontSizePxPomodoro = it.value();
 		} else if ( it.key() == "winAutoResize" ) {
 			m_enSharedContext.winAutoResize = it.value();
 			std::cout << "m_enSharedContext.winAutoResize is: " <<
@@ -87,11 +77,22 @@ CountdownState::CountdownState( StateMachine &machine
 		}
 	}
 	i.close();
+
+	PDASSERT( ( m_fontSizePxPomodoro > 0 )
+		,
+		"ERROR: m_fontSizePxPomodoro must be > 0!\tIt is: " << m_fontSizePxPomodoro <<
+		"\n" );
+
 	m_countdownBgColor.r = m_countdownBgColorR;
 	m_countdownBgColor.g = m_countdownBgColorG;
 	m_countdownBgColor.b = m_countdownBgColorB;
 	std::cout << "Pomodoro started - counting down: " << m_secsPomodoro <<
 	" seconds.\n";
+
+	m_countdownFont.loadFromFile( "assets/fonts/monofont.ttf" );
+	m_countdownText.setFont( m_countdownFont );
+	m_countdownText.setCharacterSize( m_fontSizePxPomodoro );
+	m_countdownText.setFillColor( sf::Color::White );
 
 	// TODO change this to steady clock
 	m_TPstart = std::chrono::system_clock::now();

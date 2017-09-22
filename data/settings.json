@@ -24,6 +24,11 @@
   "m_breaklongBgColorG": 0,
   "m_breaklongBgColorB": 205,
  
+  "COUNTDOWN FONT SIZE                                 )                   ": 0,
+  "m_fontSizePxPomodoro": 60,
+  "m_fontSizePxBreakShort": 60,
+  "m_fontSizePxBreakLong": 60,
+
   "COUNTDOWN IN SECONDS (25 minutes x 60 seconds = 1500)                   ": 0,
   "m_secsPomodoro": 1500,
   "m_secsBreakShort": 300,
