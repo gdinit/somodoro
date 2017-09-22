@@ -37,7 +37,6 @@ CountdownState::CountdownState( StateMachine &machine
 	m_desiredAspectRatio << " //" << m_myObjNameStr << "\n";
 	#endif
 
-	// need this? m_worldView = m_window.getDefaultView();
 	m_urgentUpdateNeeded = 10;
 
 	// debug overlay font
