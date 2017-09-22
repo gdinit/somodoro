@@ -324,6 +324,8 @@ void MainMenuState::winSizeIncrease( int times )
 		m_myObjNameStr << "\n";
 		#endif
 		m_window.setSize( nSize );
+		m_winPosX += SIZE_STEP_PX;
+		m_winPosY += SIZE_STEP_PX;
 	}
 }
 
@@ -341,6 +343,8 @@ void MainMenuState::winSizeDecrease( int times )
 
 		if ( nSize.x > MIN_SIZE_PX && nSize.y > MIN_SIZE_PX ) {
 			m_window.setSize( nSize );
+			m_winPosX -= SIZE_STEP_PX;
+			m_winPosY -= SIZE_STEP_PX;
 		}
 	}
 }
