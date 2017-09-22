@@ -63,8 +63,6 @@ public:
 private:
 	const t_objectName	m_myObjNameStr;
 	sf::Vector2u		m_windowSize;
-	// TODO move this to app
-	float			m_desiredAspectRatio;
 	// ImGui Stuff
 	// TODO clean-up this. imgui image button tests.
 	sf::Clock		m_deltaClock;

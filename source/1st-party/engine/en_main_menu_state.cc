@@ -25,12 +25,6 @@ MainMenuState::MainMenuState( StateMachine &machine
 	loadSounds();
 	playSoundClicked();
 	// resize stuff here
-	// TODO base these values on config variables
-	m_desiredAspectRatio = 640.f / 480.f;
-	#if defined DBG
-	std::cout << "[DEBUG]\tm_desiredAspectRatio is: \t" <<
-	m_desiredAspectRatio << " //" << m_myObjNameStr << "\n";
-	#endif
 	m_enSharedContext.mustMainMenu = false;
 	m_urgentUpdateNeeded = 10;
 	// debug overlay font
