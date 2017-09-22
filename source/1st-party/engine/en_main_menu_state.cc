@@ -151,6 +151,7 @@ void MainMenuState::draw()
 	// =====================================================================
 	if ( ImGui::ImageButton( m_tex2Short, -1, sf::Color::Green
 		     , sf::Color::White ) ) {
+		m_enSharedContext.nextBreakIsShort = true;
 		m_next = StateMachine::build <BreakState> ( m_machine
 				, m_window, m_enSharedContext, true );
 	}
@@ -160,8 +161,6 @@ void MainMenuState::draw()
 		m_enSharedContext.nextBreakIsShort = false;
 		m_next = StateMachine::build <BreakState> ( m_machine
 				, m_window, m_enSharedContext, true );
-		// m_next = StateMachine::build <BreaklongState> ( m_machine
-		// , m_window, m_enSharedContext, true );
 	}
 	// =====================================================================
 	ImGui::End();
