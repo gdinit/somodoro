@@ -116,6 +116,7 @@ BreaklongState::~BreaklongState()
 
 void BreaklongState::update()
 {
+	winAutoToggleMoveableIfNecessary();
 	sf::Time m_elapsedTime = m_clock.restart();
 	m_timeSinceLastUpdate += m_elapsedTime;
 
@@ -278,11 +279,6 @@ void BreaklongState::processEvents()
 				" press. Goodbye!\n";
 				m_machine.quit();
 				break;
-			case sf::Keyboard::M:
-				m_next = StateMachine::build
-					<MainMenuState> ( m_machine, m_window
-						, m_enSharedContext, true );
-				break;
 			case sf::Keyboard::F2:
 				this->tglDbgShowOverlay();
 				break;
@@ -294,13 +290,20 @@ void BreaklongState::processEvents()
 				this->
 				tglDbgDFPSConsOutput();
 				break;
-			case sf::Keyboard::L:
+			case sf::Keyboard::M:
 				if ( ( sf::Keyboard::isKeyPressed( sf::Keyboard
 					       ::RControl ) ) ||
 				     ( sf::Keyboard::isKeyPressed( sf::Keyboard
 					       ::
 					       LControl ) ) ) {
-					winToggleMoveable();
+					winManualToggleMoveable();
+				} else {
+					m_next = StateMachine::build
+						<MainMenuState> ( m_machine, m_window
+							, m_enSharedContext
+							,
+							true );
+					break;
 				}
 				break;
 			default:
@@ -518,9 +521,12 @@ void BreaklongState::winSizeDecrease( int times )
 	}
 }
 
-void BreaklongState::winToggleMoveable()
+void BreaklongState::winManualToggleMoveable()
 {
+	// toggle
 	m_enSharedContext.winMoveable = !m_enSharedContext.winMoveable;
+
+	// report
 	#if defined DBG
 	std::string newValueText;
 	if ( m_enSharedContext.winMoveable ) {
@@ -528,9 +534,35 @@ void BreaklongState::winToggleMoveable()
 	} else {
 		newValueText = "OFF";
 	}
-	std::cout << "[DEBUG] Toggled moveable. New value: " << newValueText <<
-	"\t//" << m_myObjNameStr << "\n";
+	std::cout << "[DEBUG] Manually toggled moveable. New value: " <<
+	newValueText <<	"\t//" << m_myObjNameStr << "\n";
 	#endif
+
+	// Toggle time should be updated so that autoToggleBack can function
+	m_enSharedContext.TPmoveToggleTime = std::chrono::steady_clock::now();
+}
+
+void BreaklongState::winAutoToggleMoveableIfNecessary()
+{
+	// exit, if win is NOT moveable
+	if ( !m_enSharedContext.winMoveable ) {
+		return;
+	}
+	// if window currently IS moveable AND THRESHOLD SECONDS have passed,
+	// disable it.
+	typedef std::chrono::seconds Seconds;
+	stdyTimePoint	t0 = m_enSharedContext.TPmoveToggleTime;
+	stdyTimePoint	t1 = std::chrono::steady_clock::now();
+	auto		elapsed_time = std::chrono::duration_cast <Seconds> (
+			t1 - t0 );
+	auto		duration = Seconds(
+			m_enSharedContext.winMoveableDurationSecs );
+	if ( elapsed_time >= duration ) {
+		m_enSharedContext.winMoveable = !m_enSharedContext.winMoveable;
+		#if defined DBG
+		std::cout << "[DEBUG] Automatically turned off moveable!\n";
+		#endif
+	}
 }
 
 void BreaklongState::winAutoResizeIfRequested()

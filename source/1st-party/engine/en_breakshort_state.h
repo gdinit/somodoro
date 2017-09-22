@@ -73,7 +73,8 @@ public:
 	void	playSoundChime();
 	void	winSizeIncrease( int times );
 	void	winSizeDecrease( int times );
-	void	winToggleMoveable();
+	void	winManualToggleMoveable();
+	void	winAutoToggleMoveableIfNecessary();
 	void	winAutoResizeIfRequested();
 
 private:
