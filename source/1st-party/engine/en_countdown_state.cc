@@ -164,8 +164,6 @@ void CountdownState::draw()
 	float	bgAlpha = 0.f;
 	ImGui::Begin( " ", &boolPOpen, sizeOnFirstUse, bgAlpha, window_flags );
 	if ( ImGui::Button( "Main Menu" ) ) {
-		playSoundClicked();
-		// m_enSharedContext.reqPlaySound = 1;
 		m_next = StateMachine::build <MainMenuState> ( m_machine
 				, m_window, m_enSharedContext, true );
 	}
