@@ -155,7 +155,7 @@ void MainMenuState::draw()
 		     , sf::Color::White ) ) {
 		// m_enSharedContext.reqPlaySound = 1;
 		playSoundClicked();
-		m_next = StateMachine::build <BreakshortState> ( m_machine
+		m_next = StateMachine::build <BreakState> ( m_machine
 				, m_window, m_enSharedContext, true );
 	}
 	// =====================================================================

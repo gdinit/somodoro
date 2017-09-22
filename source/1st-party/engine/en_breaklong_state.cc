@@ -17,7 +17,14 @@ BreaklongState::BreaklongState( StateMachine &machine
 	, bool replace )
 	: State{ machine, window, context, replace }
 	, m_myObjNameStr( "BreaklongState" )
+	, m_breakType( 1 )
 {
+	if ( m_breakType == 0 ) {
+		std::cout << "Breaktype is SHORT (" << m_breakType << ")\n";
+	} else if ( m_breakType == 1 ) {
+		std::cout << "Breaktype is LONG (" << m_breakType << ")\n";
+	}
+
 	loadSounds();
 	playSoundWindingUp();
 	// Reset to prevent instant-game-over next time
@@ -25,7 +32,7 @@ BreaklongState::BreaklongState( StateMachine &machine
 	m_timerLive = true;
 
 	#if defined DBG
-	std::cout << "[DEBUG]\tCreated state:\t\t" << m_myObjNameStr << "\n";
+	std::cout << "[DEBUG]\tCreated state:\t\t" << m_myObjNameStr <<	"\n";
 	#endif
 
 	restartStateClock();
@@ -45,7 +52,8 @@ BreaklongState::BreaklongState( StateMachine &machine
 	m_statisticsText.setCharacterSize( 12u );
 	m_statisticsText.setFillColor( sf::Color::White );
 	updateDebugOverlayTextIfEnabled( true );
-	// === ImGui Stuff =====================================================
+	// === ImGui Stuff
+	// =====================================================
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
 	// =====================================================================
@@ -54,12 +62,14 @@ BreaklongState::BreaklongState( StateMachine &machine
 	m_windowSize = m_window.getSize();
 
 	// TODO move JSON work to a function
-	// TODO move JSON work to a single unified location in app for all
+	// TODO move JSON work to a single unified location in app for
+	// all
 	// states
 	std::ifstream	i( "data/settings.json" );
 	nlohmann::json	j;
 	i >> j;
-	for ( nlohmann::json::iterator it = j.begin(); it != j.end(); ++it ) {
+	for ( nlohmann::json::iterator it = j.begin(); it != j.end();
+	      ++it ) {
 		if ( it.key() == "m_breaklongBgColorR" ) {
 			m_breaklongBgColorR = it.value();
 		} else if ( it.key() == "m_breaklongBgColorG" ) {
@@ -153,7 +163,8 @@ void BreaklongState::update()
 		}
 		if ( m_statisticsUpdateTime >= sf::seconds( 1.0f ) ) {
 			if ( m_statisticsNumFrames <= 1 ) {
-				break;	// if we're playing catchup, don't
+				break;	// if we're playing catchup,
+					// don't
 				// bother with debugOverlayText
 			}
 			recordObservedFPS();
@@ -178,12 +189,13 @@ void BreaklongState::draw()
 		&& m_enSharedContext.winMoveable
 		&& sf::Mouse::isButtonPressed( sf::Mouse::Left );
 	if ( m_grabbedWindow ) {
-		m_window.setPosition( sf::Mouse::getPosition() +
-			m_grabbedOffset );
+		m_window.setPosition(
+			sf::Mouse::getPosition() + m_grabbedOffset );
 	}
 	m_window.setView( m_enSharedContext.view );
 
-	// === ImGui Stuff =====================================================
+	// === ImGui Stuff
+	// =====================================================
 	ImGui::SFML::Update( m_window, m_deltaClock.restart() );
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
@@ -197,7 +209,8 @@ void BreaklongState::draw()
 	bool	boolPOpen = false;
 	ImVec2	sizeOnFirstUse = ImVec2( -1, -1 );
 	float	bgAlpha = 0.f;
-	ImGui::Begin( " ", &boolPOpen, sizeOnFirstUse, bgAlpha, window_flags );
+	ImGui::Begin( " ", &boolPOpen, sizeOnFirstUse, bgAlpha
+		, window_flags );
 	if ( ImGui::Button( "Main Menu" ) ) {
 		playSoundClicked();
 		// m_enSharedContext.reqPlaySound = 1;
@@ -227,12 +240,13 @@ void BreaklongState::resume()
 	restartStateClock();
 	m_urgentUpdateNeeded = 10;
 	// destroy the queue
-	// give me stats in the first frame, but first make up some plausible
+	// give me stats in the first frame, but first make up some
+	// plausible
 	// values
 	updateDebugOverlayTextIfEnabled( true );
 
 	#if defined DBG
-	std::cout << "[DEBUG]\tResumed State:\t\t" << m_myObjNameStr << "\n";
+	std::cout << "[DEBUG]\tResumed State:\t\t" << m_myObjNameStr <<	"\n";
 	#endif
 
 	// if there is a pending play sound request, play it
@@ -246,7 +260,8 @@ void BreaklongState::processEvents()
 {
 	sf::Event evt;
 	while ( m_window.pollEvent( evt ) ) {
-		// === ImGui Stuff =============================================
+		// === ImGui Stuff
+		// =============================================
 		ImGui::SFML::ProcessEvent( evt );
 		// =============================================================
 		switch ( evt.type ) {
@@ -267,8 +282,10 @@ void BreaklongState::processEvents()
 					, evt.size.height );
 			break;
 		case sf::Event::MouseButtonPressed:
-			if ( evt.mouseButton.button == sf::Mouse::Left ) {
-				m_grabbedOffset = m_window.getPosition() -
+			if ( evt.mouseButton.button ==
+			     sf::Mouse::Left ) {
+				m_grabbedOffset =
+					m_window.getPosition() -
 					sf::Mouse::getPosition();
 			}
 			break;
@@ -291,15 +308,18 @@ void BreaklongState::processEvents()
 				tglDbgDFPSConsOutput();
 				break;
 			case sf::Keyboard::M:
-				if ( ( sf::Keyboard::isKeyPressed( sf::Keyboard
+				if ( ( sf::Keyboard::isKeyPressed( sf::
+					       Keyboard
 					       ::RControl ) ) ||
-				     ( sf::Keyboard::isKeyPressed( sf::Keyboard
+				     ( sf::Keyboard::isKeyPressed( sf::
+					       Keyboard
 					       ::
 					       LControl ) ) ) {
 					winManualToggleMoveable();
 				} else {
 					m_next = StateMachine::build
-						<MainMenuState> ( m_machine, m_window
+						<MainMenuState> (
+							m_machine, m_window
 							, m_enSharedContext
 							,
 							true );
@@ -312,7 +332,8 @@ void BreaklongState::processEvents()
 			break;
 		case sf::Event::KeyReleased:
 			switch ( evt.key.code ) {
-			// Disabling windows size change as it is really badly
+			// Disabling windows size change as it is really
+			// badly
 			// implemented at the moment
 			// case sf::Keyboard::Add:
 			// case sf::Keyboard::Num9:
@@ -336,7 +357,8 @@ void BreaklongState::makeWindowAlwaysOnTop()
 // TODO: move this to state.cc
 {
 	#ifdef _WIN32
-	// define something for Windows (32-bit and 64-bit, this part is common)
+	// define something for Windows (32-bit and 64-bit, this part is
+	// common)
 	HWND hwnd = m_window.getSystemHandle();
 	SetWindowPos( hwnd, HWND_TOPMOST, 0, 0, 0, 0
 		, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE );
@@ -381,7 +403,8 @@ void BreaklongState::calculateUpdateTimer()
 	}
 
 	if ( !m_window.hasFocus() ) {
-		std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
+		std::this_thread::sleep_for( std::chrono::milliseconds(
+				500 ) );
 	}
 	updateText();
 	centerText();
@@ -430,7 +453,8 @@ void BreaklongState::centerText()
 		centerOrigin( m_breaklongText );
 	}
 	centerOrigin( m_breaklongText );
-	m_breaklongText.setPosition( m_windowSize.x / 2, m_windowSize.y / 2 );
+	m_breaklongText.setPosition( m_windowSize.x / 2
+		, m_windowSize.y / 2 );
 }
 
 void BreaklongState::loadSounds()
@@ -488,7 +512,8 @@ void BreaklongState::winSizeIncrease( int times )
 	for ( int n = 0; n < times; n++ ) {
 		sf::Vector2u	cSize = m_window.getSize();
 		sf::Vector2u	nSize
-			= { cSize.x + SIZE_STEP_PX, cSize.y + SIZE_STEP_PX };
+			= { cSize.x + SIZE_STEP_PX
+			    , cSize.y + SIZE_STEP_PX };
 
 		#if defined DBG
 		std::cout << "[DEBUG] curSize: " << cSize.x << "," << cSize.y <<
@@ -538,8 +563,10 @@ void BreaklongState::winManualToggleMoveable()
 	newValueText <<	"\t//" << m_myObjNameStr << "\n";
 	#endif
 
-	// Toggle time should be updated so that autoToggleBack can function
-	m_enSharedContext.TPmoveToggleTime = std::chrono::steady_clock::now();
+	// Toggle time should be updated so that autoToggleBack can
+	// function
+	m_enSharedContext.TPmoveToggleTime =
+		std::chrono::steady_clock::now();
 }
 
 void BreaklongState::winAutoToggleMoveableIfNecessary()
@@ -548,17 +575,20 @@ void BreaklongState::winAutoToggleMoveableIfNecessary()
 	if ( !m_enSharedContext.winMoveable ) {
 		return;
 	}
-	// if window currently IS moveable AND THRESHOLD SECONDS have passed,
+	// if window currently IS moveable AND THRESHOLD SECONDS have
+	// passed,
 	// disable it.
 	typedef std::chrono::seconds Seconds;
 	stdyTimePoint	t0 = m_enSharedContext.TPmoveToggleTime;
 	stdyTimePoint	t1 = std::chrono::steady_clock::now();
-	auto		elapsed_time = std::chrono::duration_cast <Seconds> (
+	auto		elapsed_time =
+		std::chrono::duration_cast <Seconds> (
 			t1 - t0 );
 	auto		duration = Seconds(
 			m_enSharedContext.winMoveableDurationSecs );
 	if ( elapsed_time >= duration ) {
-		m_enSharedContext.winMoveable = !m_enSharedContext.winMoveable;
+		m_enSharedContext.winMoveable =
+			!m_enSharedContext.winMoveable;
 		#if defined DBG
 		std::cout << "[DEBUG] Automatically turned off moveable!\n";
 		#endif
@@ -574,6 +604,7 @@ void BreaklongState::winAutoResizeIfRequested()
 	}
 }
 
-// ===================================80 chars=================================|
+// ===================================80
+// chars=================================|
 /* EOF */
 

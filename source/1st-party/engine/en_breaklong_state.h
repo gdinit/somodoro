@@ -112,6 +112,7 @@ private:
 	int32			m_winPosX = 30;
 	int32			m_winPosY = 74;
 	int32			m_fontSizePxBreaklong = -1;
+	int32			m_breakType;
 };
 
 // EN_BREAKLONG_STATE_H

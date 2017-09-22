@@ -1,8 +1,8 @@
-/* en_breakshort_state.h */
+/* en_break_state.h */
 // ===================================80 chars=================================|
 
-#ifndef EN_BREAKSHORT_STATE_H
-#define EN_BREAKSHORT_STATE_H
+#ifndef EN_BREAK_STATE_H
+#define EN_BREAK_STATE_H
 
 #include "en_essentials.h"
 #include "en_state.h"
@@ -49,14 +49,14 @@
 
 class StateMachine;
 
-class BreakshortState : public State
+class BreakState : public State
 {
 public:
-	BreakshortState( StateMachine &machine
+	BreakState( StateMachine &machine
 	, sf::RenderWindow &window
 	, EngineSharedContext &context
 	, bool replace = true );
-	virtual ~BreakshortState();
+	virtual ~BreakState();
 	void	processEvents();
 	void	update();
 	void	draw();
@@ -96,8 +96,8 @@ private:
 	int32			m_breakshortBgColorB = 0;
 	int32			m_secsBreakshort = 0;
 	int32			m_countdownSecondsRemaining = 0;
-	sf::Font		m_breakshortFont;
-	sf::Text		m_breakshortText;
+	sf::Font		m_breakFont;
+	sf::Text		m_breakText;
 	stdTimePoint		m_TPstart;
 	stdTimePoint		m_TPlatest;
 	bool			m_centerOriginNeeded = true;
@@ -112,9 +112,10 @@ private:
 	int32			m_winPosX = 30;
 	int32			m_winPosY = 74;
 	int32			m_fontSizePxBreakshort = -1;
+	int32			m_breakType;
 };
 
-// EN_BREAKSHORT_STATE_H
+// EN_BREAK_STATE_H
 #endif
 
 // ===================================80 chars=================================|

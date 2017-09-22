@@ -1,7 +1,7 @@
-/* en_breakshort_state.cc */
+/* en_break_state.cc */
 // ===================================80 chars=================================|
 
-#include "en_breakshort_state.h"
+#include "en_break_state.h"
 
 // TODO delete these?
 extern std::unique_ptr <Settings>	SETTINGS;
@@ -11,13 +11,20 @@ extern std::unique_ptr <Globals>	GLOBALS;
 #define SIZE_STEP_PX 20
 #define MIN_SIZE_PX 40
 
-BreakshortState::BreakshortState( StateMachine &machine
+BreakState::BreakState( StateMachine &machine
 	, sf::RenderWindow &window
 	, EngineSharedContext &context
 	, bool replace )
 	: State{ machine, window, context, replace }
-	, m_myObjNameStr( "BreakshortState" )
+	, m_myObjNameStr( "BreakState" )
+	, m_breakType( 0 )
 {
+	if ( m_breakType == 0 ) {
+		std::cout << "Breaktype is SHORT (" << m_breakType << ")\n";
+	} else if ( m_breakType == 1 ) {
+		std::cout << "Breaktype is LONG (" << m_breakType << ")\n";
+	}
+
 	loadSounds();
 	playSoundWindingUp();
 	// Reset to prevent instant-game-over next time
@@ -25,7 +32,7 @@ BreakshortState::BreakshortState( StateMachine &machine
 	m_timerLive = true;
 
 	#if defined DBG
-	std::cout << "[DEBUG]\tCreated state:\t\t" << m_myObjNameStr << "\n";
+	std::cout << "[DEBUG]\tCreated state:\t\t" << m_myObjNameStr <<	"\n";
 	#endif
 
 	restartStateClock();
@@ -45,7 +52,8 @@ BreakshortState::BreakshortState( StateMachine &machine
 	m_statisticsText.setCharacterSize( 12u );
 	m_statisticsText.setFillColor( sf::Color::White );
 	updateDebugOverlayTextIfEnabled( true );
-	// === ImGui Stuff =====================================================
+	// === ImGui Stuff
+	// =====================================================
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
 	// =====================================================================
@@ -54,12 +62,14 @@ BreakshortState::BreakshortState( StateMachine &machine
 	m_windowSize = m_window.getSize();
 
 	// TODO move JSON work to a function
-	// TODO move JSON work to a single unified location in app for all
+	// TODO move JSON work to a single unified location in app for
+	// all
 	// states
 	std::ifstream	i( "data/settings.json" );
 	nlohmann::json	j;
 	i >> j;
-	for ( nlohmann::json::iterator it = j.begin(); it != j.end(); ++it ) {
+	for ( nlohmann::json::iterator it = j.begin(); it != j.end();
+	      ++it ) {
 		if ( it.key() == "m_breakshortBgColorR" ) {
 			m_breakshortBgColorR = it.value();
 		} else if ( it.key() == "m_breakshortBgColorG" ) {
@@ -89,10 +99,10 @@ BreakshortState::BreakshortState( StateMachine &machine
 	std::cout << "Short Break started - counting down: " <<
 	m_secsBreakshort << " seconds.\n";
 
-	m_breakshortFont.loadFromFile( "assets/fonts/monofont.ttf" );
-	m_breakshortText.setFont( m_breakshortFont );
-	m_breakshortText.setCharacterSize( m_fontSizePxBreakshort );
-	m_breakshortText.setFillColor( sf::Color::White );
+	m_breakFont.loadFromFile( "assets/fonts/monofont.ttf" );
+	m_breakText.setFont( m_breakFont );
+	m_breakText.setCharacterSize( m_fontSizePxBreakshort );
+	m_breakText.setFillColor( sf::Color::White );
 
 	// TODO change this to steady clock
 	m_TPstart = std::chrono::system_clock::now();
@@ -101,7 +111,7 @@ BreakshortState::BreakshortState( StateMachine &machine
 	winAutoResizeIfRequested();
 }
 
-BreakshortState::~BreakshortState()
+BreakState::~BreakState()
 {
 	#if defined DBG
 	std::cout << "[DEBUG]\tDestructed state:\t" << m_myObjNameStr << "\n";
@@ -114,7 +124,7 @@ BreakshortState::~BreakshortState()
 	#endif
 }
 
-void BreakshortState::update()
+void BreakState::update()
 {
 	winAutoToggleMoveableIfNecessary();
 	sf::Time m_elapsedTime = m_clock.restart();
@@ -154,7 +164,8 @@ void BreakshortState::update()
 		}
 		if ( m_statisticsUpdateTime >= sf::seconds( 1.0f ) ) {
 			if ( m_statisticsNumFrames <= 1 ) {
-				break;	// if we're playing catchup, don't
+				break;	// if we're playing catchup,
+					// don't
 				// bother with debugOverlayText
 			}
 			recordObservedFPS();
@@ -171,7 +182,7 @@ void BreakshortState::update()
 	}
 }
 
-void BreakshortState::draw()
+void BreakState::draw()
 {
 	m_enSharedContext.frameID++;
 	m_window.clear( m_breakshortBgColor );
@@ -179,12 +190,13 @@ void BreakshortState::draw()
 		&& m_enSharedContext.winMoveable
 		&& sf::Mouse::isButtonPressed( sf::Mouse::Left );
 	if ( m_grabbedWindow ) {
-		m_window.setPosition( sf::Mouse::getPosition() +
-			m_grabbedOffset );
+		m_window.setPosition(
+			sf::Mouse::getPosition() + m_grabbedOffset );
 	}
 	m_window.setView( m_enSharedContext.view );
 
-	// === ImGui Stuff =====================================================
+	// === ImGui Stuff
+	// =====================================================
 	ImGui::SFML::Update( m_window, m_deltaClock.restart() );
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
@@ -198,7 +210,8 @@ void BreakshortState::draw()
 	bool	boolPOpen = false;
 	ImVec2	sizeOnFirstUse = ImVec2( -1, -1 );
 	float	bgAlpha = 0.f;
-	ImGui::Begin( " ", &boolPOpen, sizeOnFirstUse, bgAlpha, window_flags );
+	ImGui::Begin( " ", &boolPOpen, sizeOnFirstUse, bgAlpha
+		, window_flags );
 	if ( ImGui::Button( "Main Menu" ) ) {
 		playSoundClicked();
 		// m_enSharedContext.reqPlaySound = 1;
@@ -212,28 +225,29 @@ void BreakshortState::draw()
 	if ( SETTINGS->inGameOverlay ) {
 		m_window.draw( m_statisticsText );
 	}
-	m_window.draw( m_breakshortText );
+	m_window.draw( m_breakText );
 	m_window.display();
 }
 
-void BreakshortState::pause()
+void BreakState::pause()
 {
 	#if defined DBG
 	std::cout << "[DEBUG]\tPaused State:\t\t" << m_myObjNameStr << "\n";
 	#endif
 }
 
-void BreakshortState::resume()
+void BreakState::resume()
 {
 	restartStateClock();
 	m_urgentUpdateNeeded = 10;
 	// destroy the queue
-	// give me stats in the first frame, but first make up some plausible
+	// give me stats in the first frame, but first make up some
+	// plausible
 	// values
 	updateDebugOverlayTextIfEnabled( true );
 
 	#if defined DBG
-	std::cout << "[DEBUG]\tResumed State:\t\t" << m_myObjNameStr << "\n";
+	std::cout << "[DEBUG]\tResumed State:\t\t" << m_myObjNameStr <<	"\n";
 	#endif
 
 	// if there is a pending play sound request, play it
@@ -243,11 +257,12 @@ void BreakshortState::resume()
 	}
 }
 
-void BreakshortState::processEvents()
+void BreakState::processEvents()
 {
 	sf::Event evt;
 	while ( m_window.pollEvent( evt ) ) {
-		// === ImGui Stuff =============================================
+		// === ImGui Stuff
+		// =============================================
 		ImGui::SFML::ProcessEvent( evt );
 		// =============================================================
 		switch ( evt.type ) {
@@ -268,8 +283,10 @@ void BreakshortState::processEvents()
 					, evt.size.height );
 			break;
 		case sf::Event::MouseButtonPressed:
-			if ( evt.mouseButton.button == sf::Mouse::Left ) {
-				m_grabbedOffset = m_window.getPosition() -
+			if ( evt.mouseButton.button ==
+			     sf::Mouse::Left ) {
+				m_grabbedOffset =
+					m_window.getPosition() -
 					sf::Mouse::getPosition();
 			}
 			break;
@@ -292,15 +309,18 @@ void BreakshortState::processEvents()
 				tglDbgDFPSConsOutput();
 				break;
 			case sf::Keyboard::M:
-				if ( ( sf::Keyboard::isKeyPressed( sf::Keyboard
+				if ( ( sf::Keyboard::isKeyPressed( sf::
+					       Keyboard
 					       ::RControl ) ) ||
-				     ( sf::Keyboard::isKeyPressed( sf::Keyboard
+				     ( sf::Keyboard::isKeyPressed( sf::
+					       Keyboard
 					       ::
 					       LControl ) ) ) {
 					winManualToggleMoveable();
 				} else {
 					m_next = StateMachine::build
-						<MainMenuState> ( m_machine, m_window
+						<MainMenuState> (
+							m_machine, m_window
 							, m_enSharedContext
 							,
 							true );
@@ -313,7 +333,8 @@ void BreakshortState::processEvents()
 			break;
 		case sf::Event::KeyReleased:
 			switch ( evt.key.code ) {
-			// Disabling windows size change as it is really badly
+			// Disabling windows size change as it is really
+			// badly
 			// implemented at the moment
 			// case sf::Keyboard::Add:
 			// case sf::Keyboard::Num9:
@@ -333,11 +354,12 @@ void BreakshortState::processEvents()
 	}
 }
 
-void BreakshortState::makeWindowAlwaysOnTop()
+void BreakState::makeWindowAlwaysOnTop()
 // TODO: move this to state.cc
 {
 	#ifdef _WIN32
-	// define something for Windows (32-bit and 64-bit, this part is common)
+	// define something for Windows (32-bit and 64-bit, this part is
+	// common)
 	HWND hwnd = m_window.getSystemHandle();
 	SetWindowPos( hwnd, HWND_TOPMOST, 0, 0, 0, 0
 		, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE );
@@ -369,7 +391,7 @@ void BreakshortState::makeWindowAlwaysOnTop()
 	#endif
 }
 
-void BreakshortState::calculateUpdateTimer()
+void BreakState::calculateUpdateTimer()
 {
 	m_TPlatest = std::chrono::system_clock::now();
 	std::chrono::duration <double> elapsed_secs = m_TPlatest - m_TPstart;
@@ -382,19 +404,20 @@ void BreakshortState::calculateUpdateTimer()
 	}
 
 	if ( !m_window.hasFocus() ) {
-		std::this_thread::sleep_for( std::chrono::milliseconds( 500 ) );
+		std::this_thread::sleep_for( std::chrono::milliseconds(
+				500 ) );
 	}
 	updateText();
 	centerText();
 }
 
-void BreakshortState::updateText()
+void BreakState::updateText()
 {
-	m_breakshortText.setString( "" );
+	m_breakText.setString( "" );
 	int	minutes = ( m_countdownSecondsRemaining / 60 ) % 60;
-	int	seconds = m_countdownSecondsRemaining %	60;
+	int	seconds = m_countdownSecondsRemaining % 60;
 	if ( seconds == 0 ) {
-		m_breakshortText.setString(
+		m_breakText.setString(
 			// MINUTES
 			std::to_string( minutes )
 			// SEPARATOR & SECONDS
@@ -402,7 +425,7 @@ void BreakshortState::updateText()
 			// Close
 			);
 	} else if ( seconds > 0 && seconds <= 9 ) {
-		m_breakshortText.setString(
+		m_breakText.setString(
 			// MINUTES
 			std::to_string( minutes )
 			// SEPARATOR
@@ -412,7 +435,7 @@ void BreakshortState::updateText()
 			// Close
 			);
 	} else {
-		m_breakshortText.setString(
+		m_breakText.setString(
 			// MINUTES
 			std::to_string( minutes )
 			// SEPARATOR
@@ -424,17 +447,18 @@ void BreakshortState::updateText()
 	}
 }
 
-void BreakshortState::centerText()
+void BreakState::centerText()
 {
 	if ( m_centerOriginNeeded == true ) {
 		m_centerOriginNeeded = false;
-		centerOrigin( m_breakshortText );
+		centerOrigin( m_breakText );
 	}
-	centerOrigin( m_breakshortText );
-	m_breakshortText.setPosition( m_windowSize.x / 2, m_windowSize.y / 2 );
+	centerOrigin( m_breakText );
+	m_breakText.setPosition( m_windowSize.x / 2
+		, m_windowSize.y / 2 );
 }
 
-void BreakshortState::loadSounds()
+void BreakState::loadSounds()
 {
 	if ( !m_sbClicked.loadFromFile(
 		     "assets/sounds/clicked.wav" ) ) {
@@ -452,7 +476,7 @@ void BreakshortState::loadSounds()
 	m_sChime.setBuffer( m_sbChime );
 }
 
-void BreakshortState::playSoundIfRequested()
+void BreakState::playSoundIfRequested()
 {
 	if ( m_enSharedContext.reqPlaySound ) {
 		m_enSharedContext.reqPlaySound = 0;
@@ -460,7 +484,7 @@ void BreakshortState::playSoundIfRequested()
 	}
 }
 
-void BreakshortState::playSoundClicked()
+void BreakState::playSoundClicked()
 {
 	#if defined DBG
 	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
@@ -468,7 +492,7 @@ void BreakshortState::playSoundClicked()
 	m_sClicked.play();
 }
 
-void BreakshortState::playSoundWindingUp()
+void BreakState::playSoundWindingUp()
 {
 	#if defined DBG
 	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
@@ -476,7 +500,7 @@ void BreakshortState::playSoundWindingUp()
 	m_sWindingUp.play();
 }
 
-void BreakshortState::playSoundChime()
+void BreakState::playSoundChime()
 {
 	#if defined DBG
 	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
@@ -484,12 +508,13 @@ void BreakshortState::playSoundChime()
 	m_sChime.play();
 }
 
-void BreakshortState::winSizeIncrease( int times )
+void BreakState::winSizeIncrease( int times )
 {
 	for ( int n = 0; n < times; n++ ) {
 		sf::Vector2u	cSize = m_window.getSize();
 		sf::Vector2u	nSize
-			= { cSize.x + SIZE_STEP_PX, cSize.y + SIZE_STEP_PX };
+			= { cSize.x + SIZE_STEP_PX
+			    , cSize.y + SIZE_STEP_PX };
 
 		#if defined DBG
 		std::cout << "[DEBUG] curSize: " << cSize.x << "," << cSize.y <<
@@ -502,7 +527,7 @@ void BreakshortState::winSizeIncrease( int times )
 	}
 }
 
-void BreakshortState::winSizeDecrease( int times )
+void BreakState::winSizeDecrease( int times )
 {
 	for ( int n = 0; n < times; n++ ) {
 		sf::Vector2u	cSize = m_window.getSize();
@@ -522,7 +547,7 @@ void BreakshortState::winSizeDecrease( int times )
 	}
 }
 
-void BreakshortState::winManualToggleMoveable()
+void BreakState::winManualToggleMoveable()
 {
 	// toggle
 	m_enSharedContext.winMoveable = !m_enSharedContext.winMoveable;
@@ -539,34 +564,39 @@ void BreakshortState::winManualToggleMoveable()
 	newValueText <<	"\t//" << m_myObjNameStr << "\n";
 	#endif
 
-	// Toggle time should be updated so that autoToggleBack can function
-	m_enSharedContext.TPmoveToggleTime = std::chrono::steady_clock::now();
+	// Toggle time should be updated so that autoToggleBack can
+	// function
+	m_enSharedContext.TPmoveToggleTime =
+		std::chrono::steady_clock::now();
 }
 
-void BreakshortState::winAutoToggleMoveableIfNecessary()
+void BreakState::winAutoToggleMoveableIfNecessary()
 {
 	// exit, if win is NOT moveable
 	if ( !m_enSharedContext.winMoveable ) {
 		return;
 	}
-	// if window currently IS moveable AND THRESHOLD SECONDS have passed,
+	// if window currently IS moveable AND THRESHOLD SECONDS have
+	// passed,
 	// disable it.
 	typedef std::chrono::seconds Seconds;
 	stdyTimePoint	t0 = m_enSharedContext.TPmoveToggleTime;
 	stdyTimePoint	t1 = std::chrono::steady_clock::now();
-	auto		elapsed_time = std::chrono::duration_cast <Seconds> (
+	auto		elapsed_time =
+		std::chrono::duration_cast <Seconds> (
 			t1 - t0 );
 	auto		duration = Seconds(
 			m_enSharedContext.winMoveableDurationSecs );
 	if ( elapsed_time >= duration ) {
-		m_enSharedContext.winMoveable = !m_enSharedContext.winMoveable;
+		m_enSharedContext.winMoveable =
+			!m_enSharedContext.winMoveable;
 		#if defined DBG
 		std::cout << "[DEBUG] Automatically turned off moveable!\n";
 		#endif
 	}
 }
 
-void BreakshortState::winAutoResizeIfRequested()
+void BreakState::winAutoResizeIfRequested()
 {
 	if ( m_enSharedContext.winAutoResize ) {
 		winSizeDecrease( 3 );
@@ -575,6 +605,7 @@ void BreakshortState::winAutoResizeIfRequested()
 	}
 }
 
-// ===================================80 chars=================================|
+// ===================================80
+// chars=================================|
 /* EOF */
 
