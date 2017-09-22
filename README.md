@@ -37,7 +37,7 @@ Here is a few!
 
 Install
 -------
-Nothing here yet :(
+A pre-release Windows binary package has been attached to RELEASES (20170922).
 
 Credits
 -------
