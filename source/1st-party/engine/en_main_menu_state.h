@@ -58,6 +58,7 @@ public:
 	void	winToggleMoveable();
 	void	loadSounds();
 	void	playSoundClicked();
+	void	readSettings();
 
 private:
 	const t_objectName	m_myObjNameStr;
@@ -80,10 +81,10 @@ private:
 	bool			m_grabbedWindow = false;
 	bool			m_windowActive = true;
 	// This should be overwritten by JSON parser
-	sf::Color		m_mainmenuBgColor = sf::Color::Yellow;
-	int			m_mainmenuBgColorR = 0;
-	int			m_mainmenuBgColorG = 0;
-	int			m_mainmenuBgColorB = 0;
+	sf::Color		m_mainmenuBgColor;
+	int			m_mainmenuBgColorR;
+	int			m_mainmenuBgColorG;
+	int			m_mainmenuBgColorB;
 	// SOUNDS
 	sf::SoundBuffer		m_sbClicked;
 	sf::Sound		m_sClicked;

@@ -16,6 +16,7 @@ MainMenuState::MainMenuState( StateMachine &machine
 {
 	// Get size of window.
 	m_windowSize = m_window.getSize();
+	readSettings();
 
 	#if defined DBG
 	std::cout << "[DEBUG]\tCreated state:\t\t" << m_myObjNameStr << "\n";
@@ -39,35 +40,18 @@ MainMenuState::MainMenuState( StateMachine &machine
 	m_statisticsText.setCharacterSize( 12u );
 	m_statisticsText.setFillColor( sf::Color::White );
 	updateDebugOverlayTextIfEnabled( true );
-	////////////////////////////////////////
-	// ImGui Stuff
+	// === ImGui Stuff =====================================================
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
-	// TODO delete this m_bgColor = sf::Color::Black;
-	// TODO delete this m_tintColor = sf::Color::Black;
+	// =====================================================================
+
 	m_tex1Start.loadFromFile( "assets/textures/start.png" );
 	m_tex2Short.loadFromFile( "assets/textures/short.png" );
 	m_tex3Long.loadFromFile( "assets/textures/long.png" );
 	////////////////////////////////////////
 
-	std::ifstream	i( "data/settings.json" );
-	nlohmann::json	j;
-	i >> j;
-	for ( nlohmann::json::iterator it = j.begin(); it != j.end(); ++it ) {
-		if ( it.key() == "m_mainmenuBgColorR" ) {
-			m_mainmenuBgColorR = it.value();
-		} else if ( it.key() == "m_mainmenuBgColorG" ) {
-			m_mainmenuBgColorG = it.value();
-		} else if ( it.key() == "m_mainmenuBgColorB" ) {
-			m_mainmenuBgColorB = it.value();
-		}
-	}
-	i.close();
-	m_mainmenuBgColor.r = m_mainmenuBgColorR;
-	m_mainmenuBgColor.g = m_mainmenuBgColorG;
-	m_mainmenuBgColor.b = m_mainmenuBgColorB;
-
 	// must happen after everything else
+	// change this to winAutoResizeIfRequested();
 	if ( m_enSharedContext.winMMMustResize ) {
 		m_enSharedContext.winMMMustResize
 			= !m_enSharedContext.winMMMustResize;
@@ -277,8 +261,14 @@ void MainMenuState::processEvents()
 			// case sf::Keyboard::Num0:
 			// winSizeDecrease( 1 );
 			// break;
-			case sf::Keyboard::L:
-				winToggleMoveable();
+			case sf::Keyboard::M:
+				if ( ( sf::Keyboard::isKeyPressed( sf::Keyboard
+					       ::RControl ) ) ||
+				     ( sf::Keyboard::isKeyPressed( sf::Keyboard
+					       ::
+					       LControl ) ) ) {
+					winToggleMoveable();
+				}
 				break;
 			default:
 				break;
@@ -389,6 +379,34 @@ void MainMenuState::playSoundClicked()
 	std::cout << "[DEBUG] Playing a sound.\t" << m_myObjNameStr << "\n";
 	#endif
 	m_sClicked.play();
+}
+
+void MainMenuState::readSettings()
+{
+	std::cout << "Reading settings from file...\n";
+
+	std::ifstream	i( "data/settings.json" );
+	nlohmann::json	j;
+	i >> j;
+	for ( nlohmann::json::iterator it = j.begin(); it != j.end(); ++it ) {
+		if ( it.key() == "m_mainmenuBgColorR" ) {
+			m_mainmenuBgColorR = it.value();
+		} else if ( it.key() == "m_mainmenuBgColorG" ) {
+			m_mainmenuBgColorG = it.value();
+		} else if ( it.key() == "m_mainmenuBgColorB" ) {
+			m_mainmenuBgColorB = it.value();
+		} else if ( it.key() == "winMoveable" ) {
+			m_enSharedContext.winMoveable = it.value();
+		} else if ( it.key() == "winAutoResize" ) {
+			m_enSharedContext.winAutoResize = it.value();
+			std::cout << "m_enSharedContext.winAutoResize is: " <<
+			m_enSharedContext.winAutoResize << '\n';
+		}
+	}
+	i.close();
+	m_mainmenuBgColor.r = m_mainmenuBgColorR;
+	m_mainmenuBgColor.g = m_mainmenuBgColorG;
+	m_mainmenuBgColor.b = m_mainmenuBgColorB;
 }
 
 // ===================================80 chars=================================|
