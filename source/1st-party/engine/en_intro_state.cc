@@ -31,7 +31,6 @@ void IntroState::pause()
 
 void IntroState::resume()
 {
-	restartStateClock();
 }
 
 void IntroState::update()

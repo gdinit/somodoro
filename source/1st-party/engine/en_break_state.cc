@@ -225,23 +225,6 @@ void BreakState::pause()
 
 void BreakState::resume()
 {
-	restartStateClock();
-	m_urgentUpdateNeeded = 10;
-	// destroy the queue
-	// give me stats in the first frame, but first make up some
-	// plausible
-	// values
-	updateDebugOverlayTextIfEnabled( true );
-
-	#if defined DBG
-	std::cout << "[DEBUG]\tResumed State:\t\t" << m_myObjNameStr <<	"\n";
-	#endif
-
-	// if there is a pending play sound request, play it
-	if ( m_enSharedContext.reqPlaySound ) {
-		m_enSharedContext.reqPlaySound = 0;
-		m_sClicked.play();
-	}
 }
 
 void BreakState::processEvents()

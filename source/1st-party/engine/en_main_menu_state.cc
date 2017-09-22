@@ -179,7 +179,6 @@ void MainMenuState::pause()
 
 void MainMenuState::resume()
 {
-	restartStateClock();
 }
 
 void MainMenuState::processEvents()
