@@ -56,6 +56,9 @@ BreakshortState::BreakshortState( StateMachine &machine
 	m_res.x = static_cast <float> ( m_windowSize.x );
 	m_res.y = static_cast <float> ( m_windowSize.y );
 
+	// TODO move JSON work to a function
+	// TODO move JSON work to a single unified location in app for all
+	// states
 	std::ifstream	i( "data/settings.json" );
 	nlohmann::json	j;
 	i >> j;
