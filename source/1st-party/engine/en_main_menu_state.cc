@@ -376,10 +376,6 @@ void MainMenuState::winAutoToggleMoveableIfNecessary()
 	if ( !m_enSharedContext.winMoveable ) {
 		return;
 	}
-
-	std::cout << "m_enSharedContext.winMoveableDurationSecs is: " <<
-	m_enSharedContext.winMoveableDurationSecs << '\n';
-
 	// if window currently IS moveable AND THRESHOLD SECONDS have passed,
 	// disable it.
 	typedef std::chrono::seconds Seconds;
