@@ -90,8 +90,6 @@ protected:
 	short int			m_FPSAdjPosDelta = 0;
 	short int			m_FPSAdjNegDelta = 0;
 	unsigned short int		m_activeFPSLmt = CONST_DESIRED_FPS_INT;
-	// Needed to center stuff
-	sf::View			m_worldView;
 };
 
 // EN_STATE_H
