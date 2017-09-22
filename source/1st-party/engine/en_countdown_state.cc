@@ -64,8 +64,6 @@ CountdownState::~CountdownState()
 	#if defined DBG
 	std::cout << "[DEBUG]\tDestructed state:\t" << m_myObjNameStr << "\n";
 	#endif
-
-	// TODO remove me
 	#if defined DBG
 	std::cout << "[DEBUG]\tCountdownState run time was: " <<
 	getStateAgeAsSeconds() << " seconds\n";
