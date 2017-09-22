@@ -38,7 +38,7 @@
   "m_secsBreakshort": 300,
   "m_secsBreaklong": 900,
 
-
+  "winMoveableDurationSecs": 5,
 
   "*******************************                                         ": 0,
   "*** GLOBAL SHARED VARIABLES ***                                         ": 0,

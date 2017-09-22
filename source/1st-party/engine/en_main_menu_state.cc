@@ -68,6 +68,7 @@ MainMenuState::~MainMenuState()
 
 void MainMenuState::update()
 {
+	winAutoToggleMoveableIfNecessary();
 	sf::Time m_elapsedTime = m_clock.restart();
 	m_timeSinceLastUpdate += m_elapsedTime;
 
@@ -261,7 +262,7 @@ void MainMenuState::processEvents()
 				     ( sf::Keyboard::isKeyPressed( sf::Keyboard
 					       ::
 					       LControl ) ) ) {
-					winToggleMoveable();
+					winManualToggleMoveable();
 				}
 				break;
 			default:
@@ -344,9 +345,12 @@ void MainMenuState::winSizeDecrease( int times )
 	}
 }
 
-void MainMenuState::winToggleMoveable()
+void MainMenuState::winManualToggleMoveable()
 {
+	// toggle
 	m_enSharedContext.winMoveable = !m_enSharedContext.winMoveable;
+
+	// report
 	#if defined DBG
 	std::string newValueText;
 	if ( m_enSharedContext.winMoveable ) {
@@ -354,9 +358,39 @@ void MainMenuState::winToggleMoveable()
 	} else {
 		newValueText = "OFF";
 	}
-	std::cout << "[DEBUG] Toggled moveable. New value: " << newValueText <<
-	"\t//" << m_myObjNameStr << "\n";
+	std::cout << "[DEBUG] Manually toggled moveable. New value: " <<
+	newValueText <<	"\t//" << m_myObjNameStr << "\n";
 	#endif
+
+	// Toggle time should be updated so that autoToggleBack can function
+	m_enSharedContext.TPmoveToggleTime = std::chrono::steady_clock::now();
+}
+
+void MainMenuState::winAutoToggleMoveableIfNecessary()
+{
+	// exit, if win is NOT moveable
+	if ( !m_enSharedContext.winMoveable ) {
+		return;
+	}
+
+	std::cout << "m_enSharedContext.winMoveableDurationSecs is: " <<
+	m_enSharedContext.winMoveableDurationSecs << '\n';
+
+	// if window currently IS moveable AND THRESHOLD SECONDS have passed,
+	// disable it.
+	typedef std::chrono::seconds Seconds;
+	stdyTimePoint	t0 = m_enSharedContext.TPmoveToggleTime;
+	stdyTimePoint	t1 = std::chrono::steady_clock::now();
+	auto		elapsed_time = std::chrono::duration_cast <Seconds> (
+			t1 - t0 );
+	auto		duration = Seconds(
+			m_enSharedContext.winMoveableDurationSecs );
+	if ( elapsed_time >= duration ) {
+		m_enSharedContext.winMoveable = !m_enSharedContext.winMoveable;
+		#if defined DBG
+		std::cout << "[DEBUG] Automatically turned off moveable!\n";
+		#endif
+	}
 }
 
 void MainMenuState::loadSounds()
@@ -389,6 +423,8 @@ void MainMenuState::readSettings()
 			m_mainmenuBgColorG = it.value();
 		} else if ( it.key() == "m_mainmenuBgColorB" ) {
 			m_mainmenuBgColorB = it.value();
+		} else if ( it.key() == "winMoveableDurationSecs" ) {
+			m_enSharedContext.winMoveableDurationSecs = it.value();
 		} else if ( it.key() == "winMoveable" ) {
 			m_enSharedContext.winMoveable = it.value();
 		} else if ( it.key() == "winAutoResize" ) {

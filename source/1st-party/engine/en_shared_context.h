@@ -7,6 +7,8 @@
 #ifndef EN_SHARED_CONTEXT_H
 #define EN_SHARED_CONTEXT_H
 
+#include <chrono>
+
 struct EngineSharedContext
 {
 	// Window
@@ -24,6 +26,11 @@ struct EngineSharedContext
 	bool reqPlaySound = 0;
 	// Window
 	bool winMoveable = 1;
+	int32 winMoveableDurationSecs = 0;
+
+	// TODO change this to steady clock
+	stdyTimePoint TPmoveToggleTime;
+
 	// countdown reduced size, so MainMenu Must Resize back
 	bool winMMMustResize = 0;
 	bool winAutoResize = 0;

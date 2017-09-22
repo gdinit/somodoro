@@ -21,7 +21,13 @@ typedef std::int64_t int64;
 typedef std::uint64_t uint64;
 typedef wchar_t wchar;
 typedef std::string t_objectName;
+
+// TODO rename this to sysTimePoint
 typedef std::chrono::time_point <std::chrono::system_clock> stdTimePoint;
+
+typedef std::chrono::steady_clock::time_point stdyTimePoint;
+
+// TODO  remove this
 // not-in-use for now:	typedef BigInteger bigint;
 
 // EN_TYPEDEFS_H
