@@ -78,41 +78,49 @@ public:
 	void	winAutoResizeIfRequested();
 
 private:
-	const t_objectName	m_myObjNameStr;
-	sf::Vector2u		m_windowSize;
+	t_objectName	m_myObjNameStr;
+	sf::Vector2u	m_windowSize;
 	// TODO move this to app
 	float
-				m_desiredAspectRatio;
+			m_desiredAspectRatio;
 	// ===ImGui Stuff ======================================================
-	sf::Clock		m_deltaClock;
+	sf::Clock	m_deltaClock;
 	// =====================================================================
-	sf::Vector2i		m_grabbedOffset;
-	bool			m_grabbedWindow = false;
-	bool			m_windowActive = true;
+	sf::Vector2i	m_grabbedOffset;
+	bool		m_grabbedWindow = false;
+	bool		m_windowActive = true;
 	// This should be overwritten by JSON parser
-	sf::Color		m_breakshortBgColor = sf::Color::Yellow;
-	int32			m_breakshortBgColorR = 0;
-	int32			m_breakshortBgColorG = 0;
-	int32			m_breakshortBgColorB = 0;
-	int32			m_secsBreakshort = 0;
-	int32			m_countdownSecondsRemaining = 0;
-	sf::Font		m_breakFont;
-	sf::Text		m_breakText;
-	stdTimePoint		m_TPstart;
-	stdTimePoint		m_TPlatest;
-	bool			m_centerOriginNeeded = true;
-	bool			m_timerLive = false;
+	sf::Color	m_breakshortBgColor = sf::Color::Yellow;
+	int32		m_breakshortBgColorR = 0;
+	int32		m_breakshortBgColorG = 0;
+	int32		m_breakshortBgColorB = 0;
+	sf::Color	m_breaklongBgColor = sf::Color::Yellow;
+	int32		m_breaklongBgColorR = 0;
+	int32		m_breaklongBgColorG = 0;
+	int32		m_breaklongBgColorB = 0;
+	int32		m_secsBreakshort = 0;
+	int32		m_secsBreaklong = 0;
+	int32		m_countdownSecondsRemaining = 0;
+	sf::Font	m_breakFont;
+	sf::Text	m_breakText;
+	sf::Font	m_breaklongFont;
+	sf::Text	m_breaklongText;
+	stdTimePoint	m_TPstart;
+	stdTimePoint	m_TPlatest;
+	bool		m_centerOriginNeeded = true;
+	bool		m_timerLive = false;
 	// SOUNDS
-	sf::SoundBuffer		m_sbClicked;
-	sf::Sound		m_sClicked;
-	sf::SoundBuffer		m_sbWindingUp;
-	sf::Sound		m_sWindingUp;
-	sf::SoundBuffer		m_sbChime;
-	sf::Sound		m_sChime;
-	int32			m_winPosX = 30;
-	int32			m_winPosY = 74;
-	int32			m_fontSizePxBreakshort = -1;
-	int32			m_breakType;
+	sf::SoundBuffer	m_sbClicked;
+	sf::Sound	m_sClicked;
+	sf::SoundBuffer	m_sbWindingUp;
+	sf::Sound	m_sWindingUp;
+	sf::SoundBuffer	m_sbChime;
+	sf::Sound	m_sChime;
+	int32		m_winPosX = 30;
+	int32		m_winPosY = 74;
+	int32		m_fontSizePxBreakshort = -1;
+	int32		m_fontSizePxBreaklong = -1;
+	int32		m_breakType;
 };
 
 // EN_BREAK_STATE_H

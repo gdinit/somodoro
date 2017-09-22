@@ -34,6 +34,8 @@ struct EngineSharedContext
 	// countdown reduced size, so MainMenu Must Resize back
 	bool winMMMustResize = 0;
 	bool winAutoResize = 0;
+
+	bool nextBreakIsShort = 1;
 };
 
 // EN_SHARED_CONTEXT_H

@@ -16,13 +16,27 @@ BreakState::BreakState( StateMachine &machine
 	, EngineSharedContext &context
 	, bool replace )
 	: State{ machine, window, context, replace }
-	, m_myObjNameStr( "BreakState" )
-	, m_breakType( 0 )
+	, m_myObjNameStr( "ToBeUpdated" )
+	, m_breakType( -1 )
 {
-	if ( m_breakType == 0 ) {
-		std::cout << "Breaktype is SHORT (" << m_breakType << ")\n";
+	if ( m_enSharedContext.nextBreakIsShort ) {
+		m_myObjNameStr = "BreakShort";
+		m_breakType = 0;
+	} else {
+		m_myObjNameStr = "BreakLong";
+		m_breakType = 1;
+	}
+
+	if ( m_breakType == -1 ) {
+		std::cout << "m_breakType is NEGATIVE!!! (" << m_breakType <<
+		")\n";
+	} else if ( m_breakType == 0 ) {
+		std::cout << "m_breakType is SHORT (" << m_breakType << ")\n";
 	} else if ( m_breakType == 1 ) {
-		std::cout << "Breaktype is LONG (" << m_breakType << ")\n";
+		std::cout << "m_breakType is LONG (" << m_breakType << ")\n";
+	} else {
+		std::cout << "m_breakType is UNKNOWN!!! (" << m_breakType <<
+		")\n";
 	}
 
 	loadSounds();
@@ -76,10 +90,20 @@ BreakState::BreakState( StateMachine &machine
 			m_breakshortBgColorG = it.value();
 		} else if ( it.key() == "m_breakshortBgColorB" ) {
 			m_breakshortBgColorB = it.value();
+		} else if ( it.key() == "m_breaklongBgColorR" ) {
+			m_breaklongBgColorR = it.value();
+		} else if ( it.key() == "m_breaklongBgColorG" ) {
+			m_breaklongBgColorG = it.value();
+		} else if ( it.key() == "m_breaklongBgColorB" ) {
+			m_breaklongBgColorB = it.value();
 		} else if ( it.key() == "m_secsBreakshort" ) {
 			m_secsBreakshort = it.value();
+		} else if ( it.key() == "m_secsBreaklong" ) {
+			m_secsBreaklong = it.value();
 		} else if ( it.key() == "m_fontSizePxBreakshort" ) {
 			m_fontSizePxBreakshort = it.value();
+		} else if ( it.key() == "m_fontSizePxBreaklong" ) {
+			m_fontSizePxBreaklong = it.value();
 		} else if ( it.key() == "winAutoResize" ) {
 			m_enSharedContext.winAutoResize = it.value();
 			std::cout << "m_enSharedContext.winAutoResize is: " <<
@@ -93,20 +117,29 @@ BreakState::BreakState( StateMachine &machine
 		"ERROR: m_fontSizePxBreakshort must be > 0!\tIt is: " << m_fontSizePxBreakshort <<
 		"\n" );
 
-	m_breakshortBgColor.r = m_breakshortBgColorR;
-	m_breakshortBgColor.g = m_breakshortBgColorG;
-	m_breakshortBgColor.b = m_breakshortBgColorB;
-	std::cout << "Short Break started - counting down: " <<
-	m_secsBreakshort << " seconds.\n";
-
-	m_breakFont.loadFromFile( "assets/fonts/monofont.ttf" );
-	m_breakText.setFont( m_breakFont );
-	m_breakText.setCharacterSize( m_fontSizePxBreakshort );
-	m_breakText.setFillColor( sf::Color::White );
-
+	if ( m_breakType == 0 ) {
+		m_breakshortBgColor.r = m_breakshortBgColorR;
+		m_breakshortBgColor.g = m_breakshortBgColorG;
+		m_breakshortBgColor.b = m_breakshortBgColorB;
+		std::cout << "SHORT Break started - counting down: " <<
+		m_secsBreakshort << " seconds.\n";
+		m_breakFont.loadFromFile( "assets/fonts/monofont.ttf" );
+		m_breakText.setFont( m_breakFont );
+		m_breakText.setCharacterSize( m_fontSizePxBreakshort );
+		m_breakText.setFillColor( sf::Color::White );
+	} else if ( m_breakType == 1 ) {
+		m_breaklongBgColor.r = m_breaklongBgColorR;
+		m_breaklongBgColor.g = m_breaklongBgColorG;
+		m_breaklongBgColor.b = m_breaklongBgColorB;
+		std::cout << "LONG Break started - counting down: " <<
+		m_secsBreaklong << " seconds.\n";
+		m_breaklongFont.loadFromFile( "assets/fonts/monofont.ttf" );
+		m_breaklongText.setFont( m_breaklongFont );
+		m_breaklongText.setCharacterSize( m_fontSizePxBreaklong );
+		m_breaklongText.setFillColor( sf::Color::White );
+	}
 	// TODO change this to steady clock
 	m_TPstart = std::chrono::system_clock::now();
-
 	// must happen after everything else
 	winAutoResizeIfRequested();
 }
