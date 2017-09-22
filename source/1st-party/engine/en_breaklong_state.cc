@@ -47,7 +47,10 @@ BreaklongState::BreaklongState( StateMachine &machine
 	m_statisticsText.setCharacterSize( 12u );
 	m_statisticsText.setFillColor( sf::Color::White );
 	updateDebugOverlayTextIfEnabled( true );
-
+	// === ImGui Stuff =====================================================
+	m_deltaClock.restart();
+	ImGui::SFML::Init( m_window );
+	// =====================================================================
 	// countdown font
 	// m_breaklongFont.loadFromFile( "assets/fonts/sansation.ttf" );
 	m_breaklongFont.loadFromFile( "assets/fonts/monofont.ttf" );
@@ -63,12 +66,6 @@ BreaklongState::BreaklongState( StateMachine &machine
 	m_windowSize = m_window.getSize();
 	m_res.x = static_cast <float> ( m_windowSize.x );
 	m_res.y = static_cast <float> ( m_windowSize.y );
-
-	////////////////////////////////////////
-	// ImGui Stuff
-	m_deltaClock.restart();
-	ImGui::SFML::Init( m_window );
-	////////////////////////////////////////
 
 	// TODO move this to a function
 	// TODO move this to a single unified location in app for all states
@@ -86,6 +83,8 @@ BreaklongState::BreaklongState( StateMachine &machine
 			m_secsBreakLong = it.value();
 		} else if ( it.key() == "winAutoResize" ) {
 			m_enSharedContext.winAutoResize = it.value();
+			std::cout << "m_enSharedContext.winAutoResize is: " <<
+			m_enSharedContext.winAutoResize << '\n';
 		}
 	}
 	i.close();
@@ -185,6 +184,32 @@ void BreaklongState::draw()
 			m_grabbedOffset );
 	}
 	m_window.setView( m_enSharedContext.view );
+
+	// === ImGui Stuff =====================================================
+	ImGui::SFML::Update( m_window, m_deltaClock.restart() );
+	ImGuiWindowFlags window_flags = 0;
+	window_flags |= ImGuiWindowFlags_NoTitleBar;
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoScrollbar;
+	window_flags |= ImGuiWindowFlags_NoCollapse;
+	window_flags |= ImGuiWindowFlags_NoResize;
+	window_flags |= ImGuiWindowFlags_NoMove;
+	ImGui::SetNextWindowPos( ImVec2( 0, 0 ), ImGuiCond_Always );
+	ImGui::SetNextWindowSize( ImVec2( -1, -1 ), ImGuiCond_Always );
+	bool	boolPOpen = false;
+	ImVec2	sizeOnFirstUse = ImVec2( -1, -1 );
+	float	bgAlpha = 0.f;
+	ImGui::Begin( " ", &boolPOpen, sizeOnFirstUse, bgAlpha, window_flags );
+	if ( ImGui::Button( "Main Menu" ) ) {
+		playSoundClicked();
+		// m_enSharedContext.reqPlaySound = 1;
+		m_next = StateMachine::build <MainMenuState> ( m_machine
+				, m_window, m_enSharedContext, true );
+	}
+	ImGui::End();
+	ImGui::SFML::Render( m_window );
+	// =====================================================================
+
 	if ( SETTINGS->inGameOverlay ) {
 		m_window.draw( m_statisticsText );
 	}
@@ -226,7 +251,9 @@ void BreaklongState::processEvents()
 {
 	sf::Event evt;
 	while ( m_window.pollEvent( evt ) ) {
+		// === ImGui Stuff =============================================
 		ImGui::SFML::ProcessEvent( evt );
+		// =============================================================
 		switch ( evt.type ) {
 		case sf::Event::Closed:
 			m_machine.quit();
@@ -478,6 +505,8 @@ void BreaklongState::winSizeIncrease( int times )
 		m_myObjNameStr << "\n";
 		#endif
 		m_window.setSize( nSize );
+		m_winPosX += SIZE_STEP_PX;
+		m_winPosY += SIZE_STEP_PX;
 	}
 }
 
@@ -495,6 +524,8 @@ void BreaklongState::winSizeDecrease( int times )
 
 		if ( nSize.x > MIN_SIZE_PX && nSize.y > MIN_SIZE_PX ) {
 			m_window.setSize( nSize );
+			m_winPosX -= SIZE_STEP_PX;
+			m_winPosY -= SIZE_STEP_PX;
 		}
 	}
 }

@@ -21,8 +21,10 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Audio.hpp>
+// ===ImGui Stuff ==============================================================
 #include <imgui.h>
 #include <imgui-SFML.h>
+// =============================================================================
 
 // to in-line document
 // Required for std::unique_ptr
@@ -84,9 +86,9 @@ private:
 	// TODO move this to app
 	float
 				m_desiredAspectRatio;
-	// ImGui Stuff
+	// ===ImGui Stuff ======================================================
 	sf::Clock		m_deltaClock;
-	// pomodoro stuff
+	// =====================================================================
 	sf::Vector2i		m_grabbedOffset;
 	bool			m_grabbedWindow = false;
 	bool			m_windowActive = true;
@@ -112,6 +114,8 @@ private:
 	sf::Sound		m_sWindingUp;
 	sf::SoundBuffer		m_sbChime;
 	sf::Sound		m_sChime;
+	int32			m_winPosX = 30;
+	int32			m_winPosY = 74;
 };
 
 // EN_BREAKLONG_STATE_H
