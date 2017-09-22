@@ -18,8 +18,6 @@ CountdownState::CountdownState( StateMachine &machine
 	, m_myObjNameStr( "CountdownState" )
 {
 	m_windowSize = m_window.getSize();
-	m_res.x = static_cast <float> ( m_windowSize.x );
-	m_res.y = static_cast <float> ( m_windowSize.y );
 	readSettings();
 	loadSounds();
 	playSoundWindingUp();
@@ -107,10 +105,6 @@ void CountdownState::update()
 					, m_enSharedContext
 					, true );
 		}
-
-		// obtain current screen res - need to pass it to game objects
-		m_res = static_cast <sf::Vector2f>
-			( m_window.getSize() );
 		// update statistics for the debug overlay
 		m_statisticsUpdateTime += m_elapsedTime;
 		m_statisticsNumFrames += 1;

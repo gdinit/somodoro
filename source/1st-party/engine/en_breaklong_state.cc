@@ -53,8 +53,6 @@ BreaklongState::BreaklongState( StateMachine &machine
 
 	// START A NEW GAME
 	m_windowSize = m_window.getSize();
-	m_res.x = static_cast <float> ( m_windowSize.x );
-	m_res.y = static_cast <float> ( m_windowSize.y );
 
 	// TODO move JSON work to a function
 	// TODO move JSON work to a single unified location in app for all
@@ -136,9 +134,6 @@ void BreaklongState::update()
 		m_timeSinceLastUpdate -= State::TimePerFrame;
 
 		processEvents();
-		// obtain current screen res - need to pass it to game objects
-		m_res = static_cast <sf::Vector2f>
-			( m_window.getSize() );
 		if ( m_enSharedContext.mustMainMenu == true ) {
 			m_next = StateMachine::build <MainMenuState> (
 					m_machine, m_window

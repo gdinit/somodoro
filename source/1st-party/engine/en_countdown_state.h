@@ -80,8 +80,6 @@ public:
 
 private:
 	const t_objectName	m_myObjNameStr;
-	sf::Vector2f		m_res;
-
 	sf::Vector2u		m_windowSize;
 	// TODO move this to app
 	float
