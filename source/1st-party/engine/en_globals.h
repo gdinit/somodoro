@@ -19,16 +19,6 @@ struct Settings {
 	float ballSpeed = -9999.f;
 };
 
-struct Globals {
-	// TODO move these to sharedContext
-	// int32 currentScore = -9999;
-	// int32 livesLeft = -9999;
-	// int32 gameLevel = -9999;
-	// std::string gameHudText = "9999 to-be-updated-shortly 9999";
-	// std::string currentScoreText = "999";
-	bool returnToMainMenuRequested = 0;
-};
-
 // EN_GLOBALS_H
 #endif
 

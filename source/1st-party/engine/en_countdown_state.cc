@@ -3,8 +3,8 @@
 
 #include "en_countdown_state.h"
 
-extern std::unique_ptr <Settings>	SETTINGS;
-extern std::unique_ptr <Globals>	GLOBALS;
+// TODO delete this?
+extern std::unique_ptr <Settings> SETTINGS;
 
 // Used to increase/decrease window size with hotkeys
 #define SIZE_STEP_PX 20
@@ -21,8 +21,6 @@ CountdownState::CountdownState( StateMachine &machine
 	readSettings();
 	loadSounds();
 	playSoundWindingUp();
-	// Reset to prevent instant-game-over next time
-	GLOBALS->returnToMainMenuRequested = 0;
 	m_timerLive = true;
 
 	#if defined DBG
@@ -52,7 +50,7 @@ CountdownState::CountdownState( StateMachine &machine
 
 	// TODO change this to steady clock
 	m_TPstart = std::chrono::system_clock::now();
-	std::cout << "Pomodoro started - counting down: " << m_secsPomodoro <<
+	std::cout << "Pomodoro started - counting down: " << m_pomodoroSecs <<
 	" seconds.\n";
 
 	// must happen after everything else
@@ -75,16 +73,6 @@ void CountdownState::update()
 	winAutoToggleMoveableIfNecessary();
 	sf::Time m_elapsedTime = m_clock.restart();
 	m_timeSinceLastUpdate += m_elapsedTime;
-
-	if ( GLOBALS->returnToMainMenuRequested == 1 ) {
-		// Game over! Terminate
-		#if defined DBG
-		std::cout << "Terminating due to returnToMainMenuRequested=1\n";
-		#endif
-		m_next = StateMachine::build <MainMenuState>
-				( m_machine, m_window, m_enSharedContext
-				, true );
-	}
 
 	while ( m_timeSinceLastUpdate > State::TimePerFrame ) {
 		m_timeSinceLastUpdate -= State::TimePerFrame;
@@ -308,10 +296,10 @@ void CountdownState::calculateUpdateTimer()
 {
 	m_TPlatest = std::chrono::system_clock::now();
 	std::chrono::duration <double> elapsed_secs = m_TPlatest - m_TPstart;
-	m_countdownSecondsRemaining = m_secsPomodoro - round(
+	m_countdownSecondsRemaining = m_pomodoroSecs - round(
 			elapsed_secs.count() );
 
-	if ( elapsed_secs.count() >= m_secsPomodoro ) {
+	if ( elapsed_secs.count() >= m_pomodoroSecs ) {
 		m_timerLive = false;
 		playSoundChime();
 	}
@@ -524,8 +512,8 @@ void CountdownState::readSettings()
 			m_countdownBgColorG = it.value();
 		} else if ( it.key() == "m_countdownBgColorB" ) {
 			m_countdownBgColorB = it.value();
-		} else if ( it.key() == "m_secsPomodoro" ) {
-			m_secsPomodoro = it.value();
+		} else if ( it.key() == "m_pomodoroSecs" ) {
+			m_pomodoroSecs = it.value();
 		} else if ( it.key() == "m_fontSizePxPomodoro" ) {
 			m_fontSizePxPomodoro = it.value();
 		} else if ( it.key() == "winAutoResize" ) {

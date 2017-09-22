@@ -91,7 +91,7 @@ private:
 	int32			m_breaklongBgColorR = 0;
 	int32			m_breaklongBgColorG = 0;
 	int32			m_breaklongBgColorB = 0;
-	int32			m_secsBreaklong = 0;
+	int32			m_breaklongSecs = 0;
 	int32			m_countdownSecondsRemaining = 0;
 	sf::Font		m_breaklongFont;
 	sf::Text		m_breaklongText;
@@ -110,6 +110,7 @@ private:
 	int32			m_winPosY = 74;
 	int32			m_fontSizePxBreaklong = -1;
 	int32			m_breakType;
+	sf::Color		m_breakBgColor = sf::Color::Red;
 };
 
 // EN_BREAKLONG_STATE_H

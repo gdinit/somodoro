@@ -3,9 +3,8 @@
 
 #include "en_break_state.h"
 
-// TODO delete these?
-extern std::unique_ptr <Settings>	SETTINGS;
-extern std::unique_ptr <Globals>	GLOBALS;
+// TODO delete this?
+extern std::unique_ptr <Settings> SETTINGS;
 
 // Used to increase/decrease window size with hotkeys
 #define SIZE_STEP_PX 20
@@ -19,75 +18,25 @@ BreakState::BreakState( StateMachine &machine
 	, m_myObjNameStr( "ToBeUpdated" )
 	, m_breakType( -1 )
 {
-	if ( m_enSharedContext.nextBreakIsShort ) {
-		m_myObjNameStr = "BreakShort";
-		m_breakType = 0;
-	} else {
-		m_myObjNameStr = "BreakLong";
-		m_breakType = 1;
-	}
-
-	if ( m_breakType == -1 ) {
-		std::cout << "m_breakType is NEGATIVE!!! (" << m_breakType <<
-		")\n";
-	} else if ( m_breakType == 0 ) {
-		std::cout << "m_breakType is SHORT (" << m_breakType << ")\n";
-	} else if ( m_breakType == 1 ) {
-		std::cout << "m_breakType is LONG (" << m_breakType << ")\n";
-	} else {
-		std::cout << "m_breakType is UNKNOWN!!! (" << m_breakType <<
-		")\n";
-	}
-
+	restartStateClock();
+	setBreakType();
 	readSettingsFromJson();
 	validateSettings();
+	assignSettingsBasedOnBreakType();
 	loadSounds();
 	playSoundWindingUp();
-
-	// Reset to prevent instant-game-over next time
-	GLOBALS->returnToMainMenuRequested = 0;
-	
+	m_windowSize = m_window.getSize();
 	m_timerLive = true;
-
-	restartStateClock();
-
 	m_urgentUpdateNeeded = 10;
-
 	initDebugFont();
+	// TODO change this to steady clock
+	m_TPstart = std::chrono::system_clock::now();
 	// === ImGui Stuff =====================================================
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
 	// =====================================================================
-
-	// START A NEW GAME
-	m_windowSize = m_window.getSize();
-
-	if ( m_breakType == 0 ) {
-		m_breakshortBgColor.r = m_breakshortBgColorR;
-		m_breakshortBgColor.g = m_breakshortBgColorG;
-		m_breakshortBgColor.b = m_breakshortBgColorB;
-		std::cout << "SHORT Break started - counting down: " <<
-		m_secsBreakshort << " seconds.\n";
-		m_breakFont.loadFromFile( "assets/fonts/monofont.ttf" );
-		m_breakText.setFont( m_breakFont );
-		m_breakText.setCharacterSize( m_fontSizePxBreakshort );
-		m_breakText.setFillColor( sf::Color::White );
-	} else if ( m_breakType == 1 ) {
-		m_breaklongBgColor.r = m_breaklongBgColorR;
-		m_breaklongBgColor.g = m_breaklongBgColorG;
-		m_breaklongBgColor.b = m_breaklongBgColorB;
-		std::cout << "LONG Break started - counting down: " <<
-		m_secsBreaklong << " seconds.\n";
-		m_breaklongFont.loadFromFile( "assets/fonts/monofont.ttf" );
-		m_breaklongText.setFont( m_breaklongFont );
-		m_breaklongText.setCharacterSize( m_fontSizePxBreaklong );
-		m_breaklongText.setFillColor( sf::Color::White );
-	}
-	// TODO change this to steady clock
-	m_TPstart = std::chrono::system_clock::now();
 	// must happen after everything else
 	winAutoResizeIfRequested();
-
 	#if defined DBG
 	std::cout << "[DEBUG]\tCreated state:\t\t" << m_myObjNameStr <<	"\n";
 	#endif
@@ -109,16 +58,6 @@ void BreakState::update()
 	winAutoToggleMoveableIfNecessary();
 	sf::Time m_elapsedTime = m_clock.restart();
 	m_timeSinceLastUpdate += m_elapsedTime;
-
-	if ( GLOBALS->returnToMainMenuRequested == 1 ) {
-		// Game over! Terminate
-		#if defined DBG
-		std::cout << "Terminating due to returnToMainMenuRequested=1\n";
-		#endif
-		m_next = StateMachine::build <MainMenuState>
-				( m_machine, m_window, m_enSharedContext
-				, true );
-	}
 
 	while ( m_timeSinceLastUpdate > State::TimePerFrame ) {
 		m_timeSinceLastUpdate -= State::TimePerFrame;
@@ -165,7 +104,7 @@ void BreakState::update()
 void BreakState::draw()
 {
 	m_enSharedContext.frameID++;
-	m_window.clear( m_breakshortBgColor );
+	m_window.clear( m_breakBgColor );
 	m_grabbedWindow = m_windowActive
 		&& m_enSharedContext.winMoveable
 		&& sf::Mouse::isButtonPressed( sf::Mouse::Left );
@@ -353,10 +292,10 @@ void BreakState::calculateUpdateTimer()
 {
 	m_TPlatest = std::chrono::system_clock::now();
 	std::chrono::duration <double> elapsed_secs = m_TPlatest - m_TPstart;
-	m_countdownSecondsRemaining = m_secsBreakshort - round(
+	m_countdownSecondsRemaining = m_breakSecs - round(
 			elapsed_secs.count() );
 
-	if ( elapsed_secs.count() >= m_secsBreakshort ) {
+	if ( elapsed_secs.count() >= m_breakSecs ) {
 		m_timerLive = false;
 		playSoundChime();
 	}
@@ -565,7 +504,6 @@ void BreakState::winAutoResizeIfRequested()
 
 void BreakState::initDebugFont()
 {
-	// debug overlay font
 	m_font.loadFromFile( "assets/fonts/sansation.ttf" );
 	m_statisticsText.setFont( m_font );
 	m_statisticsText.setPosition( 5.f, 5.f );
@@ -593,10 +531,10 @@ void BreakState::readSettingsFromJson()
 			m_breaklongBgColorG = it.value();
 		} else if ( it.key() == "m_breaklongBgColorB" ) {
 			m_breaklongBgColorB = it.value();
-		} else if ( it.key() == "m_secsBreakshort" ) {
-			m_secsBreakshort = it.value();
-		} else if ( it.key() == "m_secsBreaklong" ) {
-			m_secsBreaklong = it.value();
+		} else if ( it.key() == "m_breakshortSecs" ) {
+			m_breakshortSecs = it.value();
+		} else if ( it.key() == "m_breaklongSecs" ) {
+			m_breaklongSecs = it.value();
 		} else if ( it.key() == "m_fontSizePxBreakshort" ) {
 			m_fontSizePxBreakshort = it.value();
 		} else if ( it.key() == "m_fontSizePxBreaklong" ) {
@@ -610,6 +548,35 @@ void BreakState::readSettingsFromJson()
 	i.close();
 }
 
+void BreakState::assignSettingsBasedOnBreakType()
+{
+	if ( m_breakType == 0 ) {
+		m_breakSecs = m_breakshortSecs;
+		m_breakBgColor.r = m_breakshortBgColorR;
+		m_breakBgColor.g = m_breakshortBgColorG;
+		m_breakBgColor.b = m_breakshortBgColorB;
+		m_breakFont.loadFromFile( "assets/fonts/monofont.ttf" );
+		m_breakText.setFont( m_breakFont );
+		m_breakText.setCharacterSize( m_fontSizePxBreakshort );
+		m_breakText.setFillColor( sf::Color::White );
+	} else if ( m_breakType == 1 ) {
+		m_breakSecs = m_breaklongSecs;
+		m_breakBgColor.r = m_breaklongBgColorR;
+		m_breakBgColor.g = m_breaklongBgColorG;
+		m_breakBgColor.b = m_breaklongBgColorB;
+		m_breakFont.loadFromFile( "assets/fonts/monofont.ttf" );
+		m_breakText.setFont( m_breaklongFont );
+		m_breakText.setCharacterSize( m_fontSizePxBreaklong );
+		m_breakText.setFillColor( sf::Color::White );
+	}
+
+	// Common
+	#if defined DBG
+	std::cout << m_myObjNameStr << " Break started - counting down: " <<
+	m_breakSecs << " seconds.\n";
+	#endif
+}
+
 void BreakState::validateSettings()
 {
 	// TODO add more PDASSERT()s to validate every setting!
@@ -617,6 +584,32 @@ void BreakState::validateSettings()
 		,
 		"ERROR: m_fontSizePxBreakshort must be > 0!\tIt is: " << m_fontSizePxBreakshort <<
 		"\n" );
+}
+
+void BreakState::setBreakType()
+{
+	if ( m_enSharedContext.nextBreakIsShort ) {
+		m_myObjNameStr = "BreakShort";
+		m_breakType = 0;
+	} else {
+		m_myObjNameStr = "BreakLong";
+		m_breakType = 1;
+	}
+
+	// TODO remove this debug cout
+	#if defined DBG
+	if ( m_breakType == -1 ) {
+		std::cout << "m_breakType is NEGATIVE!!! (" << m_breakType <<
+		")\n";
+	} else if ( m_breakType == 0 ) {
+		std::cout << "m_breakType is SHORT (" << m_breakType << ")\n";
+	} else if ( m_breakType == 1 ) {
+		std::cout << "m_breakType is LONG (" << m_breakType << ")\n";
+	} else {
+		std::cout << "m_breakType is UNKNOWN!!! (" << m_breakType <<
+		")\n";
+	}
+	#endif
 }
 
 // ===================================80 chars=================================|

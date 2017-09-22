@@ -79,6 +79,8 @@ public:
 	void	initDebugFont();
 	void	readSettingsFromJson();
 	void	validateSettings();
+	void	setBreakType();
+	void	assignSettingsBasedOnBreakType();
 
 private:
 	t_objectName	m_myObjNameStr;
@@ -89,26 +91,36 @@ private:
 	sf::Vector2i	m_grabbedOffset;
 	bool		m_grabbedWindow = false;
 	bool		m_windowActive = true;
-	// This should be overwritten by JSON parser
-	sf::Color	m_breakshortBgColor = sf::Color::Yellow;
+
+	// These will be overwritten by JSON parser
+
+	// Settings - Breakshort
 	int32		m_breakshortBgColorR = 0;
 	int32		m_breakshortBgColorG = 0;
 	int32		m_breakshortBgColorB = 0;
-	sf::Color	m_breaklongBgColor = sf::Color::Yellow;
+	int32		m_breakshortSecs = 0;
+	bool		m_timerLive = false;
+
+	// Settings - Breaklong
 	int32		m_breaklongBgColorR = 0;
 	int32		m_breaklongBgColorG = 0;
 	int32		m_breaklongBgColorB = 0;
-	int32		m_secsBreakshort = 0;
-	int32		m_secsBreaklong = 0;
-	int32		m_countdownSecondsRemaining = 0;
-	sf::Font	m_breakFont;
-	sf::Text	m_breakText;
+	int32		m_breaklongSecs = 0;
 	sf::Font	m_breaklongFont;
 	sf::Text	m_breaklongText;
+
+	// Settings - Break
 	stdTimePoint	m_TPstart;
 	stdTimePoint	m_TPlatest;
+	int32		m_countdownSecondsRemaining = 0;
+	int32		m_breakSecs = 0;
+	sf::Font	m_breakFont;
+	sf::Text	m_breakText;
 	bool		m_centerOriginNeeded = true;
-	bool		m_timerLive = false;
+	sf::Color	m_breakBgColor = sf::Color::Red;
+	sf::Color	m_breakshortBgColor = sf::Color::Green;
+	sf::Color	m_breaklongBgColor = sf::Color::Yellow;
+
 	// SOUNDS
 	sf::SoundBuffer	m_sbClicked;
 	sf::Sound	m_sClicked;

@@ -3,9 +3,8 @@
 
 #include "en_breaklong_state.h"
 
-// TODO delete these?
-extern std::unique_ptr <Settings>	SETTINGS;
-extern std::unique_ptr <Globals>	GLOBALS;
+// TODO delete this?
+extern std::unique_ptr <Settings> SETTINGS;
 
 // Used to increase/decrease window size with hotkeys
 #define SIZE_STEP_PX 20
@@ -27,8 +26,6 @@ BreaklongState::BreaklongState( StateMachine &machine
 
 	loadSounds();
 	playSoundWindingUp();
-	// Reset to prevent instant-game-over next time
-	GLOBALS->returnToMainMenuRequested = 0;
 	m_timerLive = true;
 
 	#if defined DBG
@@ -69,8 +66,8 @@ BreaklongState::BreaklongState( StateMachine &machine
 			m_breaklongBgColorG = it.value();
 		} else if ( it.key() == "m_breaklongBgColorB" ) {
 			m_breaklongBgColorB = it.value();
-		} else if ( it.key() == "m_secsBreaklong" ) {
-			m_secsBreaklong = it.value();
+		} else if ( it.key() == "m_breaklongSecs" ) {
+			m_breaklongSecs = it.value();
 		} else if ( it.key() == "m_fontSizePxBreaklong" ) {
 			m_fontSizePxBreaklong = it.value();
 		} else if ( it.key() == "winAutoResize" ) {
@@ -86,11 +83,11 @@ BreaklongState::BreaklongState( StateMachine &machine
 		"ERROR: m_fontSizePxBreaklong must be > 0!\tIt is: " << m_fontSizePxBreaklong <<
 		"\n" );
 
-	m_breaklongBgColor.r = m_breaklongBgColorR;
-	m_breaklongBgColor.g = m_breaklongBgColorG;
-	m_breaklongBgColor.b = m_breaklongBgColorB;
+	m_breakBgColor.r = m_breaklongBgColorR;
+	m_breakBgColor.g = m_breaklongBgColorG;
+	m_breakBgColor.b = m_breaklongBgColorB;
 	std::cout << "Short Break started - counting down: " <<
-	m_secsBreaklong << " seconds.\n";
+	m_breaklongSecs << " seconds.\n";
 
 	m_breaklongFont.loadFromFile( "assets/fonts/monofont.ttf" );
 	m_breaklongText.setFont( m_breaklongFont );
@@ -122,16 +119,6 @@ void BreaklongState::update()
 	winAutoToggleMoveableIfNecessary();
 	sf::Time m_elapsedTime = m_clock.restart();
 	m_timeSinceLastUpdate += m_elapsedTime;
-
-	if ( GLOBALS->returnToMainMenuRequested == 1 ) {
-		// Game over! Terminate
-		#if defined DBG
-		std::cout << "Terminating due to returnToMainMenuRequested=1\n";
-		#endif
-		m_next = StateMachine::build <MainMenuState>
-				( m_machine, m_window, m_enSharedContext
-				, true );
-	}
 
 	while ( m_timeSinceLastUpdate > State::TimePerFrame ) {
 		m_timeSinceLastUpdate -= State::TimePerFrame;
@@ -365,10 +352,10 @@ void BreaklongState::calculateUpdateTimer()
 {
 	m_TPlatest = std::chrono::system_clock::now();
 	std::chrono::duration <double> elapsed_secs = m_TPlatest - m_TPstart;
-	m_countdownSecondsRemaining = m_secsBreaklong - round(
+	m_countdownSecondsRemaining = m_breaklongSecs - round(
 			elapsed_secs.count() );
 
-	if ( elapsed_secs.count() >= m_secsBreaklong ) {
+	if ( elapsed_secs.count() >= m_breaklongSecs ) {
 		m_timerLive = false;
 		playSoundChime();
 	}

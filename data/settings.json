@@ -34,9 +34,9 @@
   "m_fontSizePxBreaklong": 60,
 
   "COUNTDOWN IN SECONDS (25 minutes x 60 seconds = 1500)                   ": 0,
-  "m_secsPomodoro": 1500,
-  "m_secsBreakshort": 300,
-  "m_secsBreaklong": 900,
+  "m_pomodoroSecs": 1500,
+  "m_breakshortSecs": 300,
+  "m_breaklongSecs": 900,
 
   "winMoveableDurationSecs": 5,
 

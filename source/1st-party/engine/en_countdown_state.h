@@ -92,7 +92,7 @@ private:
 	int32			m_countdownBgColorR = 0;
 	int32			m_countdownBgColorG = 0;
 	int32			m_countdownBgColorB = 0;
-	int32			m_secsPomodoro = 0;
+	int32			m_pomodoroSecs = 0;
 	int32			m_countdownSecondsRemaining = 0;
 	sf::Font		m_countdownFont;
 	sf::Text		m_countdownText;
