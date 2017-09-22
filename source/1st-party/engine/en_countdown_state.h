@@ -76,6 +76,7 @@ public:
 	void	winSizeDecrease( int times );
 	void	winToggleMoveable();
 	void	winAutoResizeIfRequested();
+	void	readSettings();
 
 private:
 	const t_objectName	m_myObjNameStr;

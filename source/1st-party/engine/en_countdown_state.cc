@@ -3,7 +3,6 @@
 
 #include "en_countdown_state.h"
 
-// TODO delete these?
 extern std::unique_ptr <Settings>	SETTINGS;
 extern std::unique_ptr <Globals>	GLOBALS;
 
@@ -18,6 +17,10 @@ CountdownState::CountdownState( StateMachine &machine
 	: State{ machine, window, context, replace }
 	, m_myObjNameStr( "CountdownState" )
 {
+	m_windowSize = m_window.getSize();
+	m_res.x = static_cast <float> ( m_windowSize.x );
+	m_res.y = static_cast <float> ( m_windowSize.y );
+	readSettings();
 	loadSounds();
 	playSoundWindingUp();
 	// Reset to prevent instant-game-over next time
@@ -51,44 +54,6 @@ CountdownState::CountdownState( StateMachine &machine
 	ImGui::SFML::Init( m_window );
 	// =====================================================================
 
-	// START A NEW GAME
-	m_windowSize = m_window.getSize();
-	m_res.x = static_cast <float> ( m_windowSize.x );
-	m_res.y = static_cast <float> ( m_windowSize.y );
-
-	std::ifstream	i( "data/settings.json" );
-	nlohmann::json	j;
-	i >> j;
-	for ( nlohmann::json::iterator it = j.begin(); it != j.end(); ++it ) {
-		if ( it.key() == "m_countdownBgColorR" ) {
-			m_countdownBgColorR = it.value();
-		} else if ( it.key() == "m_countdownBgColorG" ) {
-			m_countdownBgColorG = it.value();
-		} else if ( it.key() == "m_countdownBgColorB" ) {
-			m_countdownBgColorB = it.value();
-		} else if ( it.key() == "m_secsPomodoro" ) {
-			m_secsPomodoro = it.value();
-		} else if ( it.key() == "m_fontSizePxPomodoro" ) {
-			m_fontSizePxPomodoro = it.value();
-		} else if ( it.key() == "winAutoResize" ) {
-			m_enSharedContext.winAutoResize = it.value();
-			std::cout << "m_enSharedContext.winAutoResize is: " <<
-			m_enSharedContext.winAutoResize << '\n';
-		}
-	}
-	i.close();
-
-	PDASSERT( ( m_fontSizePxPomodoro > 0 )
-		,
-		"ERROR: m_fontSizePxPomodoro must be > 0!\tIt is: " << m_fontSizePxPomodoro <<
-		"\n" );
-
-	m_countdownBgColor.r = m_countdownBgColorR;
-	m_countdownBgColor.g = m_countdownBgColorG;
-	m_countdownBgColor.b = m_countdownBgColorB;
-	std::cout << "Pomodoro started - counting down: " << m_secsPomodoro <<
-	" seconds.\n";
-
 	m_countdownFont.loadFromFile( "assets/fonts/monofont.ttf" );
 	m_countdownText.setFont( m_countdownFont );
 	m_countdownText.setCharacterSize( m_fontSizePxPomodoro );
@@ -96,6 +61,8 @@ CountdownState::CountdownState( StateMachine &machine
 
 	// TODO change this to steady clock
 	m_TPstart = std::chrono::system_clock::now();
+	std::cout << "Pomodoro started - counting down: " << m_secsPomodoro <<
+	" seconds.\n";
 
 	// must happen after everything else
 	winAutoResizeIfRequested();
@@ -133,15 +100,17 @@ void CountdownState::update()
 		m_timeSinceLastUpdate -= State::TimePerFrame;
 
 		processEvents();
-		// obtain current screen res - need to pass it to game objects
-		m_res = static_cast <sf::Vector2f>
-			( m_window.getSize() );
+
 		if ( m_enSharedContext.mustMainMenu == true ) {
 			m_next = StateMachine::build <MainMenuState> (
 					m_machine, m_window
 					, m_enSharedContext
 					, true );
 		}
+
+		// obtain current screen res - need to pass it to game objects
+		m_res = static_cast <sf::Vector2f>
+			( m_window.getSize() );
 		// update statistics for the debug overlay
 		m_statisticsUpdateTime += m_elapsedTime;
 		m_statisticsNumFrames += 1;
@@ -283,11 +252,6 @@ void CountdownState::processEvents()
 				" press. Goodbye!\n";
 				m_machine.quit();
 				break;
-			case sf::Keyboard::M:
-				m_next = StateMachine::build
-					<MainMenuState> ( m_machine, m_window
-						, m_enSharedContext, true );
-				break;
 			case sf::Keyboard::F2:
 				this->tglDbgShowOverlay();
 				break;
@@ -299,13 +263,20 @@ void CountdownState::processEvents()
 				this->
 				tglDbgDFPSConsOutput();
 				break;
-			case sf::Keyboard::L:
+			case sf::Keyboard::M:
 				if ( ( sf::Keyboard::isKeyPressed( sf::Keyboard
 					       ::RControl ) ) ||
 				     ( sf::Keyboard::isKeyPressed( sf::Keyboard
 					       ::
 					       LControl ) ) ) {
 					winToggleMoveable();
+				} else {
+					m_next = StateMachine::build
+						<MainMenuState> ( m_machine, m_window
+							, m_enSharedContext
+							,
+							true );
+					break;
 				}
 				break;
 			default:
@@ -549,6 +520,40 @@ void CountdownState::winAutoResizeIfRequested()
 		m_enSharedContext.winMMMustResize
 			= !m_enSharedContext.winMMMustResize;
 	}
+}
+
+void CountdownState::readSettings()
+{
+	std::cout << "Reading settings from file...\n";
+
+	std::ifstream	i( "data/settings.json" );
+	nlohmann::json	j;
+	i >> j;
+	for ( nlohmann::json::iterator it = j.begin(); it != j.end(); ++it ) {
+		if ( it.key() == "m_countdownBgColorR" ) {
+			m_countdownBgColorR = it.value();
+		} else if ( it.key() == "m_countdownBgColorG" ) {
+			m_countdownBgColorG = it.value();
+		} else if ( it.key() == "m_countdownBgColorB" ) {
+			m_countdownBgColorB = it.value();
+		} else if ( it.key() == "m_secsPomodoro" ) {
+			m_secsPomodoro = it.value();
+		} else if ( it.key() == "m_fontSizePxPomodoro" ) {
+			m_fontSizePxPomodoro = it.value();
+		} else if ( it.key() == "winAutoResize" ) {
+			m_enSharedContext.winAutoResize = it.value();
+			std::cout << "m_enSharedContext.winAutoResize is: " <<
+			m_enSharedContext.winAutoResize << '\n';
+		}
+	}
+	i.close();
+	m_countdownBgColor.r = m_countdownBgColorR;
+	m_countdownBgColor.g = m_countdownBgColorG;
+	m_countdownBgColor.b = m_countdownBgColorB;
+	PDASSERT( ( m_fontSizePxPomodoro > 0 )
+		,
+		"ERROR: m_fontSizePxPomodoro must be > 0!\tIt is: " << m_fontSizePxPomodoro <<
+		"\n" );
 }
 
 // ===================================80 chars=================================|
