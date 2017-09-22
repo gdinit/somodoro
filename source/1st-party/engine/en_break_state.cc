@@ -43,21 +43,18 @@ BreakState::BreakState( StateMachine &machine
 	validateSettings();
 	loadSounds();
 	playSoundWindingUp();
+
 	// Reset to prevent instant-game-over next time
 	GLOBALS->returnToMainMenuRequested = 0;
+	
 	m_timerLive = true;
-
-	#if defined DBG
-	std::cout << "[DEBUG]\tCreated state:\t\t" << m_myObjNameStr <<	"\n";
-	#endif
 
 	restartStateClock();
 
 	m_urgentUpdateNeeded = 10;
 
 	initDebugFont();
-	// === ImGui Stuff
-	// =====================================================
+	// === ImGui Stuff =====================================================
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
 	// =====================================================================
@@ -90,6 +87,10 @@ BreakState::BreakState( StateMachine &machine
 	m_TPstart = std::chrono::system_clock::now();
 	// must happen after everything else
 	winAutoResizeIfRequested();
+
+	#if defined DBG
+	std::cout << "[DEBUG]\tCreated state:\t\t" << m_myObjNameStr <<	"\n";
+	#endif
 }
 
 BreakState::~BreakState()
@@ -97,8 +98,6 @@ BreakState::~BreakState()
 	#if defined DBG
 	std::cout << "[DEBUG]\tDestructed state:\t" << m_myObjNameStr << "\n";
 	#endif
-
-	// TODO remove me
 	#if defined DBG
 	std::cout << "[DEBUG]\t" << m_myObjNameStr << " run time was: " <<
 	getStateAgeAsSeconds() << " seconds\n";
@@ -176,8 +175,7 @@ void BreakState::draw()
 	}
 	m_window.setView( m_enSharedContext.view );
 
-	// === ImGui Stuff
-	// =====================================================
+	// === ImGui Stuff =====================================================
 	ImGui::SFML::Update( m_window, m_deltaClock.restart() );
 	ImGuiWindowFlags window_flags = 0;
 	window_flags |= ImGuiWindowFlags_NoTitleBar;
@@ -222,8 +220,7 @@ void BreakState::processEvents()
 {
 	sf::Event evt;
 	while ( m_window.pollEvent( evt ) ) {
-		// === ImGui Stuff
-		// =============================================
+		// === ImGui Stuff =============================================
 		ImGui::SFML::ProcessEvent( evt );
 		// =============================================================
 		switch ( evt.type ) {
