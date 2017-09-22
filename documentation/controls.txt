@@ -3,15 +3,15 @@ KEYBOARD SHORTCUTS
 
 MAIN MENU SCREEN
 Shortcut: Function (Alternative)
-Q	: Exit program (ESC)
+Q	: Exit program
 Space	: Start a new Pomodoro
-CTRL + L: Lock/unlock window dragging
+CTRL + M: Allow window dragging for a few seconds.
 
 COUNTDOWN/BREAK SCREENS
 Shortcut: Function (Alternative)
 Q	: Exit program
-M	: Main Menu (ESC)
-CTRL + L: Lock/unlock window dragging
+M	: Main Menu
+CTRL + M: Allow window dragging for a few seconds.
 
 
 -------------------------------------
