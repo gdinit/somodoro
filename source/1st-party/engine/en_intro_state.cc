@@ -91,7 +91,6 @@ void IntroState::processEvents()
 			// NOTE: Intro should not have pause state (no
 			// user input = already paused state!)
 			switch ( evt.key.code ) {
-			case sf::Keyboard::Escape:
 			case sf::Keyboard::Space:
 			case sf::Keyboard::Return:
 				m_next =

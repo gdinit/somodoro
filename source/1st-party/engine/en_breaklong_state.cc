@@ -273,7 +273,6 @@ void BreaklongState::processEvents()
 			break;
 		case sf::Event::KeyPressed:
 			switch ( evt.key.code ) {
-			case sf::Keyboard::Escape:
 			case sf::Keyboard::Q:
 				std::cout << "Quitting on Q key"
 				" press. Goodbye!\n";
