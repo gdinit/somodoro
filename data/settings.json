@@ -1,6 +1,10 @@
 {
   "========================================================================": 0,
-  "MAINMENU SCREEN COLOR CODE (R,G,B)                                      ": 0,
+
+  "*******************************                                         ": 0,
+  "*** GLOBAL SHARED VARIABLES ***                                         ": 0,
+  "*******************************                                         ": 0,
+"MAINMENU SCREEN COLOR CODE (R,G,B)                                      ": 0,
   "navy  #000080 rgb(0,0,128)                                              ": 0,
   "maroon  #800000 rgb(128,0,0)                                            ": 0,
   "m_mainmenuBgColorR": 128,
@@ -34,8 +38,13 @@
   "m_secsBreakshort": 300,
   "m_secsBreaklong": 900,
 
+
+
+  "*******************************                                         ": 0,
+  "*** GLOBAL SHARED VARIABLES ***                                         ": 0,
+  "*******************************                                         ": 0,
   "ALLOW WINDOW DRAG & DROP. TOGGLED VIA HOTKEY                            ": 0,
-  "m_windowMoveable": 1,
+  "winMoveable": false,
 
   "SCREEN SIZE                                                             ": 0,
   "screenResolutionWidth": 140,
