@@ -56,6 +56,8 @@ public:
 	void	winSizeDecrease( int times );
 	void	winManualToggleMoveable();
 	void	winAutoToggleMoveableIfNecessary();
+	void	loadSounds();
+	void	playSoundClicked();
 	void	readSettings();
 
 private:
@@ -84,6 +86,8 @@ private:
 	int			m_mainmenuBgColorG;
 	int			m_mainmenuBgColorB;
 	// SOUNDS
+	sf::SoundBuffer		m_sbClicked;
+	sf::Sound		m_sClicked;
 	int32			m_winPosX = 30;
 	int32			m_winPosY = 74;
 };
