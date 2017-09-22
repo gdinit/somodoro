@@ -260,7 +260,6 @@ void BreaklongState::processEvents()
 			makeWindowAlwaysOnTop();
 			break;
 		case sf::Event::Resized:
-			// onResize();
 			m_enSharedContext.view = getLetterboxView(
 					m_enSharedContext.view
 					, evt.size.width
@@ -329,10 +328,6 @@ void BreaklongState::processEvents()
 			break;
 		}
 	}
-}
-
-void BreaklongState::onResize()
-{
 }
 
 void BreaklongState::makeWindowAlwaysOnTop()

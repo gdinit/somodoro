@@ -57,7 +57,6 @@ public:
 	, EngineSharedContext &context
 	, bool replace = true );
 	virtual ~BreaklongState();
-	void	onResize();
 	void	processEvents();
 	void	update();
 	void	draw();

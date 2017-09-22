@@ -261,7 +261,6 @@ void BreakshortState::processEvents()
 			makeWindowAlwaysOnTop();
 			break;
 		case sf::Event::Resized:
-			// onResize();
 			m_enSharedContext.view = getLetterboxView(
 					m_enSharedContext.view
 					, evt.size.width
@@ -332,12 +331,8 @@ void BreakshortState::processEvents()
 	}
 }
 
-void BreakshortState::onResize()
-{
-}
-
-void BreakshortState::makeWindowAlwaysOnTop()
 // TODO: move this to state.cc
+void BreakshortState::makeWindowAlwaysOnTop()
 {
 	#ifdef _WIN32
 	// define something for Windows (32-bit and 64-bit, this part is common)

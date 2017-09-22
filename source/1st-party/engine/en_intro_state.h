@@ -38,7 +38,6 @@ public:
 	, EngineSharedContext &context
 	, bool replace = true );
 	virtual ~IntroState();
-	void	onResize();
 	void	processEvents();
 	void	update();
 	void	draw();

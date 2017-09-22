@@ -82,7 +82,6 @@ void IntroState::processEvents()
 			m_machine.quit();
 			break;
 		case sf::Event::Resized:
-			// onResize();
 			m_enSharedContext.view = getLetterboxView(
 					m_enSharedContext.view
 					, evt.size.width
@@ -125,10 +124,6 @@ void IntroState::processEvents()
 			break;
 		}
 	}
-}
-
-void IntroState::onResize()
-{
 }
 
 // ===================================80 chars=================================|

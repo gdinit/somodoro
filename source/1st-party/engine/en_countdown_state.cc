@@ -225,7 +225,6 @@ void CountdownState::processEvents()
 			makeWindowAlwaysOnTop();
 			break;
 		case sf::Event::Resized:
-			// onResize();
 			m_enSharedContext.view = getLetterboxView(
 					m_enSharedContext.view
 					, evt.size.width
@@ -296,10 +295,6 @@ void CountdownState::processEvents()
 			break;
 		}
 	}
-}
-
-void CountdownState::onResize()
-{
 }
 
 void CountdownState::makeWindowAlwaysOnTop()

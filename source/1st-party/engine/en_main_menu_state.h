@@ -46,7 +46,6 @@ public:
 	, bool replace = true );
 	virtual ~MainMenuState();
 	// resize stuff here
-	void	onResize();
 	void	processEvents();
 	void	update();
 	void	draw();
