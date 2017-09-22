@@ -88,6 +88,8 @@ private:
 	// SOUNDS
 	sf::SoundBuffer		m_sbClicked;
 	sf::Sound		m_sClicked;
+	int32			m_winPosX = 30;
+	int32			m_winPosY = 74;
 };
 
 // EN_MAIN_MENU_STATE_H
