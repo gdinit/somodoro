@@ -230,9 +230,6 @@ void BreaklongState::draw()
 
 void BreaklongState::pause()
 {
-	#if defined DBG
-	std::cout << "[DEBUG]\tPaused State:\t\t" << m_myObjNameStr << "\n";
-	#endif
 }
 
 void BreaklongState::resume()

@@ -180,9 +180,6 @@ void CountdownState::draw()
 
 void CountdownState::pause()
 {
-	#if defined DBG
-	std::cout << "[DEBUG]\tPaused State:\t\t" << m_myObjNameStr << "\n";
-	#endif
 }
 
 void CountdownState::resume()

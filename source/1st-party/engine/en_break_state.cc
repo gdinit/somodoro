@@ -218,9 +218,6 @@ void BreakState::draw()
 
 void BreakState::pause()
 {
-	#if defined DBG
-	std::cout << "[DEBUG]\tPaused State:\t\t" << m_myObjNameStr << "\n";
-	#endif
 }
 
 void BreakState::resume()
