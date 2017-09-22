@@ -80,6 +80,7 @@ CountdownState::~CountdownState()
 
 void CountdownState::update()
 {
+	winAutoToggleMoveableIfNecessary();
 	sf::Time m_elapsedTime = m_clock.restart();
 	m_timeSinceLastUpdate += m_elapsedTime;
 
@@ -260,7 +261,7 @@ void CountdownState::processEvents()
 				     ( sf::Keyboard::isKeyPressed( sf::Keyboard
 					       ::
 					       LControl ) ) ) {
-					winToggleMoveable();
+					winManualToggleMoveable();
 				} else {
 					m_next = StateMachine::build
 						<MainMenuState> ( m_machine, m_window
@@ -485,9 +486,12 @@ void CountdownState::winSizeDecrease( int times )
 	}
 }
 
-void CountdownState::winToggleMoveable()
+void CountdownState::winManualToggleMoveable()
 {
+	// toggle
 	m_enSharedContext.winMoveable = !m_enSharedContext.winMoveable;
+
+	// report
 	#if defined DBG
 	std::string newValueText;
 	if ( m_enSharedContext.winMoveable ) {
@@ -495,9 +499,35 @@ void CountdownState::winToggleMoveable()
 	} else {
 		newValueText = "OFF";
 	}
-	std::cout << "[DEBUG] Toggled moveable. New value: " << newValueText <<
-	"\t//" << m_myObjNameStr << "\n";
+	std::cout << "[DEBUG] Manually toggled moveable. New value: " <<
+	newValueText <<	"\t//" << m_myObjNameStr << "\n";
 	#endif
+
+	// Toggle time should be updated so that autoToggleBack can function
+	m_enSharedContext.TPmoveToggleTime = std::chrono::steady_clock::now();
+}
+
+void CountdownState::winAutoToggleMoveableIfNecessary()
+{
+	// exit, if win is NOT moveable
+	if ( !m_enSharedContext.winMoveable ) {
+		return;
+	}
+	// if window currently IS moveable AND THRESHOLD SECONDS have passed,
+	// disable it.
+	typedef std::chrono::seconds Seconds;
+	stdyTimePoint	t0 = m_enSharedContext.TPmoveToggleTime;
+	stdyTimePoint	t1 = std::chrono::steady_clock::now();
+	auto		elapsed_time = std::chrono::duration_cast <Seconds> (
+			t1 - t0 );
+	auto		duration = Seconds(
+			m_enSharedContext.winMoveableDurationSecs );
+	if ( elapsed_time >= duration ) {
+		m_enSharedContext.winMoveable = !m_enSharedContext.winMoveable;
+		#if defined DBG
+		std::cout << "[DEBUG] Automatically turned off moveable!\n";
+		#endif
+	}
 }
 
 void CountdownState::winAutoResizeIfRequested()
