@@ -110,7 +110,6 @@ void MainMenuState::draw()
 		m_window.setPosition( sf::Mouse::getPosition() +
 			m_grabbedOffset );
 	}
-	m_window.setView( m_enSharedContext.view );
 	ImGui::SFML::Update( m_window, m_deltaClock.restart() );
 	// =====================================================================
 	ImGuiWindowFlags window_flags = 0;

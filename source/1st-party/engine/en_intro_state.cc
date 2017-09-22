@@ -67,7 +67,6 @@ void IntroState::draw()
 {
 	m_enSharedContext.frameID++;
 	m_window.clear();
-	m_window.setView( m_enSharedContext.view );
 	m_window.draw( m_statisticsText );
 	m_window.display();
 }

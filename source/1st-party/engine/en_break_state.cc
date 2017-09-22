@@ -58,16 +58,13 @@ void BreakState::update()
 	winAutoToggleMoveableIfNecessary();
 	sf::Time m_elapsedTime = m_clock.restart();
 	m_timeSinceLastUpdate += m_elapsedTime;
-
 	while ( m_timeSinceLastUpdate > State::TimePerFrame ) {
 		m_timeSinceLastUpdate -= State::TimePerFrame;
-
 		processEvents();
 		( m_window.getSize() );
 		if ( m_enSharedContext.mustMainMenu == true ) {
 			m_next = StateMachine::build <MainMenuState> (
-					m_machine, m_window
-					, m_enSharedContext
+					m_machine, m_window, m_enSharedContext
 					, true );
 		}
 		// update statistics for the debug overlay
@@ -75,7 +72,6 @@ void BreakState::update()
 		m_statisticsNumFrames += 1;
 		// update statsText only once a second
 		if ( m_urgentUpdateNeeded > 0 ) {
-			// update now!
 			--m_urgentUpdateNeeded;
 			updateDebugOverlayTextIfEnabled();
 			printConsoleDebugIfEnabled();
@@ -83,9 +79,8 @@ void BreakState::update()
 		}
 		if ( m_statisticsUpdateTime >= sf::seconds( 1.0f ) ) {
 			if ( m_statisticsNumFrames <= 1 ) {
-				break;	// if we're playing catchup,
-					// don't
-				// bother with debugOverlayText
+				// if playing catchup, don't bother
+				break;
 			}
 			recordObservedFPS();
 			dynamicallyAdjustFPSLimit();
@@ -95,7 +90,6 @@ void BreakState::update()
 			m_statisticsNumFrames = 0;
 		}
 	}
-
 	if ( m_timerLive ) {
 		calculateUpdateTimer();
 	}
@@ -112,8 +106,6 @@ void BreakState::draw()
 		m_window.setPosition(
 			sf::Mouse::getPosition() + m_grabbedOffset );
 	}
-	m_window.setView( m_enSharedContext.view );
-
 	// === ImGui Stuff =====================================================
 	ImGui::SFML::Update( m_window, m_deltaClock.restart() );
 	ImGuiWindowFlags window_flags = 0;
@@ -230,9 +222,9 @@ void BreakState::processEvents()
 			break;
 		case sf::Event::KeyReleased:
 			switch ( evt.key.code ) {
-			// Disabling windows size change as it is really
-			// badly
-			// implemented at the moment
+			//// Disabling windows size change as it is really
+			//// badly
+			//// implemented at the moment
 			// case sf::Keyboard::Add:
 			// case sf::Keyboard::Num9:
 			// winSizeIncrease( 1 );
