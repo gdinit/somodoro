@@ -402,8 +402,7 @@ void BreakState::winSizeIncrease( int times )
 	for ( int n = 0; n < times; n++ ) {
 		sf::Vector2u	cSize = m_window.getSize();
 		sf::Vector2u	nSize
-			= { cSize.x + SIZE_STEP_PX
-			    , cSize.y + SIZE_STEP_PX };
+			= { cSize.x + SIZE_STEP_PX, cSize.y + SIZE_STEP_PX };
 
 		#if defined DBG
 		std::cout << "[DEBUG] curSize: " << cSize.x << "," << cSize.y <<
@@ -452,8 +451,7 @@ void BreakState::winManualToggleMoveable()
 	newValueText <<	"\t//" << m_myObjNameStr << "\n";
 	#endif
 
-	// Toggle time should be updated so that autoToggleBack can
-	// function
+	// Toggle time should be updated so that autoToggleBack can function
 	m_enSharedContext.TPmoveToggleTime =
 		std::chrono::steady_clock::now();
 }
