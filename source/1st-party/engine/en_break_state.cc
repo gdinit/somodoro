@@ -71,7 +71,6 @@ BreakState::BreakState( StateMachine &machine
 	// START A NEW GAME
 	m_windowSize = m_window.getSize();
 
-
 	if ( m_breakType == 0 ) {
 		m_breakshortBgColor.r = m_breakshortBgColorR;
 		m_breakshortBgColor.g = m_breakshortBgColorG;
@@ -648,7 +647,6 @@ void BreakState::validateSettings()
 		"ERROR: m_fontSizePxBreakshort must be > 0!\tIt is: " << m_fontSizePxBreakshort <<
 		"\n" );
 }
-
 
 // ===================================80 chars=================================|
 /* EOF */

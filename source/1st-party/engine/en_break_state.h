@@ -80,7 +80,6 @@ public:
 	void	readSettingsFromJson();
 	void	validateSettings();
 
-
 private:
 	t_objectName	m_myObjNameStr;
 	sf::Vector2u	m_windowSize;
