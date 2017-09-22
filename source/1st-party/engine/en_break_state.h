@@ -76,6 +76,10 @@ public:
 	void	winManualToggleMoveable();
 	void	winAutoToggleMoveableIfNecessary();
 	void	winAutoResizeIfRequested();
+	void	initDebugFont();
+	void	readSettingsFromJson();
+	void	validateSettings();
+
 
 private:
 	t_objectName	m_myObjNameStr;

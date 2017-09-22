@@ -39,6 +39,8 @@ BreakState::BreakState( StateMachine &machine
 		")\n";
 	}
 
+	readSettingsFromJson();
+	validateSettings();
 	loadSounds();
 	playSoundWindingUp();
 	// Reset to prevent instant-game-over next time
@@ -59,13 +61,7 @@ BreakState::BreakState( StateMachine &machine
 
 	m_urgentUpdateNeeded = 10;
 
-	// debug overlay font
-	m_font.loadFromFile( "assets/fonts/sansation.ttf" );
-	m_statisticsText.setFont( m_font );
-	m_statisticsText.setPosition( 5.f, 5.f );
-	m_statisticsText.setCharacterSize( 12u );
-	m_statisticsText.setFillColor( sf::Color::White );
-	updateDebugOverlayTextIfEnabled( true );
+	initDebugFont();
 	// === ImGui Stuff
 	// =====================================================
 	m_deltaClock.restart();
@@ -75,47 +71,6 @@ BreakState::BreakState( StateMachine &machine
 	// START A NEW GAME
 	m_windowSize = m_window.getSize();
 
-	// TODO move JSON work to a function
-	// TODO move JSON work to a single unified location in app for
-	// all
-	// states
-	std::ifstream	i( "data/settings.json" );
-	nlohmann::json	j;
-	i >> j;
-	for ( nlohmann::json::iterator it = j.begin(); it != j.end();
-	      ++it ) {
-		if ( it.key() == "m_breakshortBgColorR" ) {
-			m_breakshortBgColorR = it.value();
-		} else if ( it.key() == "m_breakshortBgColorG" ) {
-			m_breakshortBgColorG = it.value();
-		} else if ( it.key() == "m_breakshortBgColorB" ) {
-			m_breakshortBgColorB = it.value();
-		} else if ( it.key() == "m_breaklongBgColorR" ) {
-			m_breaklongBgColorR = it.value();
-		} else if ( it.key() == "m_breaklongBgColorG" ) {
-			m_breaklongBgColorG = it.value();
-		} else if ( it.key() == "m_breaklongBgColorB" ) {
-			m_breaklongBgColorB = it.value();
-		} else if ( it.key() == "m_secsBreakshort" ) {
-			m_secsBreakshort = it.value();
-		} else if ( it.key() == "m_secsBreaklong" ) {
-			m_secsBreaklong = it.value();
-		} else if ( it.key() == "m_fontSizePxBreakshort" ) {
-			m_fontSizePxBreakshort = it.value();
-		} else if ( it.key() == "m_fontSizePxBreaklong" ) {
-			m_fontSizePxBreaklong = it.value();
-		} else if ( it.key() == "winAutoResize" ) {
-			m_enSharedContext.winAutoResize = it.value();
-			std::cout << "m_enSharedContext.winAutoResize is: " <<
-			m_enSharedContext.winAutoResize << '\n';
-		}
-	}
-	i.close();
-
-	PDASSERT( ( m_fontSizePxBreakshort > 0 )
-		,
-		"ERROR: m_fontSizePxBreakshort must be > 0!\tIt is: " << m_fontSizePxBreakshort <<
-		"\n" );
 
 	if ( m_breakType == 0 ) {
 		m_breakshortBgColor.r = m_breakshortBgColorR;
@@ -638,7 +593,63 @@ void BreakState::winAutoResizeIfRequested()
 	}
 }
 
-// ===================================80
-// chars=================================|
+void BreakState::initDebugFont()
+{
+	// debug overlay font
+	m_font.loadFromFile( "assets/fonts/sansation.ttf" );
+	m_statisticsText.setFont( m_font );
+	m_statisticsText.setPosition( 5.f, 5.f );
+	m_statisticsText.setCharacterSize( 12u );
+	m_statisticsText.setFillColor( sf::Color::White );
+	updateDebugOverlayTextIfEnabled( true );
+}
+
+void BreakState::readSettingsFromJson()
+{
+	std::ifstream	i( "data/settings.json" );
+	nlohmann::json	j;
+	i >> j;
+	for ( nlohmann::json::iterator it = j.begin(); it != j.end();
+	      ++it ) {
+		if ( it.key() == "m_breakshortBgColorR" ) {
+			m_breakshortBgColorR = it.value();
+		} else if ( it.key() == "m_breakshortBgColorG" ) {
+			m_breakshortBgColorG = it.value();
+		} else if ( it.key() == "m_breakshortBgColorB" ) {
+			m_breakshortBgColorB = it.value();
+		} else if ( it.key() == "m_breaklongBgColorR" ) {
+			m_breaklongBgColorR = it.value();
+		} else if ( it.key() == "m_breaklongBgColorG" ) {
+			m_breaklongBgColorG = it.value();
+		} else if ( it.key() == "m_breaklongBgColorB" ) {
+			m_breaklongBgColorB = it.value();
+		} else if ( it.key() == "m_secsBreakshort" ) {
+			m_secsBreakshort = it.value();
+		} else if ( it.key() == "m_secsBreaklong" ) {
+			m_secsBreaklong = it.value();
+		} else if ( it.key() == "m_fontSizePxBreakshort" ) {
+			m_fontSizePxBreakshort = it.value();
+		} else if ( it.key() == "m_fontSizePxBreaklong" ) {
+			m_fontSizePxBreaklong = it.value();
+		} else if ( it.key() == "winAutoResize" ) {
+			m_enSharedContext.winAutoResize = it.value();
+			std::cout << "m_enSharedContext.winAutoResize is: " <<
+			m_enSharedContext.winAutoResize << '\n';
+		}
+	}
+	i.close();
+}
+
+void BreakState::validateSettings()
+{
+	// TODO add more PDASSERT()s to validate every setting!
+	PDASSERT( ( m_fontSizePxBreakshort > 0 )
+		,
+		"ERROR: m_fontSizePxBreakshort must be > 0!\tIt is: " << m_fontSizePxBreakshort <<
+		"\n" );
+}
+
+
+// ===================================80 chars=================================|
 /* EOF */
 
