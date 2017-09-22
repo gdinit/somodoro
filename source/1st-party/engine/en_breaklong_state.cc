@@ -10,7 +10,6 @@ extern std::unique_ptr <Globals>	GLOBALS;
 // Used to increase/decrease window size with hotkeys
 #define SIZE_STEP_PX 20
 #define MIN_SIZE_PX 40
-#define FONT_SIZE_PX 74
 
 BreaklongState::BreaklongState( StateMachine &machine
 	, sf::RenderWindow &window
@@ -51,24 +50,15 @@ BreaklongState::BreaklongState( StateMachine &machine
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
 	// =====================================================================
-	// countdown font
-	// m_breaklongFont.loadFromFile( "assets/fonts/sansation.ttf" );
-	m_breaklongFont.loadFromFile( "assets/fonts/monofont.ttf" );
-	m_breaklongText.setFont( m_breaklongFont );
-	// centerOrigin( m_breaklongText );
-	// m_breaklongText.setPosition( m_windowSize.x / 2, m_windowSize.y / 2
-	// );
-	// m_breaklongText.setPosition( 5.f, 5.f );
-	m_breaklongText.setCharacterSize( FONT_SIZE_PX );
-	m_breaklongText.setFillColor( sf::Color::White );
 
 	// START A NEW GAME
 	m_windowSize = m_window.getSize();
 	m_res.x = static_cast <float> ( m_windowSize.x );
 	m_res.y = static_cast <float> ( m_windowSize.y );
 
-	// TODO move this to a function
-	// TODO move this to a single unified location in app for all states
+	// TODO move JSON work to a function
+	// TODO move JSON work to a single unified location in app for all
+	// states
 	std::ifstream	i( "data/settings.json" );
 	nlohmann::json	j;
 	i >> j;
@@ -79,8 +69,10 @@ BreaklongState::BreaklongState( StateMachine &machine
 			m_breaklongBgColorG = it.value();
 		} else if ( it.key() == "m_breaklongBgColorB" ) {
 			m_breaklongBgColorB = it.value();
-		} else if ( it.key() == "m_secsBreakLong" ) {
-			m_secsBreakLong = it.value();
+		} else if ( it.key() == "m_secsBreaklong" ) {
+			m_secsBreaklong = it.value();
+		} else if ( it.key() == "m_fontSizePxBreaklong" ) {
+			m_fontSizePxBreaklong = it.value();
 		} else if ( it.key() == "winAutoResize" ) {
 			m_enSharedContext.winAutoResize = it.value();
 			std::cout << "m_enSharedContext.winAutoResize is: " <<
@@ -88,11 +80,22 @@ BreaklongState::BreaklongState( StateMachine &machine
 		}
 	}
 	i.close();
+
+	PDASSERT( ( m_fontSizePxBreaklong > 0 )
+		,
+		"ERROR: m_fontSizePxBreaklong must be > 0!\tIt is: " << m_fontSizePxBreaklong <<
+		"\n" );
+
 	m_breaklongBgColor.r = m_breaklongBgColorR;
 	m_breaklongBgColor.g = m_breaklongBgColorG;
 	m_breaklongBgColor.b = m_breaklongBgColorB;
 	std::cout << "Short Break started - counting down: " <<
-	m_secsBreakLong << " seconds.\n";
+	m_secsBreaklong << " seconds.\n";
+
+	m_breaklongFont.loadFromFile( "assets/fonts/monofont.ttf" );
+	m_breaklongText.setFont( m_breaklongFont );
+	m_breaklongText.setCharacterSize( m_fontSizePxBreaklong );
+	m_breaklongText.setFillColor( sf::Color::White );
 
 	// TODO change this to steady clock
 	m_TPstart = std::chrono::system_clock::now();
@@ -213,10 +216,7 @@ void BreaklongState::draw()
 	if ( SETTINGS->inGameOverlay ) {
 		m_window.draw( m_statisticsText );
 	}
-
 	m_window.draw( m_breaklongText );
-
-	// Display only if PauseState is not doing it.
 	m_window.display();
 }
 
@@ -381,10 +381,10 @@ void BreaklongState::calculateUpdateTimer()
 {
 	m_TPlatest = std::chrono::system_clock::now();
 	std::chrono::duration <double> elapsed_secs = m_TPlatest - m_TPstart;
-	m_countdownSecondsRemaining = m_secsBreakLong - round(
+	m_countdownSecondsRemaining = m_secsBreaklong - round(
 			elapsed_secs.count() );
 
-	if ( elapsed_secs.count() >= m_secsBreakLong ) {
+	if ( elapsed_secs.count() >= m_secsBreaklong ) {
 		m_timerLive = false;
 		playSoundChime();
 	}
