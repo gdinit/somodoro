@@ -10,7 +10,6 @@ extern std::unique_ptr <Globals>	GLOBALS;
 // Used to increase/decrease window size with hotkeys
 #define SIZE_STEP_PX 20
 #define MIN_SIZE_PX 40
-#define FONT_SIZE_PX 74
 
 BreakshortState::BreakshortState( StateMachine &machine
 	, sf::RenderWindow &window
@@ -51,16 +50,6 @@ BreakshortState::BreakshortState( StateMachine &machine
 	m_deltaClock.restart();
 	ImGui::SFML::Init( m_window );
 	// =====================================================================
-	// countdown font
-	// m_breakshortFont.loadFromFile( "assets/fonts/sansation.ttf" );
-	m_breakshortFont.loadFromFile( "assets/fonts/monofont.ttf" );
-	m_breakshortText.setFont( m_breakshortFont );
-	// centerOrigin( m_breakshortText );
-	// m_breakshortText.setPosition( m_windowSize.x / 2, m_windowSize.y / 2
-	// );
-	// m_breakshortText.setPosition( 5.f, 5.f );
-	m_breakshortText.setCharacterSize( FONT_SIZE_PX );
-	m_breakshortText.setFillColor( sf::Color::White );
 
 	// START A NEW GAME
 	m_windowSize = m_window.getSize();
@@ -77,8 +66,10 @@ BreakshortState::BreakshortState( StateMachine &machine
 			m_breakshortBgColorG = it.value();
 		} else if ( it.key() == "m_breakshortBgColorB" ) {
 			m_breakshortBgColorB = it.value();
-		} else if ( it.key() == "m_secsBreakShort" ) {
-			m_secsBreakShort = it.value();
+		} else if ( it.key() == "m_secsBreakshort" ) {
+			m_secsBreakshort = it.value();
+		} else if ( it.key() == "m_fontSizePxBreakshort" ) {
+			m_fontSizePxBreakshort = it.value();
 		} else if ( it.key() == "winAutoResize" ) {
 			m_enSharedContext.winAutoResize = it.value();
 			std::cout << "m_enSharedContext.winAutoResize is: " <<
@@ -86,11 +77,22 @@ BreakshortState::BreakshortState( StateMachine &machine
 		}
 	}
 	i.close();
+
+	PDASSERT( ( m_fontSizePxBreakshort > 0 )
+		,
+		"ERROR: m_fontSizePxBreakshort must be > 0!\tIt is: " << m_fontSizePxBreakshort <<
+		"\n" );
+
 	m_breakshortBgColor.r = m_breakshortBgColorR;
 	m_breakshortBgColor.g = m_breakshortBgColorG;
 	m_breakshortBgColor.b = m_breakshortBgColorB;
 	std::cout << "Short Break started - counting down: " <<
-	m_secsBreakShort << " seconds.\n";
+	m_secsBreakshort << " seconds.\n";
+
+	m_breakshortFont.loadFromFile( "assets/fonts/monofont.ttf" );
+	m_breakshortText.setFont( m_breakshortFont );
+	m_breakshortText.setCharacterSize( m_fontSizePxBreakshort );
+	m_breakshortText.setFillColor( sf::Color::White );
 
 	// TODO change this to steady clock
 	m_TPstart = std::chrono::system_clock::now();
@@ -376,10 +378,10 @@ void BreakshortState::calculateUpdateTimer()
 {
 	m_TPlatest = std::chrono::system_clock::now();
 	std::chrono::duration <double> elapsed_secs = m_TPlatest - m_TPstart;
-	m_countdownSecondsRemaining = m_secsBreakShort - round(
+	m_countdownSecondsRemaining = m_secsBreakshort - round(
 			elapsed_secs.count() );
 
-	if ( elapsed_secs.count() >= m_secsBreakShort ) {
+	if ( elapsed_secs.count() >= m_secsBreakshort ) {
 		m_timerLive = false;
 		playSoundChime();
 	}

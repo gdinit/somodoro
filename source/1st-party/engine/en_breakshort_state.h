@@ -96,7 +96,7 @@ private:
 	int32			m_breakshortBgColorR = 0;
 	int32			m_breakshortBgColorG = 0;
 	int32			m_breakshortBgColorB = 0;
-	int32			m_secsBreakShort = 0;
+	int32			m_secsBreakshort = 0;
 	int32			m_countdownSecondsRemaining = 0;
 	sf::Font		m_breakshortFont;
 	sf::Text		m_breakshortText;
@@ -113,6 +113,7 @@ private:
 	sf::Sound		m_sChime;
 	int32			m_winPosX = 30;
 	int32			m_winPosY = 74;
+	int32			m_fontSizePxBreakshort = -1;
 };
 
 // EN_BREAKSHORT_STATE_H
