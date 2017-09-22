@@ -240,6 +240,7 @@ void MainMenuState::processEvents()
 				" Goodbye!\n";
 				m_machine.quit();
 				break;
+			// TODO FIXME
 			// Disabling windows size change as it is really badly
 			// implemented at the moment
 			// case sf::Keyboard::Add:
